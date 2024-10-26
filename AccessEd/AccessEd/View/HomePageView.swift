@@ -7,174 +7,221 @@
 
 import SwiftUI
 
-struct HomePageView: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-                    
-                    // Top green globe and search bar area
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.green.opacity(0.9)) // Placeholder for the top background
-                            .frame(height: 220)
-                        
-                        HStack {
-                            Spacer()
-                            Image(systemName: "magnifyingglass") // Search Icon placeholder
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .padding()
-                        }
-                        
-                        // Placeholder for the globe illustration
-                        VStack {
-                            Spacer()
-                            Circle()
-                                .fill(Color.green)
-                                .frame(width: 120, height: 120)
-                                .offset(x: -40)
-                            
-                            Spacer()
-                        }
-                    }
-                    
-                    // Subjects section
-                    Text("Subjects")
-                        .font(.headline)
-                        .padding(.horizontal)
-                    
-                    Text("Recommendations for you")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                        .padding(.horizontal)
-                    
-                    HStack {
-                        // Mathematics
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.orange)
-                            .frame(width: 160, height: 100)
-                            .overlay(
-                                VStack {
-                                    Text("Mathematics")
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                    Spacer()
-                                }
-                                .padding()
-                            )
-                        
-                        Spacer()
-                        
-                        // Geography
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.blue)
-                            .frame(width: 160, height: 100)
-                            .overlay(
-                                VStack {
-                                    Text("Geography")
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                    Spacer()
-                                }
-                                .padding()
-                            )
-                    }
-                    .padding(.horizontal)
-                    
-                    // Your Schedule Section
-                    Text("Your Schedule")
-                        .font(.headline)
-                        .padding(.horizontal)
-                    
-                    Text("Next lessons")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                        .padding(.horizontal)
-                    
-                    // Biology Schedule card
+    struct HomePageView: View {
+        var body: some View {
+            VStack(alignment: .leading, spacing: 20) {
+                // Top green globe and search bar area
+                
+                ZStack {
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.green)
-                        .frame(height: 100)
-                        .overlay(
-                            HStack {
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text("Biology")
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                    Text("Chapter 3: Animal Kingdom")
-                                        .font(.subheadline)
-                                        .foregroundColor(.white.opacity(0.7))
-                                    Text("2:00 PM - 3:00 PM")
-                                        .font(.caption)
-                                        .foregroundColor(.white.opacity(0.7))
-                                }
-                                .padding()
-                                
-                                Spacer()
-                            }
-                        )
-                        .padding(.horizontal)
+                        .fill(Color.green.opacity(0.9)) // Placeholder for the top background
+                        .frame(height: 200)
                     
-                    Spacer()
-                    
-                    // Bottom Tab bar placeholders
                     HStack {
                         Spacer()
-                        Image(systemName: "house.fill")
+                        Image(systemName: "magnifyingglass") // Search Icon placeholder
                             .font(.title)
+                            .foregroundColor(.white)
+                            .padding()
+                    }
+                    
+                    // Placeholder for the globe illustration
+                    VStack {
                         Spacer()
-                        Image(systemName: "calendar")
+                        Circle()
+                            .fill(Color.green)
+                            .frame(width: 120, height: 100)
+                            .offset(x: -40)
+                        
+                        Spacer()
+                    }
+                }
+                .frame(height: 250)
+                .background(Color.red)
+                
+                
+                ScrollView(.vertical, showsIndicators: false){
+                    // Subjects section
+                    VStack(alignment: .leading) {
+                        Text("Subjects")
                             .font(.title)
-                        Spacer()
-                        Image(systemName: "message")
-                            .font(.title)
-                        Spacer()
-                        Image(systemName: "person.crop.circle")
-                            .font(.title)
-                        Spacer()
+                            .padding(.horizontal)
+                        
+                        Text("Recommendations for you")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
+                            .padding(.bottom, 15)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                // Mathematics
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color.orange)
+                                    .frame(width: 150, height: 120)
+                                    .overlay(
+                                        VStack {
+                                            Text("Mathematics")
+                                                .font(.headline)
+                                                .foregroundColor(.white)
+                                            Spacer()
+                                        }
+                                            .padding()
+                                    )
+                                
+                                
+                                // Geography
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color.blue.opacity(0.8))
+                                    .frame(width: 150, height: 120)
+                                    .overlay(
+                                        VStack {
+                                            Text("Chemistry")
+                                                .font(.headline)
+                                                .foregroundColor(.white)
+                                            Spacer()
+                                        }
+                                            .padding()
+                                    )
+                                
+                                // Geography
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color.cyan)
+                                    .frame(width: 150, height: 120)
+                                    .overlay(
+                                        VStack {
+                                            Text("Geography")
+                                                .font(.headline)
+                                                .foregroundColor(.white)
+                                            Spacer()
+                                        }
+                                            .padding()
+                                    )
+                            }
+                            .padding(.horizontal)
+                        }
                     }
                     .padding()
-                    .background(Color.white.opacity(0.9))
+                    
+                    
+                    
+                    VStack(alignment: .leading){
+                        // Your Schedule Section
+                        Text("Your Schedule")
+                            .font(.title)
+                            .padding(.horizontal)
+                        
+                        Text("Next lessons")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
+                            .padding(.bottom, 15)
+                        
+                        // Biology Schedule card
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.green)
+                            .frame(height: 150)
+                            .overlay(
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text("Biology")
+                                            .font(.headline)
+                                            .foregroundColor(.white)
+                                        Text("Chapter 3: Animal Kingdom")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.7))
+                                        Text("2:00 PM - 3:00 PM")
+                                            .font(.caption)
+                                            .foregroundColor(.white.opacity(0.7))
+                                    }
+                                    .padding()
+                                    
+                                    Spacer()
+                                }
+                            )
+                            .padding(.horizontal)
+                        
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.yellow)
+                            .frame(height: 150)
+                            .overlay(
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text("Chemistry")
+                                            .font(.headline)
+                                            .foregroundColor(.white)
+                                        Text("Chapter 4: Organic Chemistry")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.7))
+                                        Text("3:00 PM - 4:00 PM")
+                                            .font(.caption)
+                                            .foregroundColor(.white.opacity(0.7))
+                                    }
+                                    .padding()
+                                    
+                                    Spacer()
+                                }
+                            )
+                            .padding(.horizontal)
+                    }
+                    .padding()
                 }
-                .edgesIgnoringSafeArea(.all)
-                .background(Color(.systemGray6))
+                .padding(.vertical)
+                .frame(maxWidth: .infinity, maxHeight: 500)
+//                .background(Color.yellow)
+                .background(
+                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
+                        .fill(Color.white)
+                )
+                
+                
             }
-    }
-    
-    
-    var bottomMenu: some View {
-        HStack(spacing: 60) {
-            Button(action: {
+            .edgesIgnoringSafeArea(.all)
+            .background(Color.red)
                 
-            }, label: {
-                Image(systemName: "house")
-            })
             
-            
-            Button(action: {
-                
-            }, label: {
-                Image(systemName: "star")
-            })
-            
-            
-            Button(action: {
-                
-            }, label: {
-                Image(systemName: "calendar")
-            })
-            
-            
-            Button(action: {
-                
-            }, label: {
-                Image(systemName: "person")
-            })
+            // Bottom Tab bar placeholders
+            bottomMenu
         }
-        .frame(maxWidth: .infinity, maxHeight: 60)
-        .background(Color.white)
-//        .foregroundStyle(.secondary)  // add color in the asset folder
-        .font(.system(size: 25))
-}
+        
+        
+        
+        var bottomMenu: some View {
+            HStack(alignment: .top, spacing: 60) {
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "house")
+                })
+                
+                
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "calendar")
+                })
+                
+                
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "star")
+                })
+                
+                            
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "person")
+                })
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: 70)
+            .background(Color.white)
+            .accentColor(.primary)
+            .font(.system(size: 25))
+        }
+    }
 
 #Preview {
     HomePageView()
