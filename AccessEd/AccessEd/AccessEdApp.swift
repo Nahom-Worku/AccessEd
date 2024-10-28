@@ -25,7 +25,8 @@ struct AccessEdApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            HomePageView()
         }
         .modelContainer(sharedModelContainer)
     }
