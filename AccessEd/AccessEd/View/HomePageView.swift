@@ -5,45 +5,30 @@
 //  Created by Nahom Worku on 2024-10-25.
 //
 
-import SwiftUI 
+import SwiftUI
 
 struct HomePageView: View {
+    
+    @State private var showAddSubjectSheet: Bool = false
+    
     var body: some View {
         
         ScrollView(.vertical) {
             
             VStack {
                 
+                // Perview Layer
                 ZStack {
-                    
-                    HStack {
-                        Text("AccessEd")
-                            .font(.largeTitle)
-                        
-                        Spacer()
-                        
-                        Image("education")
-                            .renderingMode(.original)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 130, height: 150)
-                            .clipped()
-                    }
-                    .padding()
-                    .padding(.top, 50)
-                    .frame(maxWidth: 350, maxHeight: 150)
-
+                    emptyPreviewLayer
                 }
-                .frame(height: 250)
+                .frame(height: 260)
                 
                 
-                
+                // Subjects and Schedule Layer
                 VStack {
-                    
                     subjectsLayer
                     
                     scheduleLayer
-                    
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(
@@ -61,12 +46,53 @@ struct HomePageView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .background(Color.white)
+        .sheet(isPresented: $showAddSubjectSheet) {
+            AddCourseSheet()
+                .presentationDetents([.medium, .fraction(0.5)])
+                .background(Color.white)
+                .cornerRadius(50)
+                .ignoresSafeArea(.all)
+        }
         
         
         // Bottom Tab bar placeholders
         bottomMenu
     }
     
+    
+    var emptyPreviewLayer: some View {
+        HStack {
+            Text("AccessEd")
+                .font(.largeTitle)
+            
+            Spacer()
+            
+            Image("education")
+                .renderingMode(.original)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100, height: 150)
+                .clipped()
+        }
+        .padding()
+        .padding(.top, 50)
+        .frame(maxWidth: 320, maxHeight: 150)
+    }
+    
+    var nonEmptyPreviewLayer: some View {
+        
+        VStack {
+            Text("You have tasks in your To-Do List")
+                .font(.headline)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 25)
+                .fill(Color.white)
+                .padding()
+                .frame(width: 350, height: 200)
+                .padding(.top, 60)
+        )
+    }
     
     var subjectsLayer: some View {
         VStack(alignment: .leading) {
@@ -89,13 +115,24 @@ struct HomePageView: View {
                 
                 // Add courses button
                 Button {
-                    
+                    self.showAddSubjectSheet = true
                 } label: {
                     HStack(spacing: 5) {
                         Image(systemName: "plus")
                         
                         Text("Add")
+                            
                     }
+                    .font(.caption)
+                    .bold()
+                    .foregroundColor(.gray)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray, lineWidth: 2)
+                            .frame(width: 70, height: 30)
+                    )
                 }
             }
             .padding(.top, 15)
@@ -163,7 +200,7 @@ struct HomePageView: View {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(
                             LinearGradient(
-                                gradient: Gradient(colors: [Color(#colorLiteral(red: 0.4392156899, green: 0.01176470611, blue: 0.1921568662, alpha: 1)), Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1))]),
+                                gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
                                 startPoint: .leading,
                                 endPoint: .trailing)
                         )
@@ -196,6 +233,7 @@ struct HomePageView: View {
         }
         .padding()
     }
+    
     
     var scheduleLayer: some View {
         VStack(alignment: .leading){
@@ -262,7 +300,7 @@ struct HomePageView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(
                     LinearGradient(
-                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.4392156899, green: 0.01176470611, blue: 0.1921568662, alpha: 1)), Color(#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1))]),
+                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
                         startPoint: .leading,
                         endPoint: .trailing)
                 )
@@ -326,6 +364,95 @@ struct HomePageView: View {
         .background(Color.gray.opacity(0.1))
         .accentColor(.primary)
         .font(.system(size: 23))
+    }
+    
+    
+}
+
+
+struct AddCourseSheet: View {
+    @State private var courseName: String = ""
+    @State private var grade: String = ""
+    
+    @Environment(\.dismiss) var dismissScreen
+    
+    var body: some View {
+        
+        VStack (alignment: .center) {
+            Text("Enter Course Information")
+                .font(Font.system(size: 20))
+                .padding()
+                .padding(.top, 10)
+            
+            TextField("Enter Course Name", text: $courseName)
+                .font(.subheadline)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+            
+            TextField("Choose Category", text: $grade)
+                .font(.subheadline)
+                .padding(.horizontal)
+                .padding(.bottom, 10)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+            
+            // Buttons
+            HStack {
+                
+                // Cancel button
+                Button {
+                    dismissScreen()
+                } label: {
+                    Text("Canel")
+                        .font(.subheadline)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(
+                            
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.red.opacity(0.6))
+                                .frame(width: 120, height: 40)
+                        )
+                }
+
+                Spacer()
+                
+                // Add course button
+                Button {
+                    
+                } label: {
+                    Text("Add")
+                        .font(.subheadline)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.blue.opacity(0.6))
+                                .frame(width: 120, height: 40)
+                        )
+                }
+            }
+            .padding()
+            .frame(maxWidth: 250, maxHeight: 100)
+            .foregroundStyle(Color.black)
+        }
+        .frame(maxWidth: 300, maxHeight: 250)
+        .padding()
+        .padding(.vertical, 10)
+        .background(
+            Color.gray.opacity(0.1)
+                .cornerRadius(50)
+                .shadow(
+                    color: Color.black.opacity(0.3),
+                    radius: 5,
+                    x: 0.0,
+                    y: 10 )
+        )
+        .padding(.horizontal, 10)
+        .padding(.bottom, 10)
+        
     }
 }
 
