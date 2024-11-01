@@ -27,6 +27,7 @@ struct AccessEdApp: App {
         WindowGroup {
 //            ContentView()
             HomePageView()
+//            StudyCardView()
         }
         .modelContainer(sharedModelContainer)
     }
