@@ -144,7 +144,9 @@ struct HomePageView: View {
                     // Mathematics
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.orange)
+//                        .stroke(Color.black, lineWidth: 1)
                         .frame(width: 150, height: 120)
+                        
                         .overlay(
                             VStack {
                                 HStack {
@@ -155,7 +157,6 @@ struct HomePageView: View {
                                     Image(systemName: "ellipsis.circle")
                                     
                                 }
-                                .foregroundStyle(Color.white)
                                 .font(Font.system(size: 20))
                                 
                                 
@@ -163,15 +164,16 @@ struct HomePageView: View {
                                 
                                 Text("Mathematics")
                                     .font(.headline)
-                                    .foregroundColor(.white)
                             }
                             .padding()
+//                            .frame(width: 150, height: 120)
+                            .foregroundStyle(Color.black)
                         )
                     
                     
                     // Chemistry
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.blue)
+                        .fill(Color.blue.opacity(0.8))
                         .frame(width: 150, height: 120)
                         .overlay(
                             VStack {
@@ -183,7 +185,6 @@ struct HomePageView: View {
                                     Image(systemName: "ellipsis.circle")
                                     
                                 }
-                                .foregroundStyle(Color.white)
                                 .font(Font.system(size: 20))
                                 
                                 
@@ -191,19 +192,14 @@ struct HomePageView: View {
                                 
                                 Text("Chemistry")
                                     .font(.headline)
-                                    .foregroundColor(.white)
                             }
                             .padding()
+                            .foregroundColor(.white)
                         )
                     
                     // Geography
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
-                                startPoint: .leading,
-                                endPoint: .trailing)
-                        )
+                        .fill(Color.brown)
                         .frame(width: 150, height: 120)
                         .overlay(
                             VStack {
@@ -215,7 +211,6 @@ struct HomePageView: View {
                                     Image(systemName: "ellipsis.circle")
                                     
                                 }
-                                .foregroundStyle(Color.white)
                                 .font(Font.system(size: 20))
                                 
                                 
@@ -223,9 +218,9 @@ struct HomePageView: View {
                                 
                                 Text("Geography")
                                     .font(.headline)
-                                    .foregroundColor(.white)
                             }
                             .padding()
+                            .foregroundStyle(Color.white)
                         )
                 }
                 .padding(.horizontal)
@@ -385,16 +380,27 @@ struct AddCourseSheet: View {
                 .padding(.top, 10)
             
             TextField("Enter Course Name", text: $courseName)
+                .padding(10)
+                .background(Color.white.cornerRadius(10.0))
+                .padding(.horizontal, 20)
+                .foregroundStyle(Color.black)
                 .font(.subheadline)
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                .font(.subheadline)
+//                .padding(.horizontal)
+//                .padding(.vertical, 10)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
             
             TextField("Choose Category", text: $grade)
+                .padding(10)
+                .background(Color.white.cornerRadius(10.0))
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
+                .foregroundStyle(Color.black)
                 .font(.subheadline)
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                .font(.subheadline)
+//                .padding(.horizontal)
+//                .padding(.bottom, 10)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
             
             // Buttons
             HStack {
@@ -435,7 +441,7 @@ struct AddCourseSheet: View {
                 }
             }
             .padding()
-            .frame(maxWidth: 250, maxHeight: 100)
+            .frame(maxWidth: 240, maxHeight: 100)
             .foregroundStyle(Color.black)
         }
         .frame(maxWidth: 300, maxHeight: 250)
@@ -443,7 +449,7 @@ struct AddCourseSheet: View {
         .padding(.vertical, 10)
         .background(
             Color.gray.opacity(0.1)
-                .cornerRadius(50)
+                .cornerRadius(15)
                 .shadow(
                     color: Color.black.opacity(0.3),
                     radius: 5,
