@@ -9,11 +9,11 @@ import SwiftUI
 
 struct HomePageView: View {
     
-    @State private var showAddSubjectSheet: Bool = false
+    @State var showAddSubjectSheet: Bool = false
     
     var body: some View {
         
-        ScrollView(.vertical) {
+        ScrollView(.vertical, showsIndicators: false) {
             
             VStack {
                 
@@ -21,16 +21,17 @@ struct HomePageView: View {
                 ZStack {
                     emptyPreviewLayer
                 }
-                .frame(height: 260)
+                .frame(height: 200)
                 
                 
                 // Subjects and Schedule Layer
                 VStack {
-                    subjectsLayer
+                    SubjectsLayerView(showAddSubjectSheet: $showAddSubjectSheet)
                     
                     scheduleLayer
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(.leading)
                 .background(
                     UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
                         .fill(Color.white)
@@ -89,144 +90,9 @@ struct HomePageView: View {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.white)
                 .padding()
-                .frame(width: 350, height: 200)
+                .frame(width: .infinity, height: 120)
                 .padding(.top, 60)
         )
-    }
-    
-    var subjectsLayer: some View {
-        VStack(alignment: .leading) {
-            
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Subjects")
-                        .font(.title)
-                        .bold()
-                    
-                    Text("Recommendations for you")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                        
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 15)
-                
-                Spacer()
-                
-                // Add courses button
-                Button {
-                    self.showAddSubjectSheet = true
-                } label: {
-                    HStack(spacing: 5) {
-                        Image(systemName: "plus")
-                        
-                        Text("Add")
-                            
-                    }
-                    .font(.caption)
-                    .bold()
-                    .foregroundColor(.gray)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 10)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 2)
-                            .frame(width: 70, height: 30)
-                    )
-                }
-            }
-            .padding(.top, 15)
-            .padding(.trailing, 15)
-            
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    // Mathematics
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.orange)
-//                        .stroke(Color.black, lineWidth: 1)
-                        .frame(width: 150, height: 120)
-                        
-                        .overlay(
-                            VStack {
-                                HStack {
-                                    Image(systemName: "x.squareroot")
-                                    
-                                    Spacer()
-                                    
-                                    Image(systemName: "ellipsis.circle")
-                                    
-                                }
-                                .font(Font.system(size: 20))
-                                
-                                
-                                Spacer()
-                                
-                                Text("Mathematics")
-                                    .font(.headline)
-                            }
-                            .padding()
-//                            .frame(width: 150, height: 120)
-                            .foregroundStyle(Color.black)
-                        )
-                    
-                    
-                    // Chemistry
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.blue.opacity(0.8))
-                        .frame(width: 150, height: 120)
-                        .overlay(
-                            VStack {
-                                HStack {
-                                    Image(systemName: "atom")
-                                    
-                                    Spacer()
-                                    
-                                    Image(systemName: "ellipsis.circle")
-                                    
-                                }
-                                .font(Font.system(size: 20))
-                                
-                                
-                                Spacer()
-                                
-                                Text("Chemistry")
-                                    .font(.headline)
-                            }
-                            .padding()
-                            .foregroundColor(.white)
-                        )
-                    
-                    // Geography
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.brown)
-                        .frame(width: 150, height: 120)
-                        .overlay(
-                            VStack {
-                                HStack {
-                                    Image(systemName: "globe.europe.africa.fill")
-                                    
-                                    Spacer()
-                                    
-                                    Image(systemName: "ellipsis.circle")
-                                    
-                                }
-                                .font(Font.system(size: 20))
-                                
-                                
-                                Spacer()
-                                
-                                Text("Geography")
-                                    .font(.headline)
-                            }
-                            .padding()
-                            .foregroundStyle(Color.white)
-                        )
-                }
-                .padding(.horizontal)
-            }
-        }
-        .padding()
     }
     
     
@@ -248,7 +114,7 @@ struct HomePageView: View {
             // Biology Schedule card
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.green)
-                .frame(height: 120)
+                .frame(width: .infinity, height: 120)
                 .overlay(
                     HStack {
                         VStack(alignment: .leading, spacing: 5) {
@@ -271,7 +137,7 @@ struct HomePageView: View {
             
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.blue)
-                .frame(height: 120)
+                .frame(width: .infinity, height: 120)
                 .overlay(
                     HStack {
                         VStack(alignment: .leading, spacing: 5) {
@@ -299,7 +165,7 @@ struct HomePageView: View {
                         startPoint: .leading,
                         endPoint: .trailing)
                 )
-                .frame(height: 120)
+                .frame(width: 350,height: 120)
                 .overlay(
                     HStack {
                         VStack(alignment: .leading, spacing: 5) {
@@ -321,7 +187,6 @@ struct HomePageView: View {
             
         }
         .padding()
-        .padding(.horizontal)
     }
     
     var bottomMenu: some View {
