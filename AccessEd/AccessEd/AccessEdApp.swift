@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct AccessEdApp: App {
+    @StateObject var listViewModel: ListViewModel = ListViewModel()
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -24,10 +26,18 @@ struct AccessEdApp: App {
     }()
 
     var body: some Scene {
+//        WindowGroup {
+////            ContentView()
+//            HomePageView()
+//        }
+//        .modelContainer(sharedModelContainer)
+        
         WindowGroup {
-//            ContentView()
-            HomePageView()
-        }
-        .modelContainer(sharedModelContainer)
+                   NavigationView {
+                       HomePageView()
+                   }
+                   .navigationViewStyle(StackNavigationViewStyle())
+                   .environmentObject(listViewModel)
+               }
     }
 }
