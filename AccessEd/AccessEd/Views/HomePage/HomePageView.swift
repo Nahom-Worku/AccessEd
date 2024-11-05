@@ -13,51 +13,53 @@ struct HomePageView: View {
     
     var body: some View {
         
-        ScrollView(.vertical, showsIndicators: false) {
-            
-            VStack {
+        
+        NavigationStack {
+            ScrollView(.vertical, showsIndicators: false) {
                 
-                // Perview Layer
-                ZStack {
-                    emptyPreviewLayer
-                }
-                .frame(height: 200)
-                
-                
-                // Subjects and Schedule Layer
                 VStack {
-                    SubjectsLayerView(showAddSubjectSheet: $showAddSubjectSheet)
                     
-                    scheduleLayer
+                    // Perview Layer
+                    ZStack {
+                        emptyPreviewLayer
+                    }
+                    .frame(height: 200)
+                    
+                    
+                    // Subjects and Schedule Layer
+                    VStack {
+                        SubjectsLayerView(showAddSubjectSheet: $showAddSubjectSheet)
+                        
+                        scheduleLayer
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.leading)
+                    .background(
+                        UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
+                            .fill(Color.white)
+                    )
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding(.leading)
                 .background(
-                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
-                        .fill(Color.white)
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
+                        startPoint: .leading,
+                        endPoint: .trailing)
                 )
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
-                    startPoint: .leading,
-                    endPoint: .trailing)
-            )
+            .edgesIgnoringSafeArea(.all)
+            .background(Color.white)
+            .sheet(isPresented: $showAddSubjectSheet) {
+                AddCourseSheet()
+                    .presentationDetents([.medium, .fraction(0.5)])
+                    .background(Color.white)
+                    .cornerRadius(50)
+                    .ignoresSafeArea(.all)
+            }
+            
+            // Bottom Tab bar placeholders
+            BottomMenuView()
         }
-        .edgesIgnoringSafeArea(.all)
-        .background(Color.white)
-        .sheet(isPresented: $showAddSubjectSheet) {
-            AddCourseSheet()
-                .presentationDetents([.medium, .fraction(0.5)])
-                .background(Color.white)
-                .cornerRadius(50)
-                .ignoresSafeArea(.all)
-        }
-        
-        
-        // Bottom Tab bar placeholders
-        bottomMenu
     }
     
     
@@ -189,44 +191,6 @@ struct HomePageView: View {
         .padding()
     }
     
-    var bottomMenu: some View {
-        HStack(alignment: .center, spacing: 70) {
-            Button(action: {
-                
-            }, label: {
-                Image(systemName: "house")
-            })
-            
-            
-            Button(action: {
-                
-            }, label: {
-                Image(systemName: "calendar")
-            })
-            
-            
-            Button(action: {
-                
-            }, label: {
-                Image(systemName: "checklist")
-            })
-            
-            
-            Button(action: {
-                
-            }, label: {
-                Image(systemName: "person")
-            })
-        }
-        .padding()
-        .padding(.vertical)
-        .frame(maxWidth: .infinity, maxHeight: 60)
-        .background(Color.gray.opacity(0.1))
-        .accentColor(.primary)
-        .font(.system(size: 23))
-    }
-    
-    
 }
 
 
@@ -327,6 +291,18 @@ struct AddCourseSheet: View {
     }
 }
 
-#Preview {
-    HomePageView()
+//#Preview {
+//    NavigationView {
+//        HomePageView()
+//    }
+//    .environmentObject(ListViewModel())
+//}
+
+struct HomePageView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            HomePageView()
+        }
+        .environmentObject(ListViewModel()) 
+    }
 }
