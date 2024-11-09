@@ -14,9 +14,6 @@ struct SubjectsLayerView: View {
     var body: some View {
         VStack(alignment: .leading) {
             
-            //*************************
-            
-            
             HStack {
                 VStack(alignment: .leading) {
                     Text("Subjects")
