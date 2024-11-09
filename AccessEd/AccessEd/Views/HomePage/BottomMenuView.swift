@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BottomMenuView: View {
+    
     var body: some View {
         HStack(alignment: .center, spacing: 70) {
             
@@ -15,12 +16,12 @@ struct BottomMenuView: View {
                 Image(systemName: "house")
             }
                    
-            NavigationLink(destination: NoItemsView()) {
-                Image(systemName: "calendar")
+            NavigationLink(destination: Text("This is the courses page")) {
+                Image(systemName: "books.vertical")
             }
                    
-            NavigationLink(destination: ListView()) {
-                Image(systemName: "checklist")
+            NavigationLink(destination: CalendarParentView()) {
+                Image(systemName: "calendar")
             }
                    
             NavigationLink(destination: ProfileView()) {
@@ -40,3 +41,4 @@ struct BottomMenuView: View {
 #Preview {
     BottomMenuView()
 }
+
