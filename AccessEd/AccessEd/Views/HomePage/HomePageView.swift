@@ -33,9 +33,8 @@ struct HomePageView: View {
                         ScheduleLayerView()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(.leading)
                     .background(
-                        UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
+                        UnevenRoundedRectangle(cornerRadii: .init(topLeading: 30, topTrailing: 0), style: .continuous)
                             .fill(Color.white)
                     )
                 }

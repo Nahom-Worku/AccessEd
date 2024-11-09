@@ -57,7 +57,7 @@ struct SubjectsLayerView: View {
             
             
             ScrollView(.horizontal, showsIndicators: true) {
-                HStack(alignment: .center, spacing: 25){
+                HStack(alignment: .center, spacing: 20){
                     
                     //###############################
                     VStack {
@@ -195,14 +195,10 @@ struct SubjectsLayerView: View {
                     .background(Color.white)
                     .cornerRadius(15)
                     .shadow(radius: 3)
-                    
-                    
                 }
                 .frame(height: 200)
             }
             .frame(maxWidth: .infinity, maxHeight: 250)
-            .padding(.trailing, 15)
-            
         }
         .padding()
     }
