@@ -76,11 +76,13 @@ struct MonthlyCalendarView: View {
             Spacer()
             
             VStack {
-                Text("Events for each day")
+//                Text("To Do List")
+//                    .font(.title)
+                ListView()
             }
-            .padding()
+            .padding(.top)
             
-            Spacer()
+//            Spacer()
         }
         .padding()
     }
