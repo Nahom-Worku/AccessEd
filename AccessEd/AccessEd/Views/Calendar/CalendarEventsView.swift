@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CalendarChildView: View {
+struct CalendarEventsView: View {
     @Binding var currentMonth: Date
     @Binding var tasks: [Task]
     var onDateSelected: (Date) -> Void // Callback to handle date selection
@@ -41,21 +41,19 @@ struct CalendarChildView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
                 ForEach(daysInMonthWithPadding, id: \.self) { date in
                     if let date = date {
+                        
+                        let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
+                                                
                         Button(action: {
                             onDateSelected(date) // Notify parent view when a date is selected
                         }) {
-                            if calendar.isDateInToday(date) {
-                                Text("\(calendar.component(.day, from: date))")
-                                    .frame(width: 40, height: 40)
-                                    .background(Color.red.opacity(0.3))
-                                    .cornerRadius(8)
-                            }
-                            else {
-                                Text("\(calendar.component(.day, from: date))")
-                                    .frame(width: 40, height: 40)
-                                    .background(Color.blue.opacity(0.1))
-                                    .cornerRadius(8)
-                            }
+//                            VStack(alignment: .center) {
+                                Text("\(hasTasks ? "•\(calendar.component(.day, from: date))•" : "\(calendar.component(.day, from: date))")")
+//                            }
+                            .bold(hasTasks ? true : false)
+                            .frame(width: 40, height: 40, alignment: .center)
+                            .background(calendar.isDateInToday(date) ? Color.red.opacity(0.3) : Color.blue.opacity(0.1))
+                            .cornerRadius(8)
                         }
                         .buttonStyle(PlainButtonStyle())
                     } else {
