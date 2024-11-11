@@ -47,11 +47,11 @@ struct CalendarView: View {
                     .padding(.vertical)
                     
                 VStack (alignment: .leading){
-//                    VStack {
-//                        Text("\(formattedDate(selectedDate))")
-//                            .font(.title2)
-//                    }
-//                    .padding()
+                    //                    VStack {
+                    //                        Text("\(formattedDate(selectedDate))")
+                    //                            .font(.title2)
+                    //                    }
+                    //                    .padding()
                     
                     let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
                     
@@ -59,30 +59,37 @@ struct CalendarView: View {
                         Text("No tasks for this date.")
                             .foregroundColor(.gray)
                     } else {
-//                        NavigationStack {
-                            
-                                ForEach(tasksForSelectedDate.reversed()) { task in
-                                    Text("• \(task.description)")
-                                        .font(.body)
-                                        .strikethrough(task.completed, color: .gray) // Apply strikethrough if completed
-                                        .foregroundColor(task.completed ? .gray : .primary)
-                                        .onTapGesture(count: 2) {
-                                            if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-                                                tasks[index].completed.toggle() // Toggle completion on double click
-                                            }
-                                        }
-                                
-                            }
-
-                        
+                        ForEach(Array(tasksForSelectedDate.reversed().enumerated()), id: \.1.id) { index, task in
+                            Text("\(index + 1).) \(task.description)")
+                                .font(.body)
+                                .strikethrough(task.completed, color: .gray) // Apply strikethrough if completed
+                                .foregroundColor(task.completed ? .gray : .primary)
+                                .onTapGesture(count: 2) {
+                                    if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+                                        tasks[index].completed.toggle() // Toggle completion on double click
+                                    }
+                                }
+                        }
                     }
                     
                     // Button to add a new task
-                    Button("Add Task") {
-                        isAddingTask = true // Show the sheet
-                    }
+                    Button(action: {
+                        isAddingTask = true
+                    }, label: {
+                        Text("Add Task".uppercased())
+                            .font(.caption)
+                            .bold()
+                            .foregroundColor(.gray)
+                            .padding()
+                            .padding(.horizontal, 15)
+                            .background(
+                                Capsule()
+                                    .stroke(Color.gray, lineWidth: 2)
+                            )
+                    })
                     .padding()
-                }
+                    
+                }C
                 .padding()
                 .padding(.horizontal)
                 .frame(width: 400, height: .infinity, alignment: .leading)
