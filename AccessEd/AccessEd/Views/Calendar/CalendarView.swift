@@ -33,19 +33,21 @@ struct CalendarView: View {
                     .bold()
                     .foregroundColor(.primary)
                 
-                calendarTitleLayerView
-                
-                // Calendar view
-                CalendarEventsView(
-                    currentMonth: $currentMonth,
-                    tasks: $tasks,
-                    onDateSelected: { date in
-                        selectedDate = date // Update selected date when a date is clicked
-                    }
-                )
-                
-                // Tasks for the selected or default date (today)
-                //            VStack (alignment: .leading) {
+                VStack {
+                    calendarTitleLayerView
+                    
+                    // Calendar view
+                    CalendarEventsView(
+                        currentMonth: $currentMonth,
+                        tasks: $tasks,
+                        onDateSelected: { date in
+                            selectedDate = date // Update selected date when a date is clicked
+                        }
+                    )
+                }
+                .padding(.bottom)
+                .background(Color.gray.opacity(0.05).cornerRadius(40))
+                .padding(.horizontal ,5)
                 
                 
                 VStack (alignment: .leading) {
@@ -108,33 +110,7 @@ struct CalendarView: View {
                 
                 Spacer()
             }
-            .sheet(isPresented: $isAddingTask) {
-                VStack {
-                    Text("Add Task for \(formattedDate(selectedDate))")
-                        .font(.headline)
-                        .padding()
-                    
-                    TextField("Task description", text: $newTaskDescription)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    
-                    Button("Add") {
-                        if !newTaskDescription.isEmpty {
-                            addTask(for: selectedDate, description: newTaskDescription)
-                            newTaskDescription = "" // Clear the text field
-                            isAddingTask = false // Dismiss the sheet
-                        }
-                    }
-                    .padding()
-                    
-                    Button("Cancel") {
-                        isAddingTask = false // Dismiss the sheet without adding
-                    }
-                    .foregroundColor(.red)
-                    .padding()
-                }
-                .padding()
-            }
+            .sheet(isPresented: $isAddingTask, content: { addTaskSheetView })
         }
     }
 
@@ -159,6 +135,34 @@ struct CalendarView: View {
             }) {
                 Text("Next")
             }
+        }
+        .padding()
+    }
+    
+    var addTaskSheetView: some View {
+        VStack {
+            Text("Add Task for \(formattedDate(selectedDate))")
+                .font(.headline)
+                .padding()
+            
+            TextField("Task description", text: $newTaskDescription)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            Button("Add") {
+                if !newTaskDescription.isEmpty {
+                    addTask(for: selectedDate, description: newTaskDescription)
+                    newTaskDescription = "" // Clear the text field
+                    isAddingTask = false // Dismiss the sheet
+                }
+            }
+            .padding()
+            
+            Button("Cancel") {
+                isAddingTask = false // Dismiss the sheet without adding
+            }
+            .foregroundColor(.red)
+            .padding()
         }
         .padding()
     }
