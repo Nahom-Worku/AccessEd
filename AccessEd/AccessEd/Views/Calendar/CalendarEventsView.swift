@@ -47,9 +47,9 @@ struct CalendarEventsView: View {
                         Button(action: {
                             onDateSelected(date) // Notify parent view when a date is selected
                         }) {
-//                            VStack(alignment: .center) {
-                                Text("\(hasTasks ? "•\(calendar.component(.day, from: date))•" : "\(calendar.component(.day, from: date))")")
-//                            }
+
+                            Text("\(hasTasks ? "•\(calendar.component(.day, from: date))•" : "\(calendar.component(.day, from: date))")")
+
                             .bold(hasTasks ? true : false)
                             .frame(width: 40, height: 40, alignment: .center)
                             .background(calendar.isDateInToday(date) ? Color.red.opacity(0.3) : Color.blue.opacity(0.1))

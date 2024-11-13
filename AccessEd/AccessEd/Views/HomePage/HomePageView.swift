@@ -120,10 +120,6 @@ struct AddCourseSheet: View {
                 .padding(.horizontal, 20)
                 .foregroundStyle(Color.black)
                 .font(.subheadline)
-//                .font(.subheadline)
-//                .padding(.horizontal)
-//                .padding(.vertical, 10)
-//                .textFieldStyle(RoundedBorderTextFieldStyle())
             
             TextField("Choose Category", text: $grade)
                 .padding(10)
@@ -132,10 +128,7 @@ struct AddCourseSheet: View {
                 .padding(.top, 10)
                 .foregroundStyle(Color.black)
                 .font(.subheadline)
-//                .font(.subheadline)
-//                .padding(.horizontal)
-//                .padding(.bottom, 10)
-//                .textFieldStyle(RoundedBorderTextFieldStyle())
+            
             
             // Buttons
             HStack {
