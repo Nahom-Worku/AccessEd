@@ -20,7 +20,7 @@ struct BottomMenuView: View {
                 Image(systemName: "books.vertical")
             }
                    
-            NavigationLink(destination: CalendarView()/*CalendarParentView()*/) {
+            NavigationLink(destination: CalendarView()) {
                 Image(systemName: "calendar")
             }
                    
