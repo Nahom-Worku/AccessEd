@@ -29,7 +29,7 @@ struct CalendarView: View {
             VStack {
                 Text("Calendar + To-Do List")
                     .padding()
-                    .font(.largeTitle)
+                    .font(.title)
                     .bold()
                     .foregroundColor(.primary)
                 
