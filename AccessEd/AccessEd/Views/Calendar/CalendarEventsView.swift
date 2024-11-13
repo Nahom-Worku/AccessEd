@@ -63,7 +63,7 @@ struct CalendarEventsView: View {
                 }
             }
         }
-        .padding()
+        .padding(.horizontal)
     }
 }
 
