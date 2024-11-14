@@ -66,21 +66,28 @@ struct CalendarView: View {
                         .frame(width: 350, height: 80)
                         //                        .background(.green.opacity(0.3))
                     } else {
-                        VStack (alignment: .leading, spacing: 10) {
-                            ForEach(Array(tasksForSelectedDate.enumerated()), id: \.1.id) { index, task in
-                                Text("\(index + 1).) \(task.description)")
-                                    .font(.body)
-                                    .strikethrough(task.completed, color: .gray) // Apply strikethrough if completed
-                                    .foregroundColor(task.completed ? .gray : .primary)
-                                    .onTapGesture(count: 2) {
-                                        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-                                            tasks[index].completed.toggle() // Toggle completion on double click
+                        
+                        NavigationView {
+                            VStack (alignment: .leading, spacing: 10) {
+                                
+                                ForEach(Array(tasksForSelectedDate.enumerated()), id: \.1.id) { index, task in
+                                    Text("\(index + 1).) \(task.description)")
+                                        .font(.body)
+                                        .strikethrough(task.completed, color: .gray) // Apply strikethrough if completed
+                                        .foregroundColor(task.completed ? .gray : .primary)
+                                        .onTapGesture(count: 2) {
+                                            if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+                                                tasks[index].completed.toggle() // Toggle completion on double click
+                                            }
                                         }
-                                    }
+                                }
+                                
                             }
+                            .padding()
+                            .padding(.horizontal)
                         }
-                        .padding()
-                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
                     }
                     
                     
