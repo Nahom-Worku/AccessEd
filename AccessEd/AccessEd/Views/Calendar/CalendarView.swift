@@ -66,10 +66,15 @@ struct CalendarView: View {
                         .frame(width: 350, height: 80)
                         //                        .background(.green.opacity(0.3))
                     } else {
-                        
-                        NavigationView {
-                            VStack (alignment: .leading, spacing: 10) {
-                                
+                        List {
+                            Section ( header:
+                                        HStack {
+                                            Text("My Tasks")
+                                            Image(systemName: "checklist")
+                                        }
+                                        .foregroundColor(.black)
+                                        .font(.headline)
+                            ){
                                 ForEach(Array(tasksForSelectedDate.enumerated()), id: \.1.id) { index, task in
                                     Text("\(index + 1).) \(task.description)")
                                         .font(.body)
@@ -81,13 +86,13 @@ struct CalendarView: View {
                                             }
                                         }
                                 }
-                                
                             }
-                            .padding()
-                            .padding(.horizontal)
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    
+                        .frame(width: .infinity, height: 180)
+                        .padding()
+//                                .cornerRadius(50)
+//                                .shadow(radius: 10)
+                        .padding(.bottom, 10)
                     }
                     
                     
@@ -119,6 +124,7 @@ struct CalendarView: View {
             }
             .sheet(isPresented: $isAddingTask, content: { addTaskSheetView })
         }
+        .background(Color.gray.opacity(0.1))
     }
 
     var calendarTitleLayerView: some View {
