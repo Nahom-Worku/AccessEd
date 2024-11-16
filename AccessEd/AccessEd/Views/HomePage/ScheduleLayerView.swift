@@ -12,9 +12,11 @@ struct ScheduleLayerView: View {
         VStack(alignment: .leading){
             // Your Schedule Section
             
+            
             Text("Your Schedule")
                 .font(.title)
                 .bold()
+//                .foregroundColor(.gray)
             
             Text("Next lessons")
                 .font(.subheadline)

@@ -19,6 +19,7 @@ struct SubjectsLayerView: View {
                     Text("Subjects")
                         .font(.title)
                         .bold()
+                        .foregroundStyle(.primary)
                     
                     Text("Recommendations for you")
                         .font(.subheadline)
