@@ -14,7 +14,6 @@ struct HomePageView: View {
     
     var body: some View {
         
-        
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 

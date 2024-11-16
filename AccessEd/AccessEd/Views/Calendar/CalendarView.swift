@@ -8,6 +8,7 @@
 import SwiftUI
 import Foundation
 
+
 struct Task: Identifiable {
     let id = UUID()
     let date: Date
@@ -18,21 +19,23 @@ struct Task: Identifiable {
 struct CalendarView: View {
     @State private var currentMonth: Date = Date()
     @State private var selectedDate: Date = Date() // Initialize with today’s date
-    @State private var tasks: [Task] = [] // List to store tasks
+    @State public var tasks: [Task] = [] // List to store tasks
     @State private var isAddingTask = false // Control task sheet visibility
     @State private var newTaskDescription = "" // Hold new task description
+    
+    @State var courseName: String = ""
+    @State var grade: String = ""
 
     private let calendar = Calendar.current
+    
+    
+    
+    @EnvironmentObject var listViewModel: ListViewModel
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        ScrollView {
+        NavigationView {
             VStack {
-                Text("Calendar + To-Do List")
-                    .padding()
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(.primary)
-                
                 VStack {
                     calendarTitleLayerView
                     
@@ -47,86 +50,76 @@ struct CalendarView: View {
                 }
                 .padding(.bottom)
                 .background(Color.gray.opacity(0.05).cornerRadius(40))
-                .padding(.horizontal ,5)
+                .padding(.horizontal, 5)
                 
-                
-                VStack (alignment: .leading) {
-                    Text("\(formattedDate(selectedDate))")
-                        .font(.title2)
-                        .bold()
-                        .padding(.top)
+                VStack(alignment: .leading) {
+                    HStack (alignment: .center){
+                        Text("\(formattedDate(selectedDate))")
+                            .font(.title3)
+                            .bold()
+                            .padding(.leading)
+                        
+                        Spacer()
+                        
+                        addTaskButtonView
+                    }
+//                    .background(.yellow)
                     
+                    
+                    // Filter tasks for the selected date
                     let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
                     
                     if tasksForSelectedDate.isEmpty {
-                        VStack {
-                            Text("No tasks for this date.")
-                                .foregroundColor(.gray)
-                        }
-                        .frame(width: 350, height: 80)
-                        //                        .background(.green.opacity(0.3))
+                        Text("No tasks for this date.")
+                            .foregroundColor(.gray)
+                            .frame(maxWidth: .infinity, maxHeight: 80, alignment: .center)
                     } else {
                         List {
-                            Section ( header:
-                                        HStack {
-                                            Text("My Tasks")
-                                            Image(systemName: "checklist")
+                            ForEach(tasksForSelectedDate) { task in
+                                Text(task.description)
+                                    .strikethrough(task.completed, color: .gray) // Strikethrough if completed
+                                    .foregroundColor(task.completed ? .gray : .primary)
+                                    .onTapGesture(count: 2) {
+                                        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+                                            tasks[index].completed.toggle() // Toggle completion
                                         }
-                                        .foregroundColor(.black)
-                                        .font(.headline)
-                            ){
-                                ForEach(Array(tasksForSelectedDate.enumerated()), id: \.1.id) { index, task in
-                                    Text("\(index + 1).) \(task.description)")
-                                        .font(.body)
-                                        .strikethrough(task.completed, color: .gray) // Apply strikethrough if completed
-                                        .foregroundColor(task.completed ? .gray : .primary)
-                                        .onTapGesture(count: 2) {
-                                            if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-                                                tasks[index].completed.toggle() // Toggle completion on double click
-                                            }
-                                        }
-                                }
+                                    }
                             }
                         }
-                        .frame(width: .infinity, height: 180)
-                        .padding()
-//                                .cornerRadius(50)
-//                                .shadow(radius: 10)
-                        .padding(.bottom, 10)
                     }
-                    
-                    
-                    // Button to add a new task
-                    VStack {
-                        Button(action: {
-                            isAddingTask = true
-                        }, label: {
-                            Text("Add Task".uppercased())
-                                .font(.caption)
-                                .bold()
-                                .foregroundColor(.gray)
-                                .padding()
-                                .padding(.horizontal, 15)
-                                .background(
-                                    Capsule()
-                                        .stroke(Color.gray, lineWidth: 2)
-                                )
-                        })
-                    }
-                    .padding()
-                    .frame(width: 350, height: 50)
-                    //                    .background(Color.yellow)
                 }
                 .padding()
-                .frame(width: 400, height: .infinity, alignment: .leading)
                 
                 Spacer()
             }
-            .sheet(isPresented: $isAddingTask, content: { addTaskSheetView })
+            .navigationTitle("My Calendar")
+            .background(Color.gray.opacity(0.1))
+            .sheet(isPresented: $isAddingTask, content: {
+                addTaskSheetView
+                    .presentationDetents([.medium, .fraction(0.5)])
+            })
         }
-        .background(Color.gray.opacity(0.1))
     }
-
+    
+    var addTaskButtonView: some View {
+        VStack {
+            Button(action: {
+                isAddingTask = true
+            }, label: {
+                Text("Add Task")
+                    .font(.callout)
+                    .bold()
+                    .foregroundColor(.gray)
+                    .padding(10)
+                    .background(
+                        Capsule()
+                            .stroke(Color.gray, lineWidth: 2)
+                    )
+            })
+        }
+        .frame(width: 100, height: 40)
+    }
+    
     var calendarTitleLayerView: some View {
         HStack {
             Button(action: {
@@ -153,58 +146,110 @@ struct CalendarView: View {
     }
     
     var addTaskSheetView: some View {
-        VStack {
-            Text("Add Task for \(formattedDate(selectedDate))")
-                .font(.headline)
-                .padding()
-            
-            TextField("Task description", text: $newTaskDescription)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button("Add") {
-                if !newTaskDescription.isEmpty {
-                    addTask(for: selectedDate, description: newTaskDescription)
-                    newTaskDescription = "" // Clear the text field
-                    isAddingTask = false // Dismiss the sheet
+            VStack (alignment: .center) {
+                Text("Add Task for \(formattedDate(selectedDate))")
+                    .font(Font.system(size: 20))
+                    .padding()
+                    .padding(.vertical, 10)
+                
+                TextField("Enter Course Name", text: $courseName)
+                    .padding(10)
+                    .background(Color.white.cornerRadius(10.0))
+                    .padding(.horizontal, 20)
+                    .foregroundStyle(Color.black)
+                    .font(.subheadline)
+                
+                
+                // Buttons
+                HStack {
+                    
+                    // Cancel button
+                    Button {
+                        isAddingTask = false
+                    } label: {
+                        Text("Canel")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(
+                                
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.red.opacity(0.6))
+                                    .frame(width: 120, height: 40)
+                            )
+                    }
+
+                    Spacer()
+                    
+                    // Add course button
+                    Button {
+//                        if !newTaskDescription.isEmpty {
+//                            addTask(for: selectedDate, description: newTaskDescription)
+//                            newTaskDescription = "" // Clear the text field
+//                            isAddingTask = false // Dismiss the sheet
+//                        }
+                        
+                        addTask(for: selectedDate, description: courseName)
+                        courseName = ""
+                        isAddingTask = false
+                    } label: {
+                        Text("Add")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.blue.opacity(0.6))
+                                    .frame(width: 120, height: 40)
+                            )
+                    }
                 }
+                .padding()
+                .frame(maxWidth: 240, maxHeight: 100)
+                .foregroundStyle(Color.black)
             }
+            .frame(maxWidth: 300, maxHeight: 250)
             .padding()
+            .padding(.vertical, 10)
+            .background(
+                Color.gray.opacity(0.1)
+                    .cornerRadius(15)
+                    .shadow(
+                        color: Color.black.opacity(0.3),
+                        radius: 5,
+                        x: 0.0,
+                        y: 10 )
+            )
+            .padding(.horizontal, 10)
+            .padding(.bottom, 10)
             
-            Button("Cancel") {
-                isAddingTask = false // Dismiss the sheet without adding
-            }
-            .foregroundColor(.red)
-            .padding()
         }
-        .padding()
-    }
     
-    private func formattedMonth() -> String {
+
+    
+    public func formattedMonth() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM yyyy"
         return dateFormatter.string(from: currentMonth)
     }
     
-    private func formattedMonth(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM yyyy"
-        return dateFormatter.string(from: date)
-    }
-
-    private func formattedDate(_ date: Date) -> String {
+    public func formattedDate(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy"
         return dateFormatter.string(from: date)
     }
     
     // Function to add a task
-    private func addTask(for date: Date, description: String) {
+    public func addTask(for date: Date, description: String) {
         let task = Task(date: date, description: description)
         tasks.append(task)
     }
 }
 
+
 #Preview {
     CalendarView()
+        .environmentObject(ListViewModel())
 }
