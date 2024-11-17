@@ -47,6 +47,7 @@ struct CalendarView: View {
                             selectedDate = date // Update selected date when a date is clicked
                         }
                     )
+                    
                 }
                 .padding(.bottom)
                 .background(Color.gray.opacity(0.05).cornerRadius(40))
@@ -63,7 +64,6 @@ struct CalendarView: View {
                         
                         addTaskButtonView
                     }
-//                    .background(.yellow)
                     
                     
                     // Filter tasks for the selected date
@@ -86,6 +86,7 @@ struct CalendarView: View {
                                     }
                             }
                         }
+                        .frame(height: .infinity)
                     }
                 }
                 .padding()
@@ -224,7 +225,6 @@ struct CalendarView: View {
             )
             .padding(.horizontal, 10)
             .padding(.bottom, 10)
-            
         }
     
 
