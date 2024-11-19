@@ -23,11 +23,14 @@ struct CalendarView: View {
     @State private var isAddingTask = false // Control task sheet visibility
     @State private var newTaskDescription = "" // Hold new task description
     
+//    @State private var allTasksCompleted: Bool = false
+    @State private var allTasksCompletedByDate: [Date: Bool] = [:]
+
+    
     @State var courseName: String = ""
     @State var grade: String = ""
 
     private let calendar = Calendar.current
-    
     
     
     @EnvironmentObject var listViewModel: ListViewModel
@@ -43,6 +46,7 @@ struct CalendarView: View {
                     CalendarEventsView(
                         currentMonth: $currentMonth,
                         tasks: $tasks,
+                        allTasksCompletedByDate: $allTasksCompletedByDate,
                         onDateSelected: { date in
                             selectedDate = date // Update selected date when a date is clicked
                         }
@@ -65,28 +69,74 @@ struct CalendarView: View {
                         addTaskButtonView
                     }
                     
+                    HStack(alignment: .center) {
+                        Image(systemName: "checklist")
+                        Text("Your Tasks For The Day")
+                    }
+                    .frame(width: 370, height: 50)
+                    
                     
                     // Filter tasks for the selected date
                     let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
+                        
+                    // Check if all tasks for the day are completed
+                
                     
                     if tasksForSelectedDate.isEmpty {
                         Text("No tasks for this date.")
                             .foregroundColor(.gray)
-                            .frame(maxWidth: .infinity, maxHeight: 80, alignment: .center)
+                            .frame(width: 380, height: 80, alignment: .center)
                     } else {
-                        List {
-                            ForEach(tasksForSelectedDate) { task in
-                                Text(task.description)
-                                    .strikethrough(task.completed, color: .gray) // Strikethrough if completed
-                                    .foregroundColor(task.completed ? .gray : .primary)
-                                    .onTapGesture(count: 2) {
-                                        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-                                            tasks[index].completed.toggle() // Toggle completion
+                        ScrollView {
+                                    LazyVStack(alignment: .leading, spacing: 10) {
+                                        ForEach(Array(tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
+                                            HStack {
+                                                if task.completed {
+                                                    Text(" \(index + 1).)  \(task.description)")
+                                                        .strikethrough(task.completed, color: .gray) // Strikethrough if completed
+                                                        .foregroundColor(.gray)
+
+                                                    Spacer()
+
+                                                    Image(systemName: "checkmark.circle.fill")
+                                                        .foregroundColor(.green)
+                                                } else {
+                                                    Text(" \(index + 1).)  \(task.description)")
+                                                        .foregroundColor(.primary)
+                                                    
+                                                    Spacer()
+                                                    
+                                                    Image(systemName: "circle")
+                                                        .foregroundColor(.red)
+                                                }
+                                            }
+                                            .padding(.horizontal, 30)
+                                            .padding(.vertical, 10)
+                                            .frame(width: .infinity, height: 50)
+                                            .background(Color.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 3, x: 1, y: 2)
+                                            .onTapGesture(count: 2) {
+                                                if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+                                                    tasks[index].completed.toggle() // Toggle completion
+                                                    updateAllTasksCompleted()
+                                                    print("\n -> \(allTasksCompletedByDate)")
+                                                    for (index, task) in tasks.enumerated() {
+                                                        print("Task \(index + 1): \(task.description) - Completed: \(task.completed) \n")
+                                                    }
+                                                }
+                                            }
+                                            .onAppear {
+                                                print(" -> \(allTasksCompletedByDate)")
+                                                for (index, task) in tasks.enumerated() {
+                                                    print("Task \(index + 1): \(task.description) - Completed: \(task.completed) \n")
+                                                }
+                                            }
                                         }
                                     }
-                            }
-                        }
-                        .frame(height: .infinity)
+                                    .padding()
+                                }
+                                .frame(maxHeight: .infinity)
                     }
                 }
                 .padding()
@@ -226,7 +276,6 @@ struct CalendarView: View {
             .padding(.horizontal, 10)
             .padding(.bottom, 10)
         }
-    
 
     
     public func formattedMonth() -> String {
@@ -241,11 +290,26 @@ struct CalendarView: View {
         return dateFormatter.string(from: date)
     }
     
-    // Function to add a task
-    public func addTask(for date: Date, description: String) {
-        let task = Task(date: date, description: description)
-        tasks.append(task)
-    }
+    private func addTask(for date: Date, description: String) {
+           guard !description.isEmpty else { return }
+           let newTask = Task(date: date, description: description, completed: false)
+           tasks.append(newTask)
+           newTaskDescription = "" // Clear the input field
+           updateAllTasksCompleted() // Recalculate all tasks completion
+       }
+    
+    private func updateAllTasksCompleted() {
+            var completionStatus: [Date: Bool] = [:]
+
+            // Group tasks by their date and check if all are completed
+            for task in tasks {
+                let taskDate = calendar.startOfDay(for: task.date)
+                let tasksForDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: taskDate) }
+                completionStatus[taskDate] = tasksForDate.allSatisfy { $0.completed }
+            }
+
+            allTasksCompletedByDate = completionStatus
+        }
 }
 
 

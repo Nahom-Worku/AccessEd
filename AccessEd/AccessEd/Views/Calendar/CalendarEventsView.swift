@@ -10,6 +10,9 @@ import SwiftUI
 struct CalendarEventsView: View {
     @Binding var currentMonth: Date
     @Binding var tasks: [Task]
+    
+    @Binding var allTasksCompletedByDate: [Date: Bool]
+    
     var onDateSelected: (Date) -> Void // Callback to handle date selection
 
     private let calendar = Calendar.current
@@ -43,14 +46,18 @@ struct CalendarEventsView: View {
                     if let date = date {
                         
                         let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
+                        
+//                        TODO: <code> if AllTasksCompleted -> hasTasks = false  else hasTasks = true </code>
+//                        var hasTasks: Bool
+                        let isCompleted: Bool = allTasksCompletedByDate[date] ?? false
                                                 
                         Button(action: {
                             onDateSelected(date) // Notify parent view when a date is selected
                         }) {
 
-                            Text("\(hasTasks ? "•\(calendar.component(.day, from: date))•" : "\(calendar.component(.day, from: date))")")
+                            Text("\(!isCompleted && hasTasks ? "•\(calendar.component(.day, from: date))•" : "\(calendar.component(.day, from: date))")")
 
-                            .bold(hasTasks ? true : false)
+                                .bold(!isCompleted && hasTasks ? true : false)
                             .frame(width: 40, height: 40, alignment: .center)
                             .background(calendar.isDateInToday(date) ? Color.red.opacity(0.3) : Color.blue.opacity(0.1))
                             .cornerRadius(8)
