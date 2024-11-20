@@ -8,26 +8,23 @@
 import SwiftUI
 
 struct BottomMenuView: View {
-    
     var body: some View {
         HStack(alignment: .center, spacing: 70) {
-            
             NavigationLink(destination: HomePageView()) {
                 Image(systemName: "house")
             }
-                   
+
             NavigationLink(destination: Text("This is the courses page")) {
                 Image(systemName: "books.vertical")
             }
-                   
+
             NavigationLink(destination: CalendarView()) {
                 Image(systemName: "calendar")
             }
-                   
+
             NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person")
             }
-            
         }
         .padding()
         .padding(.vertical)
@@ -37,6 +34,7 @@ struct BottomMenuView: View {
         .font(.system(size: 23))
     }
 }
+
 
 #Preview {
     BottomMenuView()
