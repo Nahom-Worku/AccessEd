@@ -81,9 +81,6 @@ struct CalendarView: View {
                         // Filter tasks for the selected date
                         let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
                         
-                        // Check if all tasks for the day are completed
-                        
-                        
                         if tasksForSelectedDate.isEmpty {
                             Text("No tasks for this date.")
                                 .foregroundColor(.gray)
@@ -295,25 +292,25 @@ struct CalendarView: View {
     }
     
     private func addTask(for date: Date, description: String) {
-           guard !description.isEmpty else { return }
-           let newTask = Task(date: date, description: description, completed: false)
-           tasks.append(newTask)
-           newTaskDescription = "" // Clear the input field
-           updateAllTasksCompleted() // Recalculate all tasks completion
-       }
+        guard !description.isEmpty else { return }
+        let newTask = Task(date: date, description: description, completed: false)
+        tasks.append(newTask)
+        newTaskDescription = "" // Clear the input field
+        updateAllTasksCompleted() // Recalculate all tasks completion
+    }
     
     private func updateAllTasksCompleted() {
-            var completionStatus: [Date: Bool] = [:]
+        var completionStatus: [Date: Bool] = [:]
 
-            // Group tasks by their date and check if all are completed
-            for task in tasks {
-                let taskDate = calendar.startOfDay(for: task.date)
-                let tasksForDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: taskDate) }
-                completionStatus[taskDate] = tasksForDate.allSatisfy { $0.completed }
-            }
-
-            allTasksCompletedByDate = completionStatus
+        // Group tasks by their date and check if all are completed
+        for task in tasks {
+            let taskDate = calendar.startOfDay(for: task.date)
+            let tasksForDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: taskDate) }
+            completionStatus[taskDate] = tasksForDate.allSatisfy { $0.completed }
         }
+
+        allTasksCompletedByDate = completionStatus
+    }
 }
 
 
