@@ -8,7 +8,6 @@
 import SwiftUI
 import Foundation
 
-
 struct Task: Identifiable {
     let id = UUID()
     let date: Date
@@ -37,120 +36,118 @@ struct CalendarView: View {
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        NavigationView {
-            ScrollView {
+        ScrollView {
+            VStack {
                 VStack {
-                    VStack {
-                        calendarTitleLayerView
+                    calendarTitleLayerView
+                    
+                    // Calendar view
+                    CalendarEventsView(
+                        currentMonth: $currentMonth,
+                        tasks: $tasks,
+                        allTasksCompletedByDate: $allTasksCompletedByDate,
+                        onDateSelected: { date in
+                            selectedDate = date // Update selected date when a date is clicked
+                        }
+                    )
+                    
+                }
+                .padding(.bottom)
+                .background(Color.gray.opacity(0.05).cornerRadius(40))
+                .padding(.horizontal, 5)
+                
+                VStack(alignment: .leading) {
+                    HStack (alignment: .center){
+                        Text("\(formattedDate(selectedDate))")
+                            .font(.title3)
+                            .bold()
+                            .padding(.leading)
                         
-                        // Calendar view
-                        CalendarEventsView(
-                            currentMonth: $currentMonth,
-                            tasks: $tasks,
-                            allTasksCompletedByDate: $allTasksCompletedByDate,
-                            onDateSelected: { date in
-                                selectedDate = date // Update selected date when a date is clicked
-                            }
-                        )
+                        Spacer()
+                        
+                        addTaskButtonView
+                    }
+                    
+                    HStack(alignment: .center) {
+                        Image(systemName: "checklist")
+                        Text("Your Tasks For The Day")
                         
                     }
-                    .padding(.bottom)
-                    .background(Color.gray.opacity(0.05).cornerRadius(40))
-                    .padding(.horizontal, 5)
+                    .frame(width: 370, height: 50)
                     
-                    VStack(alignment: .leading) {
-                        HStack (alignment: .center){
-                            Text("\(formattedDate(selectedDate))")
-                                .font(.title3)
-                                .bold()
-                                .padding(.leading)
-                            
-                            Spacer()
-                            
-                            addTaskButtonView
-                        }
-                        
-                        HStack(alignment: .center) {
-                            Image(systemName: "checklist")
-                            Text("Your Tasks For The Day")
-                            
-                        }
-                        .frame(width: 370, height: 50)
-                        
-                        
-                        // Filter tasks for the selected date
-                        let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
-                        
-                        if tasksForSelectedDate.isEmpty {
-                            Text("No tasks for this date.")
-                                .foregroundColor(.gray)
-                                .frame(width: 380, height: 80, alignment: .center)
-                        } else {
-                            ScrollView {
-                                LazyVStack(alignment: .leading, spacing: 10) {
-                                    ForEach(Array(tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
-                                        HStack {
-                                            if task.completed {
-                                                Text(" \(index + 1).)  \(task.description)")
-                                                    .strikethrough(task.completed, color: .gray) // Strikethrough if completed
-                                                    .foregroundColor(.gray)
-                                                
-                                                Spacer()
-                                                
-                                                Image(systemName: "checkmark.circle.fill")
-                                                    .foregroundColor(.green)
-                                            } else {
-                                                Text(" \(index + 1).)  \(task.description)")
-                                                    .foregroundColor(.primary)
-                                                
-                                                Spacer()
-                                                
-                                                Image(systemName: "circle")
-                                                    .foregroundColor(.red)
-                                            }
+                    
+                    // Filter tasks for the selected date
+                    let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
+                    
+                    if tasksForSelectedDate.isEmpty {
+                        Text("No tasks for this date.")
+                            .foregroundColor(.gray)
+                            .frame(width: 380, height: 80, alignment: .center)
+                    } else {
+                        ScrollView {
+                            LazyVStack(alignment: .leading, spacing: 10) {
+                                ForEach(Array(tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
+                                    HStack {
+                                        if task.completed {
+                                            Text(" \(index + 1).)  \(task.description)")
+                                                .strikethrough(task.completed, color: .gray) // Strikethrough if completed
+                                                .foregroundColor(.gray)
+                                            
+                                            Spacer()
+                                            
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(.green)
+                                        } else {
+                                            Text(" \(index + 1).)  \(task.description)")
+                                                .foregroundColor(.primary)
+                                            
+                                            Spacer()
+                                            
+                                            Image(systemName: "circle")
+                                                .foregroundColor(.red)
                                         }
-                                        .padding(.horizontal, 30)
-                                        .padding(.vertical, 10)
-                                        .frame(width: .infinity, height: 50)
-                                        .background(Color.white)
-                                        .cornerRadius(10)
-                                        .shadow(radius: 3, x: 1, y: 2)
-                                        .onTapGesture(count: 2) {
-                                            if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-                                                tasks[index].completed.toggle() // Toggle completion
-                                                updateAllTasksCompleted()
-                                                print("\n -> \(allTasksCompletedByDate)")
-                                                for (index, task) in tasks.enumerated() {
-                                                    print("Task \(index + 1): \(task.description) - Completed: \(task.completed) \n")
-                                                }
-                                            }
-                                        }
-                                        .onAppear {
-                                            print(" -> \(allTasksCompletedByDate)")
+                                    }
+                                    .padding(.horizontal, 30)
+                                    .padding(.vertical, 10)
+                                    .frame(width: .infinity, height: 50)
+                                    .background(Color.white)
+                                    .cornerRadius(10)
+                                    .shadow(radius: 3, x: 1, y: 2)
+                                    .onTapGesture(count: 2) {
+                                        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+                                            tasks[index].completed.toggle() // Toggle completion
+                                            updateAllTasksCompleted()
+                                            print("\n -> \(allTasksCompletedByDate)")
                                             for (index, task) in tasks.enumerated() {
                                                 print("Task \(index + 1): \(task.description) - Completed: \(task.completed) \n")
                                             }
                                         }
                                     }
+                                    .onAppear {
+                                        print(" -> \(allTasksCompletedByDate)")
+                                        for (index, task) in tasks.enumerated() {
+                                            print("Task \(index + 1): \(task.description) - Completed: \(task.completed) \n")
+                                        }
+                                    }
                                 }
-                                .padding()
                             }
-                            .frame(maxHeight: .infinity)
+                            .padding()
                         }
+                        .frame(maxHeight: .infinity)
                     }
-                    .padding()
-                    
-                    Spacer()
                 }
+                .padding()
                 
+                Spacer()
             }
-            .navigationTitle("My Calendar")
-            .background(Color.gray.opacity(0.1))
-            .sheet(isPresented: $isAddingTask, content: {
-                addTaskSheetView
-                    .presentationDetents([.medium, .fraction(0.5)])
-            })
         }
+        .padding(.top, 10)
+        .navigationTitle("My Calendar")
+        .background(Color.gray.opacity(0.1))
+        .sheet(isPresented: $isAddingTask, content: {
+            addTaskSheetView
+                .presentationDetents([.medium, .fraction(0.5)])
+        })
     }
     
     var addTaskButtonView: some View {
