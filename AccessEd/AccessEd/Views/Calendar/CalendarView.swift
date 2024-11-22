@@ -39,7 +39,6 @@ struct CalendarView: View {
 
     var body: some View {
         ScrollView {
-//            VStack {
                 VStack {
                     calendarTitleLayerView
                     
@@ -80,7 +79,7 @@ struct CalendarView: View {
                         addTaskButtonView
                     }
                     .padding(.horizontal)
-//                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .frame(width: fixedWidth)
                     
                     // Filter tasks for the selected date
                     let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
@@ -88,7 +87,6 @@ struct CalendarView: View {
                     if tasksForSelectedDate.isEmpty {
                         Text("No tasks for this date.")
                             .foregroundColor(.gray)
-//                            .frame(width: 380, height: 80, alignment: .center)
                             .frame(width: fixedWidth)
                     } else {
                             LazyVStack(alignment: .leading, spacing: 10) {
@@ -165,13 +163,13 @@ struct CalendarView: View {
 
                     }
                 }
-                .frame(width: fixedWidth) 
+                .frame(width: fixedWidth)
                 .padding()
                 
                 
                 
                 Spacer()
-//            }
+
         }
         .frame(width: fixedWidth)
         .padding(.top, 10)
