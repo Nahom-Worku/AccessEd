@@ -34,10 +34,12 @@ struct CalendarView: View {
     
     @EnvironmentObject var listViewModel: ListViewModel
     @Environment(\.presentationMode) var presentationMode
+    
+    let fixedWidth: CGFloat = UIScreen.main.bounds.width * 0.9
 
     var body: some View {
         ScrollView {
-            VStack {
+//            VStack {
                 VStack {
                     calendarTitleLayerView
                     
@@ -54,27 +56,31 @@ struct CalendarView: View {
                 }
                 .padding(.bottom)
                 .background(Color.gray.opacity(0.05).cornerRadius(40))
-                .padding(.horizontal, 5)
+                
+                .padding(.horizontal)
                 
                 VStack(alignment: .leading) {
                     HStack (alignment: .center){
-                        Text("\(formattedDate(selectedDate))")
+                        Text("Selected Date:")
+                            
+                        
+                        Text(formattedDate(selectedDate))
                             .font(.title3)
                             .bold()
-                            .padding(.leading)
-                        
-                        Spacer()
-                        
-                        addTaskButtonView
                     }
+                    .padding(.horizontal)
+                    
                     
                     HStack(alignment: .center) {
                         Image(systemName: "checklist")
                         Text("Your Tasks For The Day")
                         
+                        Spacer()
+                        
+                        addTaskButtonView
                     }
-                    .frame(width: 370, height: 50)
-                    
+                    .padding(.horizontal)
+//                    .frame(maxWidth: .infinity, maxHeight: 50)
                     
                     // Filter tasks for the selected date
                     let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
@@ -82,9 +88,9 @@ struct CalendarView: View {
                     if tasksForSelectedDate.isEmpty {
                         Text("No tasks for this date.")
                             .foregroundColor(.gray)
-                            .frame(width: 380, height: 80, alignment: .center)
+//                            .frame(width: 380, height: 80, alignment: .center)
+                            .frame(width: fixedWidth)
                     } else {
-                        ScrollView {
                             LazyVStack(alignment: .leading, spacing: 10) {
                                 ForEach(Array(tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
                                     HStack {
@@ -109,9 +115,9 @@ struct CalendarView: View {
                                     }
                                     .padding(.horizontal, 30)
                                     .padding(.vertical, 10)
-                                    .frame(width: .infinity, height: 50)
+                                    .frame(width: fixedWidth, alignment: .leading)
                                     .background(Color.white)
-                                    .cornerRadius(10)
+                                    .cornerRadius(8)
                                     .shadow(radius: 3, x: 1, y: 2)
                                     .onTapGesture(count: 2) {
                                         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
@@ -130,20 +136,48 @@ struct CalendarView: View {
                                         }
                                     }
                                 }
+                                
+                                
+                                // Remove all tasks for a day button
+                                Button(action: {
+                                    tasks.removeAll { task in
+                                        calendar.isDate(task.date, inSameDayAs: selectedDate)
+                                    }
+                                }) {
+                                    Text("Remove All Tasks")
+                                        .font(.callout)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .padding(.horizontal, 15)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .fill(Color.gray.opacity(0.7))
+                                                .frame(width: 160, height: 40)
+                                        )
+                                }
+                                .frame(width: fixedWidth, alignment: .leading)
+                                .padding()
                             }
+                            .frame(width: fixedWidth, alignment: .leading)
                             .padding()
-                        }
-                        .frame(maxHeight: .infinity)
+                            .background(Color.cyan)
+
                     }
                 }
+                .frame(width: fixedWidth) 
                 .padding()
                 
+                
+                
                 Spacer()
-            }
+//            }
         }
+        .frame(width: fixedWidth)
         .padding(.top, 10)
+        .padding(.horizontal)
         .navigationTitle("My Calendar")
-        .background(Color.gray.opacity(0.1))
+        .background(Color.gray.opacity(0.1).ignoresSafeArea())
         .sheet(isPresented: $isAddingTask, content: {
             addTaskSheetView
                 .presentationDetents([.medium, .fraction(0.5)])
@@ -156,14 +190,13 @@ struct CalendarView: View {
                 isAddingTask = true
             }, label: {
                 Text("Add Task")
-                    .font(.callout)
-                    .bold()
-                    .foregroundColor(.gray)
+//                    .font(.subheadline)
+                    .foregroundColor(.blue)
                     .padding(10)
-                    .background(
-                        Capsule()
-                            .stroke(Color.gray, lineWidth: 2)
-                    )
+//                    .background(
+//                        Capsule()
+//                            .stroke(Color.gray, lineWidth: 2)
+//                    )
             })
         }
         .frame(width: 100, height: 40)
@@ -224,7 +257,7 @@ struct CalendarView: View {
                             .background(
                                 
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.red.opacity(0.6))
+                                    .fill(Color.gray.opacity(0.7))
                                     .frame(width: 120, height: 40)
                             )
                     }
