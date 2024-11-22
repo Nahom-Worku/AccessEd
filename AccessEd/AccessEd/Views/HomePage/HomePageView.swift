@@ -28,7 +28,7 @@ struct HomePageView: View {
                     
                     // Subjects and Schedule Layer
                     VStack {
-                        SubjectsLayerView(showAddSubjectSheet: $showAddSubjectSheet)
+                        CoursesLayerView(showAddSubjectSheet: $showAddSubjectSheet)
                         
                         ScheduleLayerView()
                     }
@@ -82,7 +82,6 @@ struct HomePageView: View {
     }
     
     var nonEmptyPreviewLayer: some View {
-        
         VStack {
             Text("You have tasks in your To-Do List")
                 .font(.headline)

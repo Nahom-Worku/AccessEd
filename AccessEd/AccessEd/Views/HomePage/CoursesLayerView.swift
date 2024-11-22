@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SubjectsLayerView: View {
+struct CoursesLayerView: View {
     
     @Binding var showAddSubjectSheet: Bool
     
@@ -16,7 +16,7 @@ struct SubjectsLayerView: View {
             
             HStack {
                 VStack(alignment: .leading) {
-                    Text("Subjects")
+                    Text("Courses")
                         .font(.title)
                         .bold()
                         .foregroundStyle(.primary)
@@ -206,5 +206,5 @@ struct SubjectsLayerView: View {
 }
 
 #Preview {
-    SubjectsLayerView(showAddSubjectSheet: .constant(true))
+    CoursesLayerView(showAddSubjectSheet: .constant(true))
 }

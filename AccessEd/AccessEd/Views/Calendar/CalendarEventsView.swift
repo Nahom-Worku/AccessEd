@@ -47,8 +47,6 @@ struct CalendarEventsView: View {
                         
                         let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
                         
-//                        TODO: <code> if AllTasksCompleted -> hasTasks = false  else hasTasks = true </code>
-//                        var hasTasks: Bool
                         let isCompleted: Bool = allTasksCompletedByDate[date] ?? false
                                                 
                         Button(action: {
