@@ -35,7 +35,7 @@ struct CalendarView: View {
     @EnvironmentObject var listViewModel: ListViewModel
     @Environment(\.presentationMode) var presentationMode
     
-    let fixedWidth: CGFloat = UIScreen.main.bounds.width * 0.9
+    let fixedWidth: CGFloat = UIScreen.main.bounds.width //* 0.9
 
     var body: some View {
         ScrollView {
@@ -55,7 +55,6 @@ struct CalendarView: View {
                 }
                 .padding(.bottom)
                 .background(Color.gray.opacity(0.05).cornerRadius(40))
-                
                 .padding(.horizontal)
                 
                 VStack(alignment: .leading) {
@@ -71,15 +70,20 @@ struct CalendarView: View {
                     
                     
                     HStack(alignment: .center) {
-                        Image(systemName: "checklist")
-                        Text("Your Tasks For The Day")
+//                        Section {
+                            Image(systemName: "checklist")
+                            Text("Your Tasks For The Day")
+//                        }
+//                        .padding(.leading, 10)
                         
                         Spacer()
                         
                         addTaskButtonView
                     }
                     .padding(.horizontal)
-                    .frame(width: fixedWidth)
+                    .frame(width: fixedWidth - 20, alignment: .center)
+                    .padding(.leading, 10)
+                    .padding(.top, 10)
                     
                     // Filter tasks for the selected date
                     let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
@@ -88,8 +92,9 @@ struct CalendarView: View {
                         Text("No tasks for this date.")
                             .foregroundColor(.gray)
                             .frame(width: fixedWidth)
+                            .padding(.top, 30)
                     } else {
-                            LazyVStack(alignment: .leading, spacing: 10) {
+                        LazyVStack(alignment: .center, spacing: 10) {
                                 ForEach(Array(tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
                                     HStack {
                                         if task.completed {
@@ -111,16 +116,19 @@ struct CalendarView: View {
                                                 .foregroundColor(.red)
                                         }
                                     }
-                                    .padding(.horizontal, 30)
                                     .padding(.vertical, 10)
-                                    .frame(width: fixedWidth, alignment: .leading)
+                                    .padding(.horizontal, 10)
                                     .background(Color.white)
                                     .cornerRadius(8)
+                                    .padding(.horizontal, 30)
+                                    .frame(width: fixedWidth, alignment: .center)
+                                    
                                     .shadow(radius: 3, x: 1, y: 2)
                                     .onTapGesture(count: 2) {
                                         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
                                             tasks[index].completed.toggle() // Toggle completion
                                             updateAllTasksCompleted()
+                                            
                                             print("\n -> \(allTasksCompletedByDate)")
                                             for (index, task) in tasks.enumerated() {
                                                 print("Task \(index + 1): \(task.description) - Completed: \(task.completed) \n")
@@ -137,39 +145,38 @@ struct CalendarView: View {
                                 
                                 
                                 // Remove all tasks for a day button
-                                Button(action: {
-                                    tasks.removeAll { task in
-                                        calendar.isDate(task.date, inSameDayAs: selectedDate)
+                                VStack (alignment: .center) {
+                                    Button(action: {
+                                        tasks.removeAll { task in
+                                            calendar.isDate(task.date, inSameDayAs: selectedDate)
+                                        }
+                                    }) {
+                                        Text("Remove All Tasks")
+                                            .font(.callout)
+                                            .bold()
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .padding(.horizontal, 15)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .fill(Color.gray.opacity(0.7))
+                                                    .frame(width: 160, height: 40)
+                                            )
                                     }
-                                }) {
-                                    Text("Remove All Tasks")
-                                        .font(.callout)
-                                        .bold()
-                                        .foregroundColor(.white)
-                                        .padding()
-                                        .padding(.horizontal, 15)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .fill(Color.gray.opacity(0.7))
-                                                .frame(width: 160, height: 40)
-                                        )
                                 }
-                                .frame(width: fixedWidth, alignment: .leading)
                                 .padding()
+                                .padding(.top, 40)
+                                .frame(width: fixedWidth - 100, alignment: .center)
                             }
-                            .frame(width: fixedWidth, alignment: .leading)
                             .padding()
-                            .background(Color.cyan)
-
+                            .padding(.horizontal)
+                            .frame(width: fixedWidth, alignment: .leading)
                     }
                 }
                 .frame(width: fixedWidth)
                 .padding()
                 
-                
-                
                 Spacer()
-
         }
         .frame(width: fixedWidth)
         .padding(.top, 10)
@@ -205,7 +212,11 @@ struct CalendarView: View {
             Button(action: {
                 currentMonth = calendar.date(byAdding: .month, value: -1, to: currentMonth) ?? currentMonth
             }) {
-                Text("Previous")
+//                Text("Previous")
+                Image(systemName: "chevron.left")
+                    .font(.headline)
+                    .foregroundStyle(.blue)
+                    .bold()
             }
             
             Spacer()
@@ -219,10 +230,15 @@ struct CalendarView: View {
             Button(action: {
                 currentMonth = calendar.date(byAdding: .month, value: 1, to: currentMonth) ?? currentMonth
             }) {
-                Text("Next")
+//                Text("Next")
+                Image(systemName: "chevron.right")
+                    .font(.headline)
+                    .foregroundStyle(.blue)
+                    .bold()
             }
         }
         .padding()
+        .padding(.horizontal)
     }
     
     var addTaskSheetView: some View {

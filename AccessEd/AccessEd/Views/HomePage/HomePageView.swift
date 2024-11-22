@@ -26,7 +26,7 @@ struct HomePageView: View {
                     .frame(height: 200)
                     
                     
-                    // Subjects and Schedule Layer
+                    // Courses and Schedule Layer
                     VStack {
                         CoursesLayerView(showAddSubjectSheet: $showAddSubjectSheet)
                         
