@@ -313,7 +313,7 @@ struct CalendarView: View {
         .background(
             Color(.white)
                 .cornerRadius(15)
-                .shadow(radius: 3, x: 0, y: 1)
+                .shadow(radius: 3, x: 0, y: 5)
         )
         .padding(.horizontal, 10)
         .padding(.top, 10)

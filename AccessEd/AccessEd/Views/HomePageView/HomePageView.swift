@@ -14,7 +14,7 @@ struct HomePageView: View {
     
     var body: some View {
         
-        NavigationStack {
+//        NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 
                 VStack {
@@ -46,7 +46,7 @@ struct HomePageView: View {
                         endPoint: .trailing)
                 )
             }
-            .edgesIgnoringSafeArea(.all)
+            .edgesIgnoringSafeArea(.top)
             .background(Color.white)
             .sheet(isPresented: $showAddSubjectSheet) {
                 AddCourseSheet()
@@ -57,8 +57,9 @@ struct HomePageView: View {
             }
             
             // Bottom Tab bar placeholders
-            BottomMenuView()
-        }
+//            BottomMenuView()
+//        }
+        
     }
     
     

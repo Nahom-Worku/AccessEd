@@ -33,11 +33,11 @@ struct AccessEdApp: App {
 //        .modelContainer(sharedModelContainer)
         
         WindowGroup {
-                   NavigationView {
-                       HomePageView()
-                   }
-                   .navigationViewStyle(StackNavigationViewStyle())
-                   .environmentObject(listViewModel)
-               }
+            NavigationView {
+                AccessEdTabView()
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+            .environmentObject(listViewModel)
+        }
     }
 }
