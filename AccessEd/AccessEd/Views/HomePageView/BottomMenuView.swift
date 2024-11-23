@@ -14,7 +14,7 @@ struct BottomMenuView: View {
                 Image(systemName: "house")
             }
 
-            NavigationLink(destination: Text("This is the courses page")) {
+            NavigationLink(destination: CoursesView()) {
                 Image(systemName: "books.vertical")
             }
 
