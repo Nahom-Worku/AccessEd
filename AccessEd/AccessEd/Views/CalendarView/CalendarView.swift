@@ -120,7 +120,7 @@ struct CalendarView: View {
                                     .padding(.horizontal, 10)
                                     .background(Color.white)
                                     .cornerRadius(8)
-                                    .padding(.horizontal, 30)
+                                    .padding(.horizontal, 20)
                                     .frame(width: fixedWidth, alignment: .center)
                                     .shadow(radius: 3, x: 1, y: 2)
                                     .onTapGesture(count: 2) {
