@@ -122,7 +122,6 @@ struct CalendarView: View {
                                     .cornerRadius(8)
                                     .padding(.horizontal, 30)
                                     .frame(width: fixedWidth, alignment: .center)
-                                    
                                     .shadow(radius: 3, x: 1, y: 2)
                                     .onTapGesture(count: 2) {
                                         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
@@ -186,6 +185,7 @@ struct CalendarView: View {
         .sheet(isPresented: $isAddingTask, content: {
             addTaskSheetView
                 .presentationDetents([.medium, .fraction(0.5)])
+                .padding(.top)
         })
     }
     
@@ -212,7 +212,6 @@ struct CalendarView: View {
             Button(action: {
                 currentMonth = calendar.date(byAdding: .month, value: -1, to: currentMonth) ?? currentMonth
             }) {
-//                Text("Previous")
                 Image(systemName: "chevron.left")
                     .font(.headline)
                     .foregroundStyle(.blue)
@@ -230,7 +229,6 @@ struct CalendarView: View {
             Button(action: {
                 currentMonth = calendar.date(byAdding: .month, value: 1, to: currentMonth) ?? currentMonth
             }) {
-//                Text("Next")
                 Image(systemName: "chevron.right")
                     .font(.headline)
                     .foregroundStyle(.blue)
@@ -242,85 +240,84 @@ struct CalendarView: View {
     }
     
     var addTaskSheetView: some View {
-            VStack (alignment: .center) {
-                Text("Add Task for \(formattedDate(selectedDate))")
-                    .font(Font.system(size: 20))
-                    .padding()
-                    .padding(.vertical, 10)
-                
-                TextField("Enter Course Name", text: $courseName)
+        VStack(spacing: 20) {
+            Text("Add Task")
+                .font(.title3)
+                .bold()
+            
+            VStack (alignment: .leading) {
+                Text("Add Task Name")
+                    .padding(.leading)
+                TextField("Enter Task Name", text: $courseName)
                     .padding(10)
-                    .background(Color.white.cornerRadius(10.0))
+                    .background(Color.gray.opacity(0.05).cornerRadius(5.0))
+                    .padding([.horizontal, .bottom], 20)
+                    .foregroundStyle(Color.black)
+                    .font(.subheadline)
+            
+                Text("Select Date")
+                    .padding(.leading)
+                DatePicker("Due Date", selection: $selectedDate, displayedComponents: .date)
+                    .padding(10)
+                    .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                     .padding(.horizontal, 20)
                     .foregroundStyle(Color.black)
                     .font(.subheadline)
-                
-                
-                // Buttons
-                HStack {
-                    
-                    // Cancel button
-                    Button {
-                        isAddingTask = false
-                    } label: {
-                        Text("Canel")
-                            .font(.subheadline)
-                            .bold()
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(
-                                
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.gray.opacity(0.7))
-                                    .frame(width: 120, height: 40)
-                            )
-                    }
-
-                    Spacer()
-                    
-                    // Add course button
-                    Button {
-//                        if !newTaskDescription.isEmpty {
-//                            addTask(for: selectedDate, description: newTaskDescription)
-//                            newTaskDescription = "" // Clear the text field
-//                            isAddingTask = false // Dismiss the sheet
-//                        }
-                        
-                        addTask(for: selectedDate, description: courseName)
-                        courseName = ""
-                        isAddingTask = false
-                    } label: {
-                        Text("Add")
-                            .font(.subheadline)
-                            .bold()
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.blue.opacity(0.6))
-                                    .frame(width: 120, height: 40)
-                            )
-                    }
-                }
-                .padding()
-                .frame(maxWidth: 240, maxHeight: 100)
-                .foregroundStyle(Color.black)
             }
-            .frame(maxWidth: 300, maxHeight: 250)
-            .padding()
-            .padding(.vertical, 10)
-            .background(
-                Color.gray.opacity(0.1)
-                    .cornerRadius(15)
-                    .shadow(
-                        color: Color.black.opacity(0.3),
-                        radius: 5,
-                        x: 0.0,
-                        y: 10 )
-            )
-            .padding(.horizontal, 10)
-            .padding(.bottom, 10)
+
+            
+            HStack(alignment: .center) {
+                
+                // canel bottom sheet button
+                Button(action: { isAddingTask = false }) {
+                    Text("Cancel")
+                        .font(.subheadline)
+                        .bold()
+                        .foregroundColor(.red)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.gray.opacity(0.1))
+                                .frame(width: 100, height: 40)
+                                .padding(.horizontal, 20)
+                        )
+                }
+                
+                Spacer()
+                
+                // Add course button
+                Button {
+                    addTask(for: selectedDate, description: courseName)
+                    courseName = ""
+                    isAddingTask = false
+                } label: {
+                    Text("Add")
+                        .font(.subheadline)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.blue)
+                                .frame(width: 100, height: 40)
+                                .padding(.horizontal, 20)
+                        )
+                }
+            }
+            .padding(.trailing, 7)
+            .frame(width: 250)
         }
+        .padding()
+        .frame(maxWidth: 350, maxHeight: 325)
+        .padding(.top, 5)
+        .background(
+            Color(.white)
+                .cornerRadius(15)
+                .shadow(radius: 3, x: 0, y: 1)
+        )
+        .padding(.horizontal, 10)
+        .padding(.top, 10)
+    }
 
     
     public func formattedMonth() -> String {
