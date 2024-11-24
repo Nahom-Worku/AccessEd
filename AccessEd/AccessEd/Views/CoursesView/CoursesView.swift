@@ -9,25 +9,27 @@ import SwiftUI
 
 struct CoursesView: View {
     var body: some View {
-        ScrollView {
-            LazyVStack (spacing: 10) {
-                ForEach(0..<5) { index in
-                    // TODO:
-//                         add a function to get the:
-//                                                  image for each course
-//                                                  title and discription
-                    
-                    NavigationLink {
-                        Text("each courses page")
-                    } label: {
-                        eachCourseView
+        NavigationView {
+            ScrollView {
+                LazyVStack (spacing: 10) {
+                    ForEach(0..<7) { index in
+                        // TODO:
+                        //      add a function to get the:
+                        //                               image for each course
+                        //                               title and discription
+                        
+                        NavigationLink {
+                            Text("each courses page")
+                        } label: {
+                            eachCourseView
+                        }
+                        
                     }
-
                 }
+                .padding(.top)
             }
-            .padding(.top)
+            .navigationTitle("Courses")
         }
-        .navigationTitle("Courses")
     }
     
     var eachCourseView: some View {
@@ -63,7 +65,7 @@ struct CoursesView: View {
                         .font(.headline)
                         .foregroundStyle(.white)
                 }
-                .frame(width: 330, alignment: .leading)
+                .frame(width: 320, alignment: .leading)
                 .padding(.trailing, 5)
             )
     }
