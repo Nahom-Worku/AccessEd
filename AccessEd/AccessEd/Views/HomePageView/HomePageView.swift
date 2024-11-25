@@ -35,7 +35,7 @@ struct HomePageView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(
                         UnevenRoundedRectangle(cornerRadii: .init(topLeading: 30, topTrailing: 0), style: .continuous)
-                            .fill(Color.white)
+                            .fill(Color("Light-Dark Mode Colors"))
                     )
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -47,11 +47,11 @@ struct HomePageView: View {
                 )
             }
             .edgesIgnoringSafeArea(.top)
-            .background(Color.white)
+            .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
             .sheet(isPresented: $showAddSubjectSheet) {
                 AddCourseSheet()
                     .presentationDetents([.medium, .fraction(0.5)])
-                    .background(Color.white)
+//                    .background(Color.white)
                     .cornerRadius(50)
                     .ignoresSafeArea(.all)
             }
@@ -104,6 +104,7 @@ struct AddCourseSheet: View {
     @State private var grade: String = ""
     
     @Environment(\.dismiss) var dismissScreen
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
@@ -115,17 +116,19 @@ struct AddCourseSheet: View {
             
             TextField("Enter Course Name", text: $courseName)
                 .padding(10)
-                .background(Color.white.cornerRadius(10.0))
+                .background(colorScheme == .light ? .white : .gray.opacity(0.1))
+                .cornerRadius(10.0)
                 .padding(.horizontal, 20)
-                .foregroundStyle(Color.black)
+                .foregroundStyle(Color.white)
                 .font(.subheadline)
             
             TextField("Choose Category", text: $grade)
                 .padding(10)
-                .background(Color.white.cornerRadius(10.0))
+                .background(colorScheme == .light ? .white : .gray.opacity(0.1))
+                .cornerRadius(10.0)
                 .padding(.horizontal, 20)
                 .padding(.top, 10)
-                .foregroundStyle(Color.black)
+                .foregroundStyle(Color.white)
                 .font(.subheadline)
             
             
@@ -169,31 +172,37 @@ struct AddCourseSheet: View {
             }
             .padding()
             .frame(maxWidth: 240, maxHeight: 100)
-            .foregroundStyle(Color.black)
         }
         .frame(maxWidth: 300, maxHeight: 250)
         .padding()
         .padding(.vertical, 10)
-        .background(
-            Color.gray.opacity(0.1)
-                .cornerRadius(15)
-                .shadow(
-                    color: Color.black.opacity(0.3),
-                    radius: 5,
-                    x: 0.0,
-                    y: 10 )
-        )
+        .background(colorScheme == .light ? .gray.opacity(0.2) : Color(#colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)).opacity(0.5))
         .padding(.horizontal, 10)
         .padding(.bottom, 10)
         
     }
 }
 
+//#Preview("Light Mode") {
+//    HomePageView()
+//        .preferredColorScheme(.light)
+//}
+//
+//#Preview("Dark Mode") {
+//    HomePageView()
+//        .preferredColorScheme(.dark)
+//}
+
 struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
+        Group {
             HomePageView()
+                .preferredColorScheme(.light)
+                .previewDisplayName("Light mode")
+            
+            HomePageView()
+                .preferredColorScheme(.dark)
+                .previewDisplayName("Dark mode")
         }
-        .environmentObject(ListViewModel()) 
     }
 }

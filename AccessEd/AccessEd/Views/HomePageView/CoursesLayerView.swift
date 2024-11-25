@@ -19,7 +19,6 @@ struct CoursesLayerView: View {
                     Text("Courses")
                         .font(.title)
                         .bold()
-                        .foregroundStyle(.primary)
                     
                     Text("Recommendations for you")
                         .font(.subheadline)
@@ -78,7 +77,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color.white)
+                    .background(Color("Courses Color"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -101,7 +100,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color.white)
+                    .background(Color("Courses Color"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -124,7 +123,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color.white)
+                    .background(Color("Courses Color"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -147,7 +146,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color.white)
+                    .background(Color("Courses Color"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -171,7 +170,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color.white)
+                    .background(Color("Courses Color"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -193,7 +192,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color.white)
+                    .background(Color("Courses Color"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                 }
@@ -205,6 +204,13 @@ struct CoursesLayerView: View {
     }
 }
 
-#Preview {
+
+#Preview("Light Mode") {
     CoursesLayerView(showAddSubjectSheet: .constant(true))
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    CoursesLayerView(showAddSubjectSheet: .constant(true))
+        .preferredColorScheme(.dark)
 }
