@@ -62,6 +62,12 @@ struct AccessEdTabView: View {
     }
 }
 
-#Preview {
+#Preview("Light Mode") {
     AccessEdTabView()
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    AccessEdTabView()
+        .preferredColorScheme(.dark)
 }

@@ -31,8 +31,6 @@ struct CalendarView: View {
 
     private let calendar = Calendar.current
     
-    
-    @EnvironmentObject var listViewModel: ListViewModel
     @Environment(\.presentationMode) var presentationMode
     
     let fixedWidth: CGFloat = UIScreen.main.bounds.width //* 0.9
@@ -114,7 +112,7 @@ struct CalendarView: View {
                                     }
                                     .padding(.vertical, 10)
                                     .padding(.horizontal, 13)
-                                    .background(Color.white)
+                                    .background(Color("Courses Color"))
                                     .cornerRadius(8)
                                     .padding(.horizontal, 20)
                                     .frame(width: fixedWidth, alignment: .center)
@@ -148,13 +146,13 @@ struct CalendarView: View {
                                     }) {
                                         Text("Remove All Tasks")
                                             .font(.callout)
-                                            .bold()
-                                            .foregroundColor(.white)
+                                            .foregroundStyle(Color("Text-Colors"))
                                             .padding()
                                             .padding(.horizontal, 15)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 10)
-                                                    .fill(Color.gray.opacity(0.7))
+                                                    .fill(Color("Courses Color"))
+                                                    .shadow(radius: 3)
                                                     .frame(width: 160, height: 40)
                                             )
                                     }
@@ -240,6 +238,7 @@ struct CalendarView: View {
             Text("Add Task")
                 .font(.title3)
                 .bold()
+                .foregroundStyle(Color("Text-Colors"))
             
             VStack (alignment: .leading) {
                 Text("Add Task Name")
@@ -248,7 +247,6 @@ struct CalendarView: View {
                     .padding(10)
                     .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                     .padding([.horizontal, .bottom], 20)
-                    .foregroundStyle(Color.black)
                     .font(.subheadline)
             
                 Text("Select Date")
@@ -257,9 +255,9 @@ struct CalendarView: View {
                     .padding(10)
                     .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                     .padding(.horizontal, 20)
-                    .foregroundStyle(Color.black)
                     .font(.subheadline)
             }
+            .foregroundStyle(Color("Text-Colors"))
 
             
             HStack(alignment: .center) {
@@ -307,7 +305,7 @@ struct CalendarView: View {
         .frame(maxWidth: 350, maxHeight: 325)
         .padding(.top, 5)
         .background(
-            Color(.white)
+            Color("Courses Colors")
                 .cornerRadius(15)
                 .shadow(radius: 3, x: 0, y: 5)
         )
@@ -351,7 +349,12 @@ struct CalendarView: View {
 }
 
 
-#Preview {
+#Preview("Light mode") {
     CalendarView()
-        .environmentObject(ListViewModel())
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark mode") {
+    CalendarView()
+        .preferredColorScheme(.dark)
 }
