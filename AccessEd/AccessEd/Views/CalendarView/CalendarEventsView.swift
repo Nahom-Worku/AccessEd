@@ -10,6 +10,7 @@ import SwiftUI
 struct CalendarEventsView: View {
     @Binding var currentMonth: Date
     @Binding var tasks: [Task]
+    @Binding var selectedDate: Date
     
     @Binding var allTasksCompletedByDate: [Date: Bool]
     
@@ -46,7 +47,6 @@ struct CalendarEventsView: View {
                     if let date = date {
                         
                         let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
-                        
                         let isCompleted: Bool = allTasksCompletedByDate[date] ?? false
                                                 
                         Button(action: {
@@ -57,7 +57,7 @@ struct CalendarEventsView: View {
 
                                 .bold(!isCompleted && hasTasks ? true : false)
                             .frame(width: 40, height: 40, alignment: .center)
-                            .background(calendar.isDateInToday(date) ? Color.red.opacity(0.3) : Color.blue.opacity(0.1))
+                            .background(calendar.isDateInToday(date) ? Color.red.opacity(0.3) : selectedDate == date ? Color.blue.opacity(0.3) : Color.blue.opacity(0.05))
                             .cornerRadius(8)
                         }
                         .buttonStyle(PlainButtonStyle())

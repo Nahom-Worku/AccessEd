@@ -10,6 +10,7 @@ import SwiftUI
 struct AccessEdTabView: View {
     
     @State var selectedTab: Int = 0
+    let uncompletedTasksForCurrentDate: Int = 3
     
     var body: some View {
         
@@ -46,7 +47,7 @@ struct AccessEdTabView: View {
                 Label("Calendar", systemImage: "calendar")
             }
             .tag(2)
-            .badge(3)  // TODO: update if there are unfinished tasks or something...
+            .badge(uncompletedTasksForCurrentDate)
             
             
             // Profile page
