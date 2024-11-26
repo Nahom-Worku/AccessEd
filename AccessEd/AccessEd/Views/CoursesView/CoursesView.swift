@@ -8,28 +8,66 @@
 import SwiftUI
 
 struct CoursesView: View {
+    
+    @State var showAddCoursesBottomView: Bool = false
+    
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVStack (spacing: 10) {
-                    ForEach(0..<7) { index in
-                        // TODO:
-                        //      add a function to get the:
-                        //                               image for each course
-                        //                               title and discription
-                        
-                        NavigationLink {
-                            Text("each courses page")
-                        } label: {
-                            eachCourseView
+            ZStack {
+                ScrollView {
+                    LazyVStack (spacing: 10) {
+                        ForEach(0..<7) { index in
+                            // TODO:
+                            //      add a function to get the:
+                            //                               image for each course
+                            //                               title and discription
+                            
+                            NavigationLink {
+                                Text("each courses page")
+                            } label: {
+                                eachCourseView
+                            }
+                            
                         }
+                    }
+                    .padding(.top)
+                }
+                
+                VStack {
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        // add courses button
+                        Button(action: {
+                            showAddCoursesBottomView = true
+                        }) {
+                            Circle()
+                                .fill(Color.white.opacity(0.5))
+                                .stroke(Color.white, lineWidth: 1)
+                                .frame(width: 60)
+                                .shadow(radius: 3)
+                                .overlay(
+                                    Image(systemName: "plus")
+                                        .font(.largeTitle)
+                                        .foregroundStyle(.black.opacity(0.8))
+                                )
+                                .padding()
+                        }
+                        .buttonStyle(PlainButtonStyle())
                         
                     }
+                    .padding(.trailing)
                 }
-                .padding(.top)
             }
             .navigationTitle("Courses")
         }
+        .sheet(isPresented: $showAddCoursesBottomView, content: {
+            addCourseButtomSheet
+                .presentationDetents([.medium, .fraction(0.5)])
+                .background(Color.gray.opacity(0.1))
+        })
     }
     
     var eachCourseView: some View {
@@ -69,8 +107,27 @@ struct CoursesView: View {
                 .padding(.trailing, 5)
             )
     }
+    
+    var addCourseButtomSheet: some View {
+        VStack(alignment: .center, spacing: 20) {
+            Text("Users can add their own courses here")
+            
+            Text("Course Name")
+            
+            Text("Course Category")
+        }
+        .font(.headline)
+        .padding(.top)
+        .frame(width: 350, height: 350)
+    }
 }
 
-#Preview {
+#Preview("Light mode") {
     CoursesView()
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark mode") {
+    CoursesView()
+        .preferredColorScheme(.dark)
 }
