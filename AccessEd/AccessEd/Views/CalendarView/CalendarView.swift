@@ -22,24 +22,41 @@ struct CalendarView: View {
     @State private var isAddingTask = false // Control task sheet visibility
     @State private var newTaskDescription = "" // Hold new task description
     
-//    @State private var allTasksCompleted: Bool = false
     @State private var allTasksCompletedByDate: [Date: Bool] = [:]
+    
+    // Filter tasks for the selected date
+    var tasksForSelectedDate: [Task] {
+            tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
+    }
+    
+    // Filter the uncompleted tasks for the selected date
+    var uncompletedTasksForSelectedDate: [Task] {
+        tasksForSelectedDate.filter { !$0.completed }
+    }
+    
+    var uncompletedTasksForCurrentDate: [Task] {
+        tasks.filter { calendar.isDateInToday($0.date) && !$0.completed }
+    }
+
 
     
-    @State var courseName: String = ""
-    @State var grade: String = ""
+    @State var TaskName: String = ""
 
     private let calendar = Calendar.current
     
     @Environment(\.presentationMode) var presentationMode
     
     let fixedWidth: CGFloat = UIScreen.main.bounds.width //* 0.9
+    
 
     var body: some View {
+        
+        // TODO: need to add the above parameters and variables in a viewModel
+//        AccessEdTabView(uncompletedTasksForCurrentDate: uncompletedTasksForCurrentDate.count)
+        
         NavigationView {
             ScrollView {
                 VStack {
-                    
                     VStack {
                         calendarTitleLayerView
                         
@@ -47,6 +64,7 @@ struct CalendarView: View {
                         CalendarEventsView(
                             currentMonth: $currentMonth,
                             tasks: $tasks,
+                            selectedDate: $selectedDate,
                             allTasksCompletedByDate: $allTasksCompletedByDate,
                             onDateSelected: { date in
                                 selectedDate = date // Update selected date when a date is clicked
@@ -71,19 +89,34 @@ struct CalendarView: View {
                         HStack(alignment: .center) {
 
                             Image(systemName: "checklist")
-                            Text("Your Tasks For The Day")
+                            Text("Tasks For The Day")
+                                .padding(.trailing, 5)
+                            
+                            // number of uncompleted task for the selected date
+                            Text("\(uncompletedTasksForSelectedDate.count)")
+                                .foregroundStyle(.purple)
+                                .padding(8)
+                                .frame(maxWidth: 25, maxHeight: 25)
+                                .background(
+                                    Circle()
+                                        .fill(Color.gray.opacity(0.2))
+                                        .overlay(
+                                                Circle()
+                                                    .stroke(Color.purple, lineWidth: 0.5)
+                                            )
+                                )
+                                .font(.subheadline)
+
                             
                             Spacer()
                             
                             addTaskButtonView
                         }
                         .padding(.horizontal)
-                        .frame(width: fixedWidth - 20, alignment: .center)
+                        .frame(width: fixedWidth, alignment: .center)
                         .padding(.leading, 10)
                         .padding(.top, 10)
-                        
-                        // Filter tasks for the selected date
-                        let tasksForSelectedDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
+
                         
                         if tasksForSelectedDate.isEmpty {
                             Text("No tasks for this date.")
@@ -92,9 +125,9 @@ struct CalendarView: View {
                                 .padding(.top, 30)
                         } else {
                             LazyVStack(alignment: .center, spacing: 10) {
-                                ForEach(Array(tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
+                                ForEach(Array(tasksForSelectedDate.enumerated().reversed()), id: \.offset) { index, task in
                                     HStack {
-                                        Text(" \(index + 1).)  \(task.description)")
+                                        Text("\(task.description)")
                                             .foregroundColor(task.completed ? .gray : .primary)
                                             .strikethrough(task.completed, color: .gray)
                                         
@@ -115,23 +148,13 @@ struct CalendarView: View {
                                     .background(Color("Courses Color"))
                                     .cornerRadius(8)
                                     .padding(.horizontal, 20)
-                                    .frame(width: fixedWidth, alignment: .center)
+                                    .frame(width: fixedWidth - 20, alignment: .center)
+                                    .padding(.leading)
                                     .shadow(radius: 3, x: 1, y: 2)
                                     .onTapGesture(count: 2) {
                                         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
                                             tasks[index].completed.toggle() // Toggle completion
                                             updateAllTasksCompleted()
-                                            
-                                            print("\n -> \(allTasksCompletedByDate)")
-                                            for (index, task) in tasks.enumerated() {
-                                                print("Task \(index + 1): \(task.description) - Completed: \(task.completed) \n")
-                                            }
-                                        }
-                                    }
-                                    .onAppear {
-                                        print(" -> \(allTasksCompletedByDate)")
-                                        for (index, task) in tasks.enumerated() {
-                                            print("Task \(index + 1): \(task.description) - Completed: \(task.completed) \n")
                                         }
                                     }
                                 }
@@ -152,13 +175,13 @@ struct CalendarView: View {
                                             .background(
                                                 RoundedRectangle(cornerRadius: 10)
                                                     .fill(Color("Courses Color"))
-                                                    .shadow(radius: 3)
+                                                    .shadow(radius: 3, x: 0, y: 3)
                                                     .frame(width: 160, height: 40)
                                             )
                                     }
                                 }
                                 .padding()
-                                .padding(.top, 40)
+                                .padding(.top, 20)
                                 .frame(width: fixedWidth - 100, alignment: .center)
                             }
                             .padding()
@@ -243,7 +266,7 @@ struct CalendarView: View {
             VStack (alignment: .leading) {
                 Text("Add Task Name")
                     .padding(.leading)
-                TextField("Enter Task Name", text: $courseName)
+                TextField("Enter Task Name", text: $TaskName)
                     .padding(10)
                     .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                     .padding([.horizontal, .bottom], 20)
@@ -281,8 +304,8 @@ struct CalendarView: View {
                 
                 // Add course button
                 Button {
-                    addTask(for: selectedDate, description: courseName)
-                    courseName = ""
+                    addTask(for: selectedDate, description: TaskName)
+                    TaskName = ""
                     isAddingTask = false
                 } label: {
                     Text("Add")
