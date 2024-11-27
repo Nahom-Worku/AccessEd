@@ -38,7 +38,6 @@ struct CalendarView: View {
         tasks.filter { calendar.isDateInToday($0.date) && !$0.completed }
     }
 
-
     
     @State var TaskName: String = ""
 
@@ -124,6 +123,8 @@ struct CalendarView: View {
                                 .frame(width: fixedWidth)
                                 .padding(.top, 30)
                         } else {
+                            
+                            // Display the tasks for the selected date
                             LazyVStack(alignment: .center, spacing: 10) {
                                 ForEach(Array(tasksForSelectedDate.enumerated().reversed()), id: \.offset) { index, task in
                                     HStack {
@@ -145,7 +146,7 @@ struct CalendarView: View {
                                     }
                                     .padding(.vertical, 10)
                                     .padding(.horizontal, 13)
-                                    .background(Color("Courses Color"))
+                                    .background(Color("Courses-Colors"))
                                     .cornerRadius(8)
                                     .padding(.horizontal, 20)
                                     .frame(width: fixedWidth - 20, alignment: .center)
@@ -174,7 +175,7 @@ struct CalendarView: View {
                                             .padding(.horizontal, 15)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 10)
-                                                    .fill(Color("Courses Color"))
+                                                    .fill(Color("Courses-Colors"))
                                                     .shadow(radius: 3, x: 0, y: 3)
                                                     .frame(width: 160, height: 40)
                                             )
@@ -328,9 +329,9 @@ struct CalendarView: View {
         .frame(maxWidth: 350, maxHeight: 325)
         .padding(.top, 5)
         .background(
-            Color("Courses Colors")
+            Color("Courses-Colors")
                 .cornerRadius(15)
-                .shadow(radius: 3, x: 0, y: 5)
+                .shadow(radius: 1, x: 0, y: 1)
         )
         .padding(.horizontal, 10)
         .padding(.top, 10)

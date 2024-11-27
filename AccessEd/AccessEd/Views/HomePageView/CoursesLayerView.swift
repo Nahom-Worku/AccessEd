@@ -63,7 +63,7 @@ struct CoursesLayerView: View {
                     VStack {
                         Image("Geometry")
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .frame(height: 120)
                             .clipped()
                             .cornerRadius(10)
@@ -77,7 +77,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color("Courses Color"))
+                    .background(Color("Courses-Colors"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -86,7 +86,7 @@ struct CoursesLayerView: View {
                     VStack(alignment: .center, spacing: 8) {
                         Image("science")
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .frame(height: 120)
                             .clipped()
                             .cornerRadius(10)
@@ -100,7 +100,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color("Courses Color"))
+                    .background(Color("Courses-Colors"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -123,7 +123,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color("Courses Color"))
+                    .background(Color("Courses-Colors"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -146,7 +146,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color("Courses Color"))
+                    .background(Color("Courses-Colors"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -154,9 +154,9 @@ struct CoursesLayerView: View {
                     //#######################
                     
                     VStack {
-                        Image("Arts-Humanities2")
+                        Image("Arts-Humanities")
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .frame(height: 120)
                             .clipped()
                             .cornerRadius(10)
@@ -170,7 +170,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color("Courses Color"))
+                    .background(Color("Courses-Colors"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                     
@@ -178,7 +178,7 @@ struct CoursesLayerView: View {
                     VStack {
                         Image("Social Sciences")
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .frame(height: 120)
                             .clipped()
                             .cornerRadius(10)
@@ -192,7 +192,7 @@ struct CoursesLayerView: View {
                         .padding([.leading, .trailing, .bottom], 8)
                     }
                     .frame(width: 180)
-                    .background(Color("Courses Color"))
+                    .background(Color("Courses-Colors"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
                 }
