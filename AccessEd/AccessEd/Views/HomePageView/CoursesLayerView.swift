@@ -130,7 +130,7 @@ struct CoursesLayerView: View {
                     //#######################
                     
                     VStack {
-                        Image("Tech-Eng")
+                        Image("Tech-and-Eng")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 120)
@@ -176,7 +176,7 @@ struct CoursesLayerView: View {
                     
                     //############################
                     VStack {
-                        Image("Social Sciences")
+                        Image("Social-Sciences")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 120)
@@ -185,6 +185,29 @@ struct CoursesLayerView: View {
                         
                         VStack(alignment: .center, spacing: 4) {
                             Text("Geography")
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                                .padding(5)
+                        }
+                        .padding([.leading, .trailing, .bottom], 8)
+                    }
+                    .frame(width: 180)
+                    .background(Color("Courses-Colors"))
+                    .cornerRadius(15)
+                    .shadow(radius: 3)
+                    
+                    //############################
+                    VStack {
+                        Image("Health-and-Physical-Education")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 120)
+                            .clipped()
+                            .cornerRadius(10)
+                            .opacity(0.8)
+                        
+                        VStack(alignment: .center, spacing: 4) {
+                            Text("Physical Education")
                                 .font(.headline)
                                 .foregroundColor(.primary)
                                 .padding(5)
