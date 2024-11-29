@@ -40,9 +40,9 @@ struct CoursesView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                ScrollView {
-                    LazyVStack (spacing: 10) {
-                        ForEach(coursesList) {course in
+                List {
+//                    LazyVStack (spacing: 10) {
+                    ForEach(coursesList) { course in
                             NavigationLink {
                                 Text("\(course.name) page")
                             } label: {
@@ -51,36 +51,17 @@ struct CoursesView: View {
                                 }
                             }
                         }
-                    }
-                    .padding(.top)
+                    .onDelete(perform: deleteCourse)
+                    .onMove(perform: moveCourse)
+//                    }
+                        .padding(.horizontal)
                 }
+//                .listRowBackground(Color.white)
                 
-                VStack {
-                    Spacer()
-                    
-                    HStack {
-                        Spacer()
-                        
-                        // add courses button
-                        Button(action: {
-                            showAddCoursesBottomView = true
-                        }) {
-                            Circle()
-                                .fill(Color.blue.opacity(0.8))
-                                .frame(width: 50)
-                                .shadow(radius: 3)
-                                .overlay(
-                                    Image(systemName: "plus")
-                                        .font(.headline)
-                                        .foregroundStyle(.white)
-                                )
-                                .padding()
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        
-                    }
-                    .padding(.trailing)
-                }
+                // MARK: do something about this ^^^
+                
+                // Add a Course Button
+                addCourseButton
             }
             .navigationTitle("Courses")
         }
@@ -90,6 +71,42 @@ struct CoursesView: View {
         })
     }
     
+    func deleteCourse(offsets: IndexSet) {
+        coursesList.remove(atOffsets: offsets)
+    }
+    
+    func moveCourse(from source: IndexSet, to destination: Int) {
+        coursesList.move(fromOffsets: source, toOffset: destination)
+    }
+    
+    var addCourseButton: some View {
+        VStack {
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                // add courses button
+                Button(action: {
+                    showAddCoursesBottomView = true
+                }) {
+                    Circle()
+                        .fill(Color.blue.opacity(0.8))
+                        .frame(width: 50)
+                        .shadow(radius: 3)
+                        .overlay(
+                            Image(systemName: "plus")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                        )
+                        .padding()
+                }
+                .buttonStyle(PlainButtonStyle())
+                
+            }
+            .padding(.trailing)
+        }
+    }
     var addCourseButtomSheet: some View {
         VStack(spacing: 20) {
             Text("Add a Course")
@@ -263,7 +280,7 @@ struct EachCourseView: View {
     var body: some View {
         
         RoundedRectangle(cornerRadius: 10)
-            .fill(course.courseColor.opacity(0.5))
+            .fill(course.courseColor.opacity(0.1))
             .padding(.horizontal, 20)
             .frame(width: UIScreen.main.bounds.width, height: 100)
             .shadow(radius: 1, x: 0, y: 1)
@@ -292,7 +309,7 @@ struct EachCourseView: View {
                     
                     Image(systemName: "chevron.right")
                         .font(.headline)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color("Text-Colors"))
                 }
                 .frame(width: 320, alignment: .leading)
                 .padding(.trailing, 5)
