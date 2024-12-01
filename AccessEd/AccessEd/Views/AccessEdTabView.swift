@@ -9,6 +9,9 @@ import SwiftUI
 
 struct AccessEdTabView: View {
     
+//    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
+    @Environment(\.modelContext) private var modelContext
+    
     @State var selectedTab: Int = 0
     let uncompletedTasksForCurrentDate: Int = 3
     
@@ -29,7 +32,7 @@ struct AccessEdTabView: View {
             
             // Course page
             VStack {
-                CoursesView()
+                CoursesView(viewModel: CourseViewModel(context: modelContext))
                 Spacer().frame(height: 10)
             }
             .tabItem {
@@ -66,9 +69,11 @@ struct AccessEdTabView: View {
 #Preview("Light Mode") {
     AccessEdTabView()
         .preferredColorScheme(.light)
+        .modelContainer(for: CourseModel.self, inMemory: true)
 }
 
 #Preview("Dark Mode") {
     AccessEdTabView()
         .preferredColorScheme(.dark)
+        .modelContainer(for: CourseModel.self, inMemory: true)
 }
