@@ -42,6 +42,8 @@ struct CoursesView: View {
                             modelContext.delete(courses[index])
                         }
                     }
+                    
+                    // TODO: onMove function causing a glich and not working
                     .onMove(perform: viewModel.moveCourse)
                     
                     .listRowBackground(Color("List-Colors"))
@@ -54,10 +56,19 @@ struct CoursesView: View {
                     addCourseButton
                 } else {
                     VStack {
-                        Image(systemName: "book")
+                        Image(systemName: "books.vertical")
+                            .font(Font.system(size: 60))
+                            .padding(5)
+                            .foregroundStyle(.gray)
                         
-                        Text("Add a course to get started!")
-                            .font(.title3)
+                        Text("No Courses")
+                            .font(.title2)
+                            .bold()
+                        
+                        Text("Start adding courses to get started!")
+                            .font(.subheadline)
+                            .padding(.bottom)
+                            .foregroundStyle(.gray)
                         
                         Button(action: {
                             showAddCoursesBottomView = true
@@ -65,6 +76,46 @@ struct CoursesView: View {
                             Text("Add Course")
                                 .font(.headline)
                         })
+                        
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.gray.opacity(0.1))
+                            .padding(.horizontal, 10)
+                            .frame(width: UIScreen.main.bounds.width - 30, height: 95)
+                        
+                            .shadow(radius: 1, x: 0, y: 1)
+                            .overlay(
+                                HStack {
+                                    Image(systemName: "paintpalette")
+                                        .renderingMode(.original)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 50, height: 50)
+                                        .clipped()
+                                        .cornerRadius(10)
+                                        .padding(.horizontal, 5)
+                                    
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Text("Art 101")
+                                            .font(.headline)
+                                            .foregroundStyle(Color("Text-Colors"))
+                                        Text("Category: Arts & Humanities")
+                                            .font(.footnote)
+                                            .foregroundStyle(Color("Text-Colors")).opacity(0.5)
+                                    }
+                                    .padding(5)
+                                    .padding(.leading, 5)
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "chevron.right")
+                                        .font(.headline)
+                                        .foregroundStyle(Color("Text-Colors"))
+                                        .padding(.trailing, 5)
+                                }
+                                .frame(width: 315, alignment: .leading)
+                                .padding(.leading, 10)
+                                .padding(.trailing, 10)
+                            )
                     }
                 }
             }
