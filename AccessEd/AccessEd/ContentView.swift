@@ -9,53 +9,99 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query(sort: \CourseModel.id) var courses: [CourseModel]
+//    @EnvironmentObject var viewModel: CourseViewModel
+    @Environment(\.modelContext) var modelContext
+    @State private var viewModel: ViewModel
 
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(items) { item in
+                ForEach(courses) { course in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text("Course: \(course.name)")
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        VStack(alignment: .leading) {
+                            Text(course.name)
+                                .font(.headline)
+                            Text(course.categoryRawValue)
+                                .font(.subheadline)
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
+//                .onDelete(perform: deleteCourses)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
                 ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                    Button(action: addSampleCourse) {
+                        Label("Add Course", systemImage: "plus")
                     }
                 }
             }
         } detail: {
-            Text("Select an item")
+            Text("Select a course")
         }
     }
 
-    private func addItem() {
+    private func addSampleCourse() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
+//            viewModel.addCourse(
+//                name: "New Course",
+//                category: CourseCategory(rawValue: "General") ?? .mathematics
+//            )
+            let course = CourseModel(name: "New Course", category: .mathematics)
+            modelContext.insert(course)
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+//    private func deleteCourses(at offsets: IndexSet) {
+//        withAnimation {
+//            for index in offsets {
+//                let course = viewModel.courses[index]
+//                viewModel.deleteCourse(course: course)
+//            }
+//        }
+//    }
+    
+    init(modelContext: ModelContext) {
+            let viewModel = ViewModel(modelContext: modelContext)
+            _viewModel = State(initialValue: viewModel)
+        }
+}
+
+extension ContentView {
+    @Observable
+    class ViewModel {
+        var modelContext: ModelContext
+        var courses = [CourseModel]()
+
+        init(modelContext: ModelContext) {
+            self.modelContext = modelContext
+            fetchData()
+        }
+
+        func addSample() {
+            let course = CourseModel(name: "New Course", category: .mathematics)
+            modelContext.insert(course)
+            fetchData()
+        }
+
+        func fetchData() {
+            do {
+                let descriptor = FetchDescriptor<CourseModel>(sortBy: [SortDescriptor(\.id)])
+                courses = try modelContext.fetch(descriptor)
+            } catch {
+                print("Fetch failed")
             }
         }
     }
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
-}
+
+//#Preview {
+//    ContentView()
+////        .environmentObject(CourseViewModel(context: ModelContext))
+//}

@@ -6,40 +6,29 @@
 //
 
 import SwiftUI
-
-struct Course: Identifiable {
-    let id = UUID()
-    var name: String
-    var category: String
-    var courseImage: Image
-    var courseColor: Color
-}
+import SwiftData
 
 struct CoursesView: View {
     
+    @Query private var courses: [CourseModel]
+    @Environment(\.modelContext) var modelContext
+    
+    @ObservedObject var viewModel: CourseViewModel
+    
     @State var showAddCoursesBottomView: Bool = false
     @State var courseName: String = ""
-    @State var coursesList: [Course] = []
-    @State private var selectedCategory: String = "Mathematics"
+    @State private var selectedCategory: CourseCategory = .mathematics
     
-    let courseCategories = [
-        "Mathematics",
-        "Natural Sciences",
-        "Social Sciences",
-        "Tech & Engineering",
-        "Health & PE",
-        "Languages",
-        "Arts & Humanities",
-        "Career & Tech",
-        "Other"
-    ]
+    @State private var courseToEdit: CourseModel = CourseModel(name: "", category: .other)
+    @State private var showEditCoursesBottomView: Bool = false
+    
     
    
     var body: some View {
         NavigationView {
             ZStack {
                 List {
-                    ForEach(coursesList) { course in
+                    ForEach(courses) { course in
                             NavigationLink {
                                 Text("\(course.name) page")
                             } label: {
@@ -48,13 +37,36 @@ struct CoursesView: View {
                                 }
                             }
                         }
-                    .onDelete(perform: deleteCourse)
-                    .onMove(perform: moveCourse)
+                    .onDelete { IndexSet in
+                        for index in IndexSet {
+                            modelContext.delete(courses[index])
+                        }
+                    }
+                    .onMove(perform: viewModel.moveCourse)
+                    
                     .listRowBackground(Color("List-Colors"))
                 }
                 
                 // Add a Course Button
-                addCourseButton
+                // TODO: the add course button should displayed like this
+                
+                if !courses.isEmpty {
+                    addCourseButton
+                } else {
+                    VStack {
+                        Image(systemName: "book")
+                        
+                        Text("Add a course to get started!")
+                            .font(.title3)
+                        
+                        Button(action: {
+                            showAddCoursesBottomView = true
+                        }, label: {
+                            Text("Add Course")
+                                .font(.headline)
+                        })
+                    }
+                }
             }
             .navigationTitle("Courses")
         }
@@ -62,15 +74,15 @@ struct CoursesView: View {
             addCourseButtomSheet
                 .presentationDetents([.medium, .fraction(0.5)])
         })
+        .sheet(isPresented: $showEditCoursesBottomView) {
+//            if let courseToEdit = Binding($courseToEdit) {
+            UpdateCourseSheet(course: Binding(projectedValue: $courseToEdit))
+                    .presentationDetents([.medium, .fraction(0.5)])
+//            }
+        }
+
     }
     
-    func deleteCourse(offsets: IndexSet) {
-        coursesList.remove(atOffsets: offsets)
-    }
-    
-    func moveCourse(from source: IndexSet, to destination: Int) {
-        coursesList.move(fromOffsets: source, toOffset: destination)
-    }
     
     var addCourseButton: some View {
         VStack {
@@ -121,8 +133,8 @@ struct CoursesView: View {
                     .padding(.leading)
                
                 Picker("Select Category", selection: $selectedCategory) {
-                    ForEach(courseCategories, id: \.self) { category in
-                        Text(category).tag(category)
+                    ForEach(CourseCategory.allCases, id: \.self) { category in
+                        Text(category.rawValue).tag(category)
                     }
                 }
                 .padding(5)
@@ -155,10 +167,15 @@ struct CoursesView: View {
                 // Add course button
                 Button {
                     if !courseName.isEmpty {
-                        addCourse(name: courseName, category: selectedCategory, courseImage: Image(selectedCategory), courseColor: Color(selectedCategory))
+                        
+                        let newCourse = CourseModel(name: courseName, category: selectedCategory)
+//                        viewModel.addCourse(course: newCourse)
+                        modelContext.insert(newCourse)
+                        
                         courseName = ""
                     }
                     showAddCoursesBottomView = false
+                    
                 } label: {
                     Text("Add")
                         .font(.subheadline)
@@ -188,13 +205,11 @@ struct CoursesView: View {
         .padding(.top, 10)
     }
     
-    func addCourse(name: String, category: String, courseImage: Image, courseColor: Color) {
-        coursesList.append(Course(name: name, category: category, courseImage: courseImage, courseColor: courseColor))
-    }
+
 }
 
 struct EachCourseView: View {
-    let course: Course
+    let course: CourseModel
     
     var body: some View {
         
@@ -218,7 +233,7 @@ struct EachCourseView: View {
                         Text(course.name)
                             .font(.headline)
                             .foregroundStyle(Color("Text-Colors"))
-                        Text("Category: \(course.category)")
+                        Text("Category: \(course.category.rawValue)")
                             .font(.footnote)
                             .foregroundStyle(Color("Text-Colors")).opacity(0.5)
                     }
@@ -238,12 +253,139 @@ struct EachCourseView: View {
     }
 }
 
+
+struct UpdateCourseSheet: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    @Binding var course: CourseModel
+    
+    @State private var updateCourse: Bool = false
+    
+    @State private var tempCourse: CourseModel
+        
+        init(course: Binding<CourseModel>) {
+            self._course = course
+            self._tempCourse = State(initialValue: course.wrappedValue)
+        }
+    
+    var body: some View {
+        NavigationStack {
+//            Form {
+                    VStack(spacing: 20) {
+                        Text("Update Course")
+                            .font(.title3)
+                            .bold()
+                            .foregroundStyle(Color("Text-Colors"))
+                        
+                        VStack (alignment: .leading) {
+                            Text("Add The Course Name")
+                                .padding(.leading)
+                            
+                            TextField("Enter Course Name", text: $tempCourse.name) //$course.name)
+                                .padding(10)
+                                .background(Color.gray.opacity(0.05).cornerRadius(5.0))
+                                .padding([.horizontal, .bottom], 20)
+                                .font(.subheadline)
+                        
+                            Text("Select Course Category")
+                                .padding(.leading)
+                            
+                            Picker("Select Category", selection: $tempCourse.category) { //$course.category) {
+                                ForEach(CourseCategory.allCases, id: \.self) { category in
+                                    Text(category.rawValue).tag(category)
+                                }
+                            }
+                            .padding(5)
+                            .background(Color.gray.opacity(0.05).cornerRadius(5.0))
+                            .padding(.leading, 20)
+                            .font(.subheadline)
+                        }
+                        .foregroundStyle(Color("Text-Colors"))
+
+                        
+                        HStack(alignment: .center) {
+                            
+                            // canel bottom sheet button
+                            Button(action: {
+                                dismiss()
+                            }) {
+                                Text("Cancel")
+                                    .font(.subheadline)
+                                    .bold()
+                                    .foregroundColor(.red)
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(Color.gray.opacity(0.1))
+                                            .frame(width: 100, height: 40)
+                                            .padding(.horizontal, 20)
+                                    )
+                            }
+                            
+                            Spacer()
+                            
+                            // Add course button
+                            Button {
+                                
+//                                self.updateCourse = true
+//                                dismiss()
+//                                
+//                                course.courseImageName = course.category.imageName
+//                                course.courseColorName = course.category.colorName
+                                course.name = tempCourse.name
+                                course.category = tempCourse.category
+                                course.courseImageName = tempCourse.category.imageName
+                                course.courseColorName = tempCourse.category.colorName
+                                
+                                dismiss()
+                                
+                            } label: {
+                                Text("Done")
+                                    .font(.subheadline)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(Color.blue)
+                                            .frame(width: 100, height: 40)
+                                            .padding(.horizontal, 20)
+                                    )
+                            }
+                        }
+                        .padding(.trailing, 7)
+                        .frame(width: 250)
+                    }
+                    .padding()
+                    .frame(maxWidth: 350, maxHeight: 325)
+                    .padding(.top, 5)
+                    .background(
+                        Color("Courses-Colors")
+                            .cornerRadius(15)
+                            .shadow(radius: 1, x: 0, y: 1)
+                    )
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+//                }
+            }
+            .navigationTitle("Update Course")
+        }
+}
+
 #Preview("Light mode") {
-    CoursesView()
+    @Previewable @Environment(\.modelContext) var modelContext
+    
+    CoursesView(viewModel: CourseViewModel(context: modelContext))
+        
         .preferredColorScheme(.light)
+        .modelContainer(for: CourseModel.self, inMemory: true)
 }
 
 #Preview("Dark mode") {
-    CoursesView()
+    @Previewable @Environment(\.modelContext) var modelContext
+    
+    CoursesView(viewModel: CourseViewModel(context: modelContext))
         .preferredColorScheme(.dark)
+        .modelContainer(for: CourseModel.self, inMemory: true)
 }
+

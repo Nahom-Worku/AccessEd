@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct BottomMenuView: View {
+    @Environment(\.modelContext) private var modelContext
+    
     var body: some View {
         HStack(alignment: .center, spacing: 70) {
             NavigationLink(destination: HomePageView()) {
                 Image(systemName: "house")
             }
 
-            NavigationLink(destination: CoursesView()) {
+            NavigationLink(destination: CoursesView(viewModel: CourseViewModel(context: modelContext))) {
                 Image(systemName: "books.vertical")
             }
 
