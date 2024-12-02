@@ -19,7 +19,7 @@ struct CoursesView: View {
     @State var courseName: String = ""
     @State private var selectedCategory: CourseCategory = .mathematics
     
-    @State private var courseToEdit: CourseModel = CourseModel(name: "", category: .other)
+//    @State private var courseToEdit: CourseModel = CourseModel(name: "", category: .other)
     @State private var showEditCoursesBottomView: Bool = false
     
     
@@ -86,12 +86,12 @@ struct CoursesView: View {
             addCourseButtomSheet
                 .presentationDetents([.medium, .fraction(0.5)])
         })
-        .sheet(isPresented: $showEditCoursesBottomView) {
-//            if let courseToEdit = Binding($courseToEdit) {
-            UpdateCourseSheet(course: Binding(projectedValue: $courseToEdit))
-                    .presentationDetents([.medium, .fraction(0.5)])
-//            }
-        }
+//        .sheet(isPresented: $showEditCoursesBottomView) {
+//            //if let courseToEdit = Binding($courseToEdit) {
+//            UpdateCourseSheet(course: Binding(projectedValue: $courseToEdit))
+//                    .presentationDetents([.medium, .fraction(0.5)])
+////            }
+//        }
 
     }
     
@@ -180,8 +180,9 @@ struct CoursesView: View {
                 Button {
                     if !courseName.isEmpty {
                         
+//                        let nextOrder = (courses.last?.order ?? -1) + 1
+                        
                         let newCourse = CourseModel(name: courseName, category: selectedCategory)
-//                        viewModel.addCourse(course: newCourse)
                         modelContext.insert(newCourse)
                         
                         courseName = ""

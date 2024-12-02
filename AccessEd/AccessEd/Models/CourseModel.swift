@@ -15,6 +15,9 @@ class CourseModel: Identifiable {
     @Attribute(.unique) var id: UUID
     var name: String
     var createdDate: Date = Date()
+    
+    //TODO: work with the below the save the order of courses
+//    var order: Int
     var categoryRawValue: String
     var courseImageName: String
     var courseColorName: String
@@ -52,7 +55,7 @@ class CourseModel: Identifiable {
     }
 }
 
-enum CourseCategory: String, CaseIterable {
+enum CourseCategory: String, Codable, CaseIterable {
     case mathematics = "Mathematics"
     case naturalSciences = "Natural Sciences"
     case socialSciences = "Social Sciences"

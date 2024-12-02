@@ -40,7 +40,21 @@ class CourseViewModel: ObservableObject {
         }
     
     func moveCourse(from: IndexSet, to: Int) {
+        guard let sourceIndex = from.first else {
+            print("Error: IndexSet is empty.")
+            return
+        }
+
+        // Ensure the sourceIndex is within bounds
+        guard sourceIndex >= 0 && sourceIndex < courses.count else {
+            print("Error: Source index out of range.")
+            return
+        }
+
+        // Reorder the in-memory courses array
         courses.move(fromOffsets: from, toOffset: to)
+        
+        getCourses()
     }
     
 }
