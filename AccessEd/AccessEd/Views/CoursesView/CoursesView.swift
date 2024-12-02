@@ -10,7 +10,7 @@ import SwiftData
 
 struct CoursesView: View {
     
-    @Query private var courses: [CourseModel]
+    @Query(sort: \CourseModel.createdDate, order: .reverse) private var courses: [CourseModel]
     @Environment(\.modelContext) var modelContext
     
     @ObservedObject var viewModel: CourseViewModel
@@ -59,7 +59,8 @@ struct CoursesView: View {
                         Image(systemName: "books.vertical")
                             .font(Font.system(size: 60))
                             .padding(5)
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(.gray.opacity(0.8))
+                            .fontWeight(.light)
                         
                         Text("No Courses")
                             .font(.title2)
@@ -76,46 +77,6 @@ struct CoursesView: View {
                             Text("Add Course")
                                 .font(.headline)
                         })
-                        
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.gray.opacity(0.1))
-                            .padding(.horizontal, 10)
-                            .frame(width: UIScreen.main.bounds.width - 30, height: 95)
-                        
-                            .shadow(radius: 1, x: 0, y: 1)
-                            .overlay(
-                                HStack {
-                                    Image(systemName: "paintpalette")
-                                        .renderingMode(.original)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 50, height: 50)
-                                        .clipped()
-                                        .cornerRadius(10)
-                                        .padding(.horizontal, 5)
-                                    
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        Text("Art 101")
-                                            .font(.headline)
-                                            .foregroundStyle(Color("Text-Colors"))
-                                        Text("Category: Arts & Humanities")
-                                            .font(.footnote)
-                                            .foregroundStyle(Color("Text-Colors")).opacity(0.5)
-                                    }
-                                    .padding(5)
-                                    .padding(.leading, 5)
-                                    
-                                    Spacer()
-                                    
-                                    Image(systemName: "chevron.right")
-                                        .font(.headline)
-                                        .foregroundStyle(Color("Text-Colors"))
-                                        .padding(.trailing, 5)
-                                }
-                                .frame(width: 315, alignment: .leading)
-                                .padding(.leading, 10)
-                                .padding(.trailing, 10)
-                            )
                     }
                 }
             }

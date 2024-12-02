@@ -14,6 +14,7 @@ import SwiftData
 class CourseModel: Identifiable {
     @Attribute(.unique) var id: UUID
     var name: String
+    var createdDate: Date = Date()
     var categoryRawValue: String
     var courseImageName: String
     var courseColorName: String
