@@ -30,7 +30,7 @@ struct CoursesView: View {
                 List {
                     ForEach(courses) { course in
                             NavigationLink {
-                                Text("\(course.name) page")
+                                EachCoursePageView(course: course)
                             } label: {
                                 VStack(spacing: 15) {
                                     EachCourseView(course: course)
