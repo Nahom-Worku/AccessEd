@@ -49,8 +49,7 @@ struct CoursesView: View {
                     .listRowBackground(Color("List-Colors"))
                 }
                 
-                // Add a Course Button
-                // TODO: the add course button should displayed like this
+                
                 
                 if !courses.isEmpty {
                     addCourseButton
