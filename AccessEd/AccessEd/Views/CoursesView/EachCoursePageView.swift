@@ -8,6 +8,10 @@
 import SwiftUI
 import PDFKit
 
+enum ResoursesCategory: String, Codable, CaseIterable {
+    case textbook = "book.pages"
+    case notes = "pencil.and.scribble"
+}
 
 struct EachCoursePageView: View {
     
@@ -49,21 +53,18 @@ struct CoursesTabView: View {
     @State var course: CourseModel
     
     var body: some View {
-        ZStack {
-            Color.green.opacity(0.2).cornerRadius(10)
+        ScrollView {
             
-            VStack(spacing: 30) {
+            ZStack {
+//                Color.green.opacity(0.2).cornerRadius(10)
                 
-                StudyCards(course: $course)
-                    .frame(width: 300, height: 200)
-                    .cornerRadius(10)
-                
-                Text("Courses Tab View")
-                
-                Text("Add pictures of your notes things here")
-                
-                Text("Convert your notes to PDF")
-                
+                VStack(spacing: 20) {
+                    
+                    ForEach(0..<3) { card in
+                        StudyCards(course: $course, cardNumber: card)
+                    }
+                }
+                .padding()
             }
         }
     }
@@ -71,6 +72,7 @@ struct CoursesTabView: View {
 
 struct StudyCards: View {
     @Binding var course: CourseModel
+    @State var cardNumber: Int
     
     @State private var isFlipped = false // State to track the flip
 
@@ -79,15 +81,15 @@ struct StudyCards: View {
             // Front Side
             if !isFlipped {
                 VStack {
-                    Text("Question for \(course.name) course")
-                        .font(.headline)
-                        .padding(5)
+                    Text("Question \(cardNumber + 1)")
+                        .font(.title3)
+                        .padding(.vertical)
                     
                     Text("What is the answer to the question?")
 
                 }
-                .frame(width: 300, height: 150)
-                .background(Color("Courses-Colors"))
+                .frame(width: 350, height: 200)
+                .background(course.courseColor)
                 .foregroundStyle(Color("Text-Colors"))
                 .cornerRadius(10)
                 .shadow(radius: 3, y: 1)
@@ -95,14 +97,15 @@ struct StudyCards: View {
             // Back Side
             else {
                 VStack {
-                    Text("Answer for the question")
-                        .font(.headline)
+                    Text("Answer")
+                        .font(.title3)
+                        .padding(.vertical)
                     
                     Text("Answer: 10,000")
                 }
-                .frame(width: 300, height: 150)
+                .frame(width: 350, height: 200)
                 .rotation3DEffect(.degrees(-180), axis: (x: 0, y: 1, z: 0))
-                .background(Color("Courses-Colors"))
+                .background(course.courseColor)
                 .cornerRadius(10)
                 .shadow(radius: 3, y: 1)
             }
@@ -113,13 +116,12 @@ struct StudyCards: View {
         )
         .animation(.bouncy(duration: 0.6), value: isFlipped)
         .onTapGesture(count: 2) {
-            isFlipped.toggle() // Toggle the flip state
+            isFlipped.toggle()
         }
     }
 }
 
 struct ResoursesTabView: View {
-    
     @Binding var course: CourseModel
     
     var body: some View {
@@ -130,21 +132,12 @@ struct ResoursesTabView: View {
                       
                 // TODO: this has to be in a ForEach loop
                 
-                NavigationLink(destination: BookView()) {
-                    EachCourseResoursesView(course: $course)
+                NavigationLink(destination: BookChapters(course: $course)) {
+                    VStack {
+                        EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
+                        EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.notes)
+                    }
                 }
-                
-                
-                Text("Books for \(course.name)")
-                    .font(.title)
-                
-                Text("Resourses Tab View")
-                
-                Text("Open source Books")
-                
-                Text("Each Book is divided by its chapters")
-                
-                Text("Other resourses like: others study notes")
                 
                 Spacer()
             }
@@ -153,31 +146,31 @@ struct ResoursesTabView: View {
     }
 }
 
+
 struct EachCourseResoursesView: View {
     @Binding var course: CourseModel
+    @State var resourseCategory: ResoursesCategory
     
     var body: some View {
         
         RoundedRectangle(cornerRadius: 10)
             .fill(course.courseColor)
             .padding(.horizontal, 10)
-            .frame(width: UIScreen.main.bounds.width - 40, height: 80)
-//            .padding(.leading)
-        
+            .frame(width: UIScreen.main.bounds.width - 40, height: 70)
             .shadow(radius: 1, x: 0, y: 1)
             .overlay(
                 HStack {
-                    Image(systemName: "book.pages")
+                    Image(systemName: resourseCategory.rawValue)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .fontWeight(.thin)
-                        .frame(width: 40, height: 60)
+                        .frame(width: 30, height: 50)
                         .foregroundStyle(Color("Text-Colors"))
                         .clipped()
                         .cornerRadius(10)
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("\(course.name) TextBook")
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("\(resourseCategory.rawValue.capitalized)")
                             .font(.headline)
                             .foregroundStyle(Color("Text-Colors"))
                         Text("Resourse Category: TextBook")
@@ -200,17 +193,62 @@ struct EachCourseResoursesView: View {
     }
 }
 
-struct BookView: View {
+struct BookChapters: View {
+    @Binding var course: CourseModel
+    
     var body: some View {
-//        NavigationView {
+        ScrollView {
             VStack {
-                PDFViewer(pdfName: "W1 - PartB - I")
-                    .background(Color.gray.opacity(0.1))
-                    .padding()
+                
+                // TODO: this loop would eventually be updated to the number of chapters for each book
+                ForEach(0..<12) { chapter in
+                    
+                    NavigationLink(destination: BookView(course: $course, chapter: chapter)) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(course.courseColor)
+                            .padding(.horizontal, 10)
+                            .frame(width: UIScreen.main.bounds.width - 40, height: 50)
+                            .shadow(radius: 1, x: 0, y: 1)
+                            .overlay(
+                                HStack {
+                                    Text("\(course.name) TextBook")
+                                        .font(.headline)
+                                        .foregroundStyle(Color("Text-Colors"))
+                                    Text("Chapter \(chapter)")
+                                        .font(.footnote)
+                                        .foregroundStyle(Color("Text-Colors")).opacity(0.5)
+                                    
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "chevron.right")
+                                        .font(.headline)
+                                        .foregroundStyle(Color("Text-Colors"))
+                                }
+                                    .frame(width: 300, alignment: .leading)
+                                    .padding(.leading, 20)
+                                    .padding(.trailing, 20)
+                            )
+                    }
+                }
             }
-            .navigationTitle("TextBook")
-            .navigationBarTitleDisplayMode(.inline)
-//        }
+        }
+        .navigationTitle("TextBook Chapters")
+    }
+}
+
+struct BookView: View {
+    @Binding var course: CourseModel
+    @State var chapter: Int
+    
+    var body: some View {
+        VStack {
+            PDFViewer(pdfName: "EECS 2101 3.0 Fundamentals of Data Structures") //"W1 - PartB - I")
+                .background(Color.gray.opacity(0.1))
+                .padding()
+        }
+        .navigationTitle("TextBook")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
