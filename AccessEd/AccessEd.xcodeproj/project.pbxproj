@@ -30,6 +30,12 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		794B047E2CFFBE2100B14D03 /* Week 2 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = "Week 2";
+			path = "/Users/nahomworku/Desktop/Nahom's Folder/YorkU/Summer 2024/EECS 2101/Notes/Week 2";
+			sourceTree = "<absolute>";
+		};
 		79B5E6A92CCC43DA00EA6597 /* AccessEd */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AccessEd;
@@ -79,6 +85,7 @@
 				79B5E6BC2CCC43DB00EA6597 /* AccessEdTests */,
 				79B5E6C62CCC43DB00EA6597 /* AccessEdUITests */,
 				79B5E6A82CCC43DA00EA6597 /* Products */,
+				794B047E2CFFBE2100B14D03 /* Week 2 */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,6 +115,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				794B047E2CFFBE2100B14D03 /* Week 2 */,
 				79B5E6A92CCC43DA00EA6597 /* AccessEd */,
 			);
 			name = AccessEd;
