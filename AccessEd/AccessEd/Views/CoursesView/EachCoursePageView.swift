@@ -7,24 +7,29 @@
 
 import SwiftUI
 import PDFKit
+import Foundation
 
 enum ResoursesCategory: String, Codable, CaseIterable {
     case textbook = "book.pages"
     case notes = "pencil.and.scribble"
 }
 
+enum tabs: String, CaseIterable {
+    case Course
+    case Resourses
+}
+
 struct EachCoursePageView: View {
     
     @State var course: CourseModel
     
-    @State private var selectedTab: String = "Course"
-    private let tabs: [String] = ["Course", "Resourses"]
+    @State private var selectedTab: tabs = .Course
     
     var body: some View {
         VStack {
             Picker("Select the tab", selection: $selectedTab) {
-                ForEach(tabs, id: \.self) { tab in
-                    Text(tab).tag(tab)
+                ForEach(tabs.allCases, id: \.self) { tab in
+                    Text(tab.rawValue).tag(tab)
                 }
             }
             .pickerStyle(SegmentedPickerStyle())
@@ -32,9 +37,9 @@ struct EachCoursePageView: View {
             
             
             Group {
-                if selectedTab == "Course" {
+                if selectedTab == .Course {
                     CoursesTabView(course: course)
-                } else if selectedTab == "Resourses" {
+                } else if selectedTab == .Resourses {
                     ResoursesTabView(course: $course)
                 }
             }
@@ -134,8 +139,10 @@ struct ResoursesTabView: View {
                 
                 NavigationLink(destination: BookChapters(course: $course)) {
                     VStack {
-                        EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
-                        EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.notes)
+                        ForEach(0..<3) { resourse in
+                            EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
+                            EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.notes)
+                        }
                     }
                 }
                 
@@ -173,7 +180,7 @@ struct EachCourseResoursesView: View {
                         Text("\(resourseCategory.rawValue.capitalized)")
                             .font(.headline)
                             .foregroundStyle(Color("Text-Colors"))
-                        Text("Resourse Category: TextBook")
+                        Text("Resourse Category: \(resourseCategory.self)")
                             .font(.footnote)
                             .foregroundStyle(Color("Text-Colors")).opacity(0.5)
                     }

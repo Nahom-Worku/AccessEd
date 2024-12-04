@@ -22,6 +22,7 @@ class CourseModel: Identifiable {
     var courseImageName: String
     var courseColorName: String
     
+    
     var category: CourseCategory {
         get {
             CourseCategory(rawValue: categoryRawValue) ?? .other
@@ -77,3 +78,24 @@ enum CourseCategory: String, Codable, CaseIterable {
     }
 }
  
+
+//TODO: update the below accordingly
+enum CourseResourses: String, Codable, CaseIterable {
+    case textbooks
+    case assignments
+    case exams
+    case notes
+    
+    var content: [String] {
+        switch self {
+            case .textbooks:
+                return ["Textbooks"]
+            case .assignments:
+                return ["Assignments"]
+            case .exams:
+                return ["Exams"]
+        case .notes:
+            return ["Notes"]
+        }
+    }
+}
