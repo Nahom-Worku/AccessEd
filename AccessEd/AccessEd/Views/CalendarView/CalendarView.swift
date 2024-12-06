@@ -7,22 +7,38 @@
 
 import SwiftUI
 import Foundation
+import SwiftData
 
-struct Task: Identifiable {
-    let id = UUID()
-    let date: Date
-    let description: String
-    var completed: Bool = false
-}
+//struct Task: Identifiable {
+//    let id = UUID()
+//    let date: Date
+//    let description: String
+//    var completed: Bool = false
+//}
 
 struct CalendarView: View {
     @State private var currentMonth: Date = Date()
     @State private var selectedDate: Date = Date() // Initialize with today’s date
-    @State public var tasks: [Task] = [] // List to store tasks
+//    @State public var tasks: [Task] = [] // List to store tasks
     @State private var isAddingTask = false // Control task sheet visibility
     @State private var newTaskDescription = "" // Hold new task description
     
     @State private var allTasksCompletedByDate: [Date: Bool] = [:]
+    
+    //**********
+    
+    @Query(sort: \Task.id) var fetchedTasks: [Task]
+    @State private var tasks: [Task] = []
+    
+    @Environment(\.modelContext) var tasksContext
+    
+    //******
+    
+    @Query(sort: \CalendarModel.date) var calendarDates: [CalendarModel]
+        @Environment(\.modelContext) var calendarModelContext
+    
+    //******
+    
     
     // Filter tasks for the selected date
     var tasksForSelectedDate: [Task] {
@@ -43,9 +59,10 @@ struct CalendarView: View {
 
     private let calendar = Calendar.current
     
-    @Environment(\.presentationMode) var presentationMode
-    
     let fixedWidth: CGFloat = UIScreen.main.bounds.width //* 0.9
+    
+    
+    
     
 
     var body: some View {
@@ -67,12 +84,24 @@ struct CalendarView: View {
                             allTasksCompletedByDate: $allTasksCompletedByDate,
                             onDateSelected: { date in
                                 selectedDate = date // Update selected date when a date is clicked
+                            },
+                            updateDynamicColor: { date in
+                                updateDynamicColor(for: date) // Pass the function
                             }
                         )
                         
                     }
                     .padding(.bottom)
                     .background(Color.gray.opacity(0.05).cornerRadius(40))
+                    .onAppear {
+                        tasks = fetchedTasks
+                        for date in tasks.map({ $0.date }) {
+                                updateDynamicColor(for: date)
+                            }
+                    }
+                    .onChange(of: fetchedTasks) { newFetchedTasks in
+                        tasks = newFetchedTasks
+                    }
                     
                     VStack(alignment: .leading) {
                         HStack (alignment: .center){
@@ -128,7 +157,7 @@ struct CalendarView: View {
                             LazyVStack(alignment: .center, spacing: 10) {
                                 ForEach(Array(tasksForSelectedDate.enumerated().reversed()), id: \.offset) { index, task in
                                     HStack {
-                                        Text("\(task.description)")
+                                        Text("\(task.name)")
                                             .foregroundColor(task.completed ? .gray : .primary)
                                             .strikethrough(task.completed, color: .gray)
                                         
@@ -136,13 +165,17 @@ struct CalendarView: View {
                                         
                                         Button(action: {
                                             if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-                                                tasks[index].completed.toggle() // Toggle completion
-                                                updateAllTasksCompleted()
+                                                tasks[index].completed.toggle() // Toggle task completion
+                                                try? tasksContext.save() // Save updated task state
+
+                                                // Update the background color
+                                                updateDynamicColor(for: task.date)
                                             }
                                         }, label: {
                                             Image(systemName: task.completed ? "checkmark.circle.fill" : "circle")
                                                 .foregroundColor(task.completed ? .green : .red)
                                         })
+
                                     }
                                     .padding(.vertical, 10)
                                     .padding(.horizontal, 13)
@@ -164,6 +197,12 @@ struct CalendarView: View {
                                 // Remove all tasks for a day button
                                 VStack (alignment: .center) {
                                     Button(action: {
+                                        let tasksToDelete = fetchedTasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
+                                            for task in tasksToDelete {
+                                                tasksContext.delete(task)
+                                            }
+                                            try? tasksContext.save()
+                                        
                                         tasks.removeAll { task in
                                             calendar.isDate(task.date, inSameDayAs: selectedDate)
                                         }
@@ -205,6 +244,45 @@ struct CalendarView: View {
             }
             .navigationTitle("My Calendar")
         }
+    }
+    func updateDynamicColor(for date: Date) {
+        // Check task state for the date
+        let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
+        let isCompleted = tasks.filter { calendar.isDate($0.date, inSameDayAs: date) }.allSatisfy { $0.completed }
+
+        // Determine the new color
+        let newColor: String
+        if hasTasks && !isCompleted {
+            newColor = "red" // Incomplete tasks
+        } else if hasTasks && isCompleted {
+            newColor = "green" // All tasks completed
+        } else {
+            newColor = "blue" // Default color (no tasks)
+        }
+
+        // Update the color in CalendarModel
+        if let calendarDate = calendarDates.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
+            calendarDate.color = newColor
+        } else {
+            let newCalendarDate = CalendarModel(date: date, color: newColor)
+            calendarModelContext.insert(newCalendarDate)
+        }
+        try? calendarModelContext.save()
+    }
+    
+    func saveTasks(_ updatedTasks: [Task]) {
+        for task in updatedTasks {
+            if fetchedTasks.contains(where: { $0.id == task.id }) {
+                // Update existing task
+                if let existingTask = fetchedTasks.first(where: { $0.id == task.id }) {
+                    existingTask.name = task.name
+                }
+            } else {
+                // Insert new task
+                tasksContext.insert(task)
+            }
+        }
+        try? tasksContext.save() // Save changes to SwiftData context
     }
     
     var addTaskButtonView: some View {
@@ -305,7 +383,7 @@ struct CalendarView: View {
                 
                 // Add course button
                 Button {
-                    addTask(for: selectedDate, description: TaskName)
+                    addTask(for: selectedDate, name: TaskName)
                     TaskName = ""
                     isAddingTask = false
                 } label: {
@@ -350,35 +428,44 @@ struct CalendarView: View {
         return dateFormatter.string(from: date)
     }
     
-    private func addTask(for date: Date, description: String) {
-        guard !description.isEmpty else { return }
-        let newTask = Task(date: date, description: description, completed: false)
-        tasks.append(newTask)
-        newTaskDescription = "" // Clear the input field
-        updateAllTasksCompleted() // Recalculate all tasks completion
+    func addTask(for date: Date, name: String) {
+        guard !name.isEmpty else { return }
+        let newTask = Task(date: date, name: name, completed: false)
+
+        // Save the new task
+        tasksContext.insert(newTask)
+        try? tasksContext.save()
+
+        // Update the background color for the date
+        updateDynamicColor(for: date)
     }
+
     
     private func updateAllTasksCompleted() {
         var completionStatus: [Date: Bool] = [:]
 
-        // Group tasks by their date and check if all are completed
-        for task in tasks {
-            let taskDate = calendar.startOfDay(for: task.date)
-            let tasksForDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: taskDate) }
-            completionStatus[taskDate] = tasksForDate.allSatisfy { $0.completed }
-        }
+            for task in tasks {
+                let taskDate = calendar.startOfDay(for: task.date) // Normalize to the start of the day
+                let tasksForDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: taskDate) }
+                completionStatus[taskDate] = tasksForDate.allSatisfy { $0.completed }
+            }
 
-        allTasksCompletedByDate = completionStatus
+            allTasksCompletedByDate = completionStatus
     }
+    
 }
 
 
 #Preview("Light mode") {
     CalendarView()
         .preferredColorScheme(.light)
+        .modelContainer(for: Task.self, inMemory: true)
+        .modelContainer(for: CalendarModel.self, inMemory: true)
 }
 
 #Preview("Dark mode") {
     CalendarView()
         .preferredColorScheme(.dark)
+        .modelContainer(for: Task.self, inMemory: true)
+        .modelContainer(for: CalendarModel.self, inMemory: true)
 }

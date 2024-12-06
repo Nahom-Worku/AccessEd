@@ -70,10 +70,15 @@ struct AccessEdTabView: View {
     AccessEdTabView()
         .preferredColorScheme(.light)
         .modelContainer(for: CourseModel.self, inMemory: true)
+        .modelContainer(for: Task.self, inMemory: true)
+        .modelContainer(for: CalendarModel.self, inMemory: true)
 }
 
 #Preview("Dark Mode") {
     AccessEdTabView()
         .preferredColorScheme(.dark)
         .modelContainer(for: CourseModel.self, inMemory: true)
+        .modelContainer(for: Task.self, inMemory: true)
+        .modelContainer(for: CalendarModel.self, inMemory: true)
+    
 }

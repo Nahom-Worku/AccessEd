@@ -20,6 +20,8 @@ struct AccessEdApp: App {
 
         let schema = Schema([
             CourseModel.self,
+            CalendarModel.self,
+            Task.self,
         ])
         
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

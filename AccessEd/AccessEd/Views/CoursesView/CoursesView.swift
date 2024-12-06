@@ -27,6 +27,8 @@ struct CoursesView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                
+                // TODO: can possibily do List(courses) { course in 
                 List {
                     ForEach(courses) { course in
                             NavigationLink {
