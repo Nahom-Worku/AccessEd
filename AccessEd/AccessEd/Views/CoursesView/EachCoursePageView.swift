@@ -130,26 +130,54 @@ struct ResoursesTabView: View {
     @Binding var course: CourseModel
     
     var body: some View {
-        ZStack {
-            Color.yellow.opacity(0.1).cornerRadius(10)
-            
             VStack(spacing: 30) {
                       
                 // TODO: this has to be in a ForEach loop
                 
                 NavigationLink(destination: BookChapters(course: $course)) {
-                    VStack {
-                        ForEach(0..<3) { resourse in
-                            EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
-                            EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.notes)
+//                    VStack {
+                        List {
+                            Section(
+                                header:
+                                    HStack {
+                                        Text("TextBooks")
+                                    }
+                                    .foregroundColor(.red)
+                                    .font(.headline)
+                            ){
+                                ForEach(0..<3) { resourse in
+                                    EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
+                                }
+                            }
                         }
-                    }
+                        .listRowBackground(Color("List-Colors"))
+//                    }
+                    .background(Color.white)
+                }
+                            
+                NavigationLink(destination: BookChapters(course: $course)) {
+                        List {
+                            Section(
+                                header:
+                                    HStack {
+                                        Text("Notes")
+                                    }
+                                    .foregroundColor(.green)
+                                    .font(.headline)
+                            ){
+                                EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.notes)
+                            }
+                            .listRowBackground(Color.white)//Color("List-Colors"))
+                        }
+                        
                 }
                 
                 Spacer()
             }
+            .background(Color.white)
+            .frame(width: UIScreen.main.bounds.width)
             .padding()
-        }
+        
     }
 }
 

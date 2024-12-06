@@ -1,39 +1,38 @@
 //
-//  ScheduleLayerView.swift
+//  CalendarLayerView.swift
 //  AccessEd
 //
-//  Created by Nahom Worku on 2024-11-08.
+//  Created by Nahom Worku on 2024-12-05.
 //
 
 import SwiftUI
 
-struct ScheduleLayerView: View {
+struct CalendarLayerView: View {
     var body: some View {
         VStack(alignment: .leading){
             // Your Schedule Section
             
             
-            Text("Your Schedule")
+            Text("Your ToDo List")
                 .font(.title)
                 .bold()
             
-            Text("Next lessons")
+            Text("Tasks to complete")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .padding(.bottom, 30)
             
             
-            HStack() {
+            HStack(alignment: .center) {
                 Spacer()
                 
-                Text("No lessons scheduled!")
+                // TODO: get tasks data and update code accordingly 
+                
+                Text("No tasks!")
                     .font(.subheadline)
                     
                 Spacer()
             }
-            .frame(minHeight: 50)
-            
-            Spacer()
         }
         .padding()
         .frame(width: 400, alignment: .leading)
@@ -42,5 +41,5 @@ struct ScheduleLayerView: View {
 }
 
 #Preview {
-    ScheduleLayerView()
+    CalendarLayerView()
 }
