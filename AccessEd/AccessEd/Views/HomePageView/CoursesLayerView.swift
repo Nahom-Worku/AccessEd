@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CoursesLayerView: View {
     
-    @Binding var showAddSubjectSheet: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -29,199 +28,40 @@ struct CoursesLayerView: View {
 //                .padding(.bottom)
                 
                 Spacer()
-                
-                // Add courses button
-                Button {
-                    showAddSubjectSheet = true
-                } label: {
-                    HStack(spacing: 5) {
-                        Image(systemName: "plus")
-                        
-                        Text("Add")
-                            
-                    }
-                    .font(.caption)
-                    .bold()
-                    .foregroundColor(.gray)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 10)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 2)
-                            .frame(width: 70, height: 30)
-                    )
-                }
             }
             .padding(.top, 15)
             .padding(.trailing, 15)
             
-            
-            ScrollView(.horizontal, showsIndicators: true) {
+            ScrollView(.horizontal ,showsIndicators: true) {
                 HStack(alignment: .center, spacing: 20){
-                    
-                    //###############################
-                    VStack {
-                        Image("Geometry")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 120)
-                            .clipped()
-                            .cornerRadius(10)
+                    ForEach(CourseCategory.allCases, id: \.self) { category in
                         
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Calculus I")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                                .padding(5)
+                        VStack {
+                            Image(category.imageName)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(height: 100) // 120
+                                .clipped()
+                                .cornerRadius(10)
+                            
+                            VStack(alignment: .center, spacing: 4) {
+                                Text(category.rawValue)
+                                    .font(.footnote)
+                                    .foregroundColor(.primary)
+                                    .padding(5)
+                            }
+                            .padding([.leading, .trailing, .bottom], 8)
                         }
-                        .padding([.leading, .trailing, .bottom], 8)
+                        .frame(width: 150) // 180
+                        .background(Color("Courses-Colors"))
+                        .cornerRadius(15)
+                        .shadow(radius: 3)
                     }
-                    .frame(width: 180)
-                    .background(Color("Courses-Colors"))
-                    .cornerRadius(15)
-                    .shadow(radius: 3)
-                    
-                    
-                    //########################
-                    VStack(alignment: .center, spacing: 8) {
-                        Image("science")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 120)
-                            .clipped()
-                            .cornerRadius(10)
-                        
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Physics I")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                                .padding(5)
-                        }
-                        .padding([.leading, .trailing, .bottom], 8)
-                    }
-                    .frame(width: 180)
-                    .background(Color("Courses-Colors"))
-                    .cornerRadius(15)
-                    .shadow(radius: 3)
-                    
-                    //#############################
-                    
-                    VStack {
-                        Image("Business-Finance")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 120)
-                            .clipped()
-                            .cornerRadius(10)
-                        
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Business")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                                .padding(5)
-                        }
-                        .padding([.leading, .trailing, .bottom], 8)
-                    }
-                    .frame(width: 180)
-                    .background(Color("Courses-Colors"))
-                    .cornerRadius(15)
-                    .shadow(radius: 3)
-                    
-                    //#######################
-                    
-                    VStack {
-                        Image("Tech-and-Eng")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 120)
-                            .clipped()
-                            .cornerRadius(10)
-                        
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Technology")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                                .padding(5)
-                        }
-                        .padding([.leading, .trailing, .bottom], 8)
-                    }
-                    .frame(width: 180)
-                    .background(Color("Courses-Colors"))
-                    .cornerRadius(15)
-                    .shadow(radius: 3)
-                    
-                    
-                    //#######################
-                    
-                    VStack {
-                        Image("Arts-Humanities")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 120)
-                            .clipped()
-                            .cornerRadius(10)
-                        
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Art")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                                .padding(5)
-                        }
-                        .padding([.leading, .trailing, .bottom], 8)
-                    }
-                    .frame(width: 180)
-                    .background(Color("Courses-Colors"))
-                    .cornerRadius(15)
-                    .shadow(radius: 3)
-                    
-                    //############################
-                    VStack {
-                        Image("Social-Sciences")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 120)
-                            .clipped()
-                            .cornerRadius(10)
-                        
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Geography")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                                .padding(5)
-                        }
-                        .padding([.leading, .trailing, .bottom], 8)
-                    }
-                    .frame(width: 180)
-                    .background(Color("Courses-Colors"))
-                    .cornerRadius(15)
-                    .shadow(radius: 3)
-                    
-                    //############################
-                    VStack {
-                        Image("Health-and-Physical-Education")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 120)
-                            .clipped()
-                            .cornerRadius(10)
-                            .opacity(0.8)
-                        
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Physical Education")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                                .padding(5)
-                        }
-                        .padding([.leading, .trailing, .bottom], 8)
-                    }
-                    .frame(width: 180)
-                    .background(Color("Courses-Colors"))
-                    .cornerRadius(15)
-                    .shadow(radius: 3)
                 }
-                .frame(height: 200)
+                .frame(maxWidth: .infinity, maxHeight: 300)
             }
-            .frame(maxWidth: .infinity, maxHeight: 250)
+                
+            
         }
         .padding()
     }
@@ -229,11 +69,11 @@ struct CoursesLayerView: View {
 
 
 #Preview("Light Mode") {
-    CoursesLayerView(showAddSubjectSheet: .constant(true))
+    CoursesLayerView()
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
-    CoursesLayerView(showAddSubjectSheet: .constant(true))
+    CoursesLayerView()
         .preferredColorScheme(.dark)
 }

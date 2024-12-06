@@ -54,7 +54,7 @@ struct CalendarView: View {
 //        AccessEdTabView(uncompletedTasksForCurrentDate: uncompletedTasksForCurrentDate.count)
         
         NavigationView {
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack {
                     VStack {
                         calendarTitleLayerView

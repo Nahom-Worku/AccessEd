@@ -9,9 +9,7 @@ import SwiftUI
 
 
 struct HomePageView: View {
-    
-    @State var showAddSubjectSheet: Bool = false
-    
+        
     var body: some View {
         
 //        NavigationView {
@@ -23,38 +21,36 @@ struct HomePageView: View {
                     ZStack {
                         emptyPreviewLayer
                     }
-                    .frame(height: 200)
+                    .frame(height: 150)
                     
                     
                     // Courses and Schedule Layer
-                    VStack {
-                        CoursesLayerView(showAddSubjectSheet: $showAddSubjectSheet)
+                    VStack(spacing: 0) {
+                        CoursesLayerView()
+                            .frame(height: 300)
                         
                         ScheduleLayerView()
+                            .frame(minHeight: 200)
+                        
+                        CalendarLayerView()
+                            .frame(minHeight: 100)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.leading, 10)
                     .background(
-                        UnevenRoundedRectangle(cornerRadii: .init(topLeading: 30, topTrailing: 0), style: .continuous)
+                        UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
                             .fill(Color("Light-Dark Mode Colors"))
                     )
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(
                     LinearGradient(
                         gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
-                        startPoint: .leading,
-                        endPoint: .trailing)
+                        startPoint: .bottomTrailing,
+                        endPoint: .topLeading)
                 )
             }
             .edgesIgnoringSafeArea(.top)
             .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
-            .sheet(isPresented: $showAddSubjectSheet) {
-                AddCourseSheet()
-                    .presentationDetents([.medium, .fraction(0.5)])
-//                    .background(Color.white)
-                    .cornerRadius(50)
-                    .ignoresSafeArea(.all)
-            }
+
             
             // Bottom Tab bar placeholders
 //            BottomMenuView()
@@ -66,7 +62,7 @@ struct HomePageView: View {
     var emptyPreviewLayer: some View {
         HStack {
             Text("AccessEd")
-                .font(.largeTitle)
+                .font(.title)
             
             Spacer()
             
@@ -74,12 +70,12 @@ struct HomePageView: View {
                 .renderingMode(.original)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 100, height: 150)
+                .frame(width: 70)
                 .clipped()
         }
         .padding()
         .padding(.top, 50)
-        .frame(maxWidth: 320, maxHeight: 150)
+        .frame(maxWidth: 240, maxHeight: 150)
     }
     
     var nonEmptyPreviewLayer: some View {
