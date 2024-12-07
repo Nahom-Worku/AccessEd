@@ -82,6 +82,8 @@ struct CalendarView: View {
                             tasks: $tasks,
                             selectedDate: $selectedDate,
                             allTasksCompletedByDate: $allTasksCompletedByDate,
+//                            uncompletedTasksForSelectedDate: uncompletedTasksForSelectedDate,
+//                            tasksForSelectedDate: tasksForSelectedDate,
                             onDateSelected: { date in
                                 selectedDate = date // Update selected date when a date is clicked
                             },
@@ -98,6 +100,7 @@ struct CalendarView: View {
                         for date in tasks.map({ $0.date }) {
                                 updateDynamicColor(for: date)
                             }
+                        print(allTasksCompletedByDate)
                     }
                     .onChange(of: fetchedTasks) { newFetchedTasks in
                         tasks = newFetchedTasks
@@ -165,11 +168,8 @@ struct CalendarView: View {
                                         
                                         Button(action: {
                                             if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-                                                tasks[index].completed.toggle() // Toggle task completion
-                                                try? tasksContext.save() // Save updated task state
-
-                                                // Update the background color
-                                                updateDynamicColor(for: task.date)
+                                                tasks[index].completed.toggle() // Toggle completion
+                                                updateAllTasksCompleted()
                                             }
                                         }, label: {
                                             Image(systemName: task.completed ? "checkmark.circle.fill" : "circle")
