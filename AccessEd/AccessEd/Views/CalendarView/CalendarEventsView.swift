@@ -6,15 +6,24 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CalendarEventsView: View {
+    
+    //******
+    @Query(sort: \CalendarModel.date) var calendarDates: [CalendarModel]
+    @Environment(\.modelContext) var calendarModelContext
+    
+    //******
+    
+    
     @Binding var currentMonth: Date
     @Binding var tasks: [Task]
     @Binding var selectedDate: Date
-    
     @Binding var allTasksCompletedByDate: [Date: Bool]
     
     var onDateSelected: (Date) -> Void // Callback to handle date selection
+    var updateDynamicColor: (Date) -> Void
 
     private let calendar = Calendar.current
 
@@ -41,36 +50,173 @@ struct CalendarEventsView: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+            .padding(.bottom, 10)
+            
+//            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
+//                ForEach(daysInMonthWithPadding, id: \.self) { date in
+//                    if let date = date {
+//                        let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
+//                        let isCompleted: Bool = allTasksCompletedByDate[date] ?? false
+//                        let isSelected = selectedDate == date
+//                        let isToday = calendar.isDateInToday(date)
+//                        
+//                        let backgroundColor = getColorForDate(date) ?? .blue
+//                        
+//                        Button(action: {
+//                            onDateSelected(date) // Notify parent view when a date is selected
+//                        }) {
+//                            Text("\(hasTasks && !isCompleted ? "•\(calendar.component(.day, from: date))•" : "\(calendar.component(.day, from: date))")")
+//                                .font(.footnote)
+//                                .bold(hasTasks && !isCompleted) // Bold text for dates with incomplete tasks
+//                                .frame(width: 35, height: 35, alignment: .center)
+//                                .background(
+//                                    hasTasks && !isCompleted ? Color.red.opacity(0.4) :
+//                                        hasTasks && isCompleted ? Color.green.opacity(0.5) :
+//                                        isToday ? Color.yellow.opacity(0.5) :
+//                                        isSelected ? Color.blue.opacity(0.4) :
+//                                        Color.blue.opacity(0.1)
+//                                )
+//                                .cornerRadius(8)
+//                        }
+//                        .buttonStyle(PlainButtonStyle())
+//                    } else {
+//                        Text("") // Empty cell for padding days
+//                            .frame(width: 40, height: 40)
+//                    }
+//                }
+//            }
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
-                ForEach(daysInMonthWithPadding, id: \.self) { date in
-                    if let date = date {
+                ForEach(daysInMonthWithPadding.indices, id: \.self) { index in
+                    if let date = daysInMonthWithPadding[index] {
                         
+                        // Conditions for the background color
                         let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
                         let isCompleted: Bool = allTasksCompletedByDate[date] ?? false
-                                                
+                        let isSelected = selectedDate == date
+                        let isToday = calendar.isDateInToday(date)
+
+                        // Stored color from database (if exists)
+                        let storedColor = Color.fromString(getColorForDate(date) ?? "blue").opacity(0.1)
+                        
+                        // Determine final background color based on conditions
+                        let backgroundColor: Color = {
+                            if hasTasks && !isCompleted {
+                                return Color.red.opacity(0.4) // Incomplete tasks
+                            } else if hasTasks && isCompleted {
+                                return Color.green.opacity(0.5) // All tasks completed
+                            } else if isToday {
+                                return Color.yellow.opacity(0.5) // Today
+                            } else if isSelected {
+                                return Color.blue.opacity(0.4) // Selected date
+                            } else {
+                                return storedColor.opacity(0.5) // Fallback to stored color
+                            }
+                        }()
+
+                        
                         Button(action: {
-                            onDateSelected(date) // Notify parent view when a date is selected
+                            onDateSelected(date) // Notify parent view
+                            updateDynamicColor(date)
+                            
+                            for i in calendarDates {
+                                print(i.color)
+                            }
+                            
                         }) {
-
-                            Text("\(!isCompleted && hasTasks ? "•\(calendar.component(.day, from: date))•" : "\(calendar.component(.day, from: date))")")
-
-                                .bold(!isCompleted && hasTasks ? true : false)
-                            .frame(width: 40, height: 40, alignment: .center)
-                            .background(calendar.isDateInToday(date) ? Color.red.opacity(0.3) : selectedDate == date ? Color.blue.opacity(0.3) : Color.blue.opacity(0.05))
-                            .cornerRadius(8)
+                            Text("\(calendar.component(.day, from: date))")
+                                .font(.footnote)
+                                .bold(hasTasks && !isCompleted) // Bold text for dates with incomplete tasks
+                                .frame(width: 35, height: 35, alignment: .center)
+                                .background(backgroundColor) // Use determined background color
+                                .cornerRadius(8)
                         }
                         .buttonStyle(PlainButtonStyle())
                     } else {
-                        Text("")
+                        Text("") // Empty cell for padding days
                             .frame(width: 40, height: 40)
                     }
                 }
             }
+
+
+            
         }
         .padding(.horizontal)
     }
+    
+    func updateDateColor(for date: Date, color: Color) {
+        let colorString = String.fromColor(color)
+
+        if let calendarDate = calendarDates.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
+            // Update the color
+            calendarDate.color = colorString
+        } else {
+            // Create a new CalendarDate entry
+            let newCalendarDate = CalendarModel(date: date, color: colorString)
+            calendarModelContext.insert(newCalendarDate)
+        }
+
+        try? calendarModelContext.save()
+    }
+
+    func getColorForDate(_ date: Date) -> String? {
+        if let calendarDate = calendarDates.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
+            return calendarDate.color
+        }
+        return "blue" // Default color
+    }
+
+    
+    func updateDynamicColor(for date: Date) {
+        // Check task state for the date
+        let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
+        let isCompleted = tasks.filter { calendar.isDate($0.date, inSameDayAs: date) }.allSatisfy { $0.completed }
+
+        // Determine the new color
+        let newColor: String
+        if hasTasks && !isCompleted {
+            newColor = "red" // Incomplete tasks
+        } else if hasTasks && isCompleted {
+            newColor = "green" // All tasks completed
+        } else {
+            newColor = "blue" // Default color (no tasks)
+        }
+
+        // Update the color in CalendarModel
+        if let calendarDate = calendarDates.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
+            calendarDate.color = newColor
+        } else {
+            let newCalendarDate = CalendarModel(date: date, color: newColor)
+            calendarModelContext.insert(newCalendarDate)
+        }
+        try? calendarModelContext.save()
+    }
+
 }
+
+extension Color {
+    static func fromString(_ string: String) -> Color {
+        switch string {
+        case "red": return .red
+        case "green": return .green
+        case "orange": return .orange
+        case "blue": return .blue
+        default: return .gray // Default color
+        }
+    }
+}
+
+extension String {
+    static func fromColor(_ color: Color) -> String {
+        if color == .red { return "red" }
+        if color == .green { return "green" }
+        if color == .orange { return "orange" }
+        if color == .blue { return "blue" }
+        return "gray" // Default string
+    }
+}
+
 
 
 //#Preview {
