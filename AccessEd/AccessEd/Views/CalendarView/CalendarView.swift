@@ -9,17 +9,9 @@ import SwiftUI
 import Foundation
 import SwiftData
 
-//struct Task: Identifiable {
-//    let id = UUID()
-//    let date: Date
-//    let description: String
-//    var completed: Bool = false
-//}
-
 struct CalendarView: View {
     @State private var currentMonth: Date = Date()
     @State private var selectedDate: Date = Date() // Initialize with today’s date
-//    @State public var tasks: [Task] = [] // List to store tasks
     @State private var isAddingTask = false // Control task sheet visibility
     @State private var newTaskDescription = "" // Hold new task description
     
@@ -82,8 +74,6 @@ struct CalendarView: View {
                             tasks: $tasks,
                             selectedDate: $selectedDate,
                             allTasksCompletedByDate: $allTasksCompletedByDate,
-//                            uncompletedTasksForSelectedDate: uncompletedTasksForSelectedDate,
-//                            tasksForSelectedDate: tasksForSelectedDate,
                             onDateSelected: { date in
                                 selectedDate = date // Update selected date when a date is clicked
                             },

@@ -30,7 +30,7 @@ struct CoursesView: View {
                 
                 // TODO: can possibily do List(courses) { course in 
                 List {
-                    ForEach(courses) { course in
+                    ForEach(courses.reversed()) { course in
                             NavigationLink {
                                 EachCoursePageView(course: course)
                             } label: {
@@ -49,7 +49,9 @@ struct CoursesView: View {
                     .onMove(perform: viewModel.moveCourse)
                     
                     .listRowBackground(Color("List-Colors"))
+                    .listRowSeparatorTint(Color("List-Colors"))
                 }
+                .scrollContentBackground(.hidden)
                 
                 
                 
