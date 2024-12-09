@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 
 struct HomePageView: View {
+    
+    @Query var profile: [ProfileModel]
         
     var body: some View {
         
@@ -19,7 +22,13 @@ struct HomePageView: View {
                     
                     // Perview Layer
                     ZStack {
-                        emptyPreviewLayer
+//                        emptyPreviewLayer
+                        if !profile.isEmpty {
+                            Text("The profile has been set up")
+                        } else {
+                            emptyPreviewLayer
+                        }
+                        
                     }
                     .frame(height: 150)
                     
@@ -29,8 +38,8 @@ struct HomePageView: View {
                         CoursesLayerView()
                             .frame(height: 300)
                         
-                        ScheduleLayerView()
-                            .frame(minHeight: 200)
+//                        ScheduleLayerView()
+//                            .frame(minHeight: 200)
                         
                         CalendarLayerView()
                             .frame(minHeight: 100)
