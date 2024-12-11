@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AccessEdTabView: View {
     
@@ -14,6 +15,12 @@ struct AccessEdTabView: View {
     
     @State var selectedTab: Int = 0
     let uncompletedTasksForCurrentDate: Int = 3
+    
+    @Query var allTasks: [Task]
+    
+    var uncompletedTasks: [Task] {
+        allTasks.filter { !$0.completed }
+    }
     
     var body: some View {
         
@@ -50,7 +57,7 @@ struct AccessEdTabView: View {
                 Label("Calendar", systemImage: "calendar")
             }
             .tag(2)
-            .badge(uncompletedTasksForCurrentDate)
+            .badge(uncompletedTasks.count)
             
             
             // Profile page
