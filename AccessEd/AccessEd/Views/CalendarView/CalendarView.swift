@@ -96,6 +96,7 @@ struct CalendarView: View {
                         tasks = newFetchedTasks
                     }
                     
+                    // Tasks View
                     VStack(alignment: .leading) {
                         HStack (alignment: .center){
                             Text("Selected Date:")
