@@ -56,6 +56,10 @@ struct CoursesLayerView: View {
                         .background(Color("Courses-Colors"))
                         .cornerRadius(15)
                         .shadow(radius: 3)
+                        .contextMenu(menuItems: {
+                            coursesConextMenu
+                                .background(Color.red)
+                        })
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: 300)
@@ -64,6 +68,28 @@ struct CoursesLayerView: View {
             
         }
         .padding()
+    }
+    
+    var coursesConextMenu: some View {
+        VStack {
+            Button {
+                // add course to course model
+                
+            } label: {
+                Text("Add")
+                    .font(.subheadline)
+                    .foregroundStyle(.green)
+            }
+
+            Button {
+                // add course to course model
+                
+            } label: {
+                Text("Dimiss")
+                    .font(.subheadline)
+                    .foregroundStyle(.red)
+            }
+        }
     }
 }
 
