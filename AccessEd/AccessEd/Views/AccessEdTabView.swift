@@ -14,7 +14,6 @@ struct AccessEdTabView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State var selectedTab: Int = 0
-    let uncompletedTasksForCurrentDate: Int = 3
     
     @Query var allTasks: [Task]
     
