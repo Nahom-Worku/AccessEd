@@ -118,10 +118,11 @@ struct CalendarView: View {
                             Text("\(uncompletedTasksForSelectedDate.count)")
                                 .foregroundStyle(.purple)
                                 .padding(8)
-                                .frame(maxWidth: 25, maxHeight: 25)
+                                .frame(maxWidth: 35, maxHeight: 30)
                                 .background(
                                     Circle()
-                                        .fill(Color.gray.opacity(0.2))
+                                        .fill(Color.gray.opacity(0.1))
+                                        .frame(width: 30)
                                         .overlay(
                                                 Circle()
                                                     .stroke(Color.purple, lineWidth: 0.5)
@@ -236,6 +237,7 @@ struct CalendarView: View {
             .navigationTitle("My Calendar")
         }
     }
+    
     func updateDynamicColor(for date: Date) {
         // Check task state for the date
         let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
