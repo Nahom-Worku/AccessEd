@@ -85,7 +85,7 @@ struct CoursesLayerView: View {
                 // add course to course model
                 
             } label: {
-                Text("Dimiss")
+                Text("Dismiss")
                     .font(.subheadline)
                     .foregroundStyle(.red)
             }

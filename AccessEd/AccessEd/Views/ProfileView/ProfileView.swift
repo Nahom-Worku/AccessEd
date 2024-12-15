@@ -63,7 +63,7 @@ struct ProfileView: View {
                         Text("Studying Method: ") // choose from a list
                     }
                     
-                    HStack {
+//                    HStack {
                         Button {
                             editProfileSheet = true
                         } label: {
@@ -87,8 +87,8 @@ struct ProfileView: View {
                                 .background(Color.red.opacity(0.5))
                                 .cornerRadius(10)
                         }
-                    }
-                    .frame(width: UIScreen.main.bounds.width - 20)
+//                    }
+//                    .frame(width: UIScreen.main.bounds.width - 20)
                     
                 }
                 else {
