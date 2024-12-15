@@ -24,7 +24,25 @@ struct HomePageView: View {
                     ZStack {
 //                        emptyPreviewLayer
                         if !profile.isEmpty {
-                            Text("The profile has been set up")
+                            
+                            VStack(spacing: 20) {
+                                Text("The profile has been set up")
+                                let input: [String: Double] = [
+                                    "Calculus": 1.44,
+                                    "Chemistry": 1.2,
+                                    "History": 1.1,
+                                    "Robotics": 1.0
+                                ]
+                                
+                                let excludedCourses: [String] = [
+//                                    "Chemistry",
+                                    ""
+                                ]
+                                
+                                Text("\(getRecommendedCourses(for: input, excludeList: excludedCourses))")
+                            }
+                            .frame(width: 300)
+                            
                         } else {
                             emptyPreviewLayer
                         }
