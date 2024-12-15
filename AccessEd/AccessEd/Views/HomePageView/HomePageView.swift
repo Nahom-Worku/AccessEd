@@ -59,12 +59,6 @@ struct HomePageView: View {
             }
             .edgesIgnoringSafeArea(.top)
             .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
-
-            
-            // Bottom Tab bar placeholders
-//            BottomMenuView()
-//        }
-        
     }
     
     

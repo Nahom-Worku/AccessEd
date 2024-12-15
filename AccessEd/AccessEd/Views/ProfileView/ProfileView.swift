@@ -15,6 +15,8 @@ struct ProfileView: View {
     
     @Environment(\.modelContext) private var context
     @Query var userProfile: [ProfileModel]
+    
+
 
     
     var body: some View {
@@ -22,99 +24,105 @@ struct ProfileView: View {
         NavigationView {
 //            VStack {
 
-                List{
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.yellow.opacity(0.5))
-                        .padding()
-                        .frame(width: UIScreen.main.bounds.width, height: 130)
-                        .overlay(
-                            HStack {
-                                Circle()
-                                    .fill(Color.cyan)
-                                    .frame(width: 65)
-                                    .overlay {
-                                        Image(systemName: "graduationcap.circle")  //"person.circle")
-                                            .resizable()
-                                            .fontWeight(.ultraLight)
-                                            .foregroundStyle(Color.white)
-                                    }
-                                
-                                Text("Name")
-                                    .padding(.leading)
-                                
-                                Spacer()
-                                
-                                Button(action: {
-                                    showSetupProfileSheet = true
-                                }, label: {
-                                    Image(systemName: "applepencil.gen1")
-                                        .font(.title)
-                                })
-                                //                                .padding(.trailing)
-                            }
-                                .padding()
-                                .padding(.horizontal, 25)
-                                .frame(width: UIScreen.main.bounds.width, height: 150, alignment: .leading)
-                        )
-                    
-                    Section(
-                        header:
-                            HStack {
-                                Image(systemName: "person")
-                                    .fontWeight(.light)
-                                    .foregroundStyle(Color.black)
-                                
-                                Text("Your Information")
-                            }
-                    ) {
-                        if let profile = userProfile.first {
-                            Text("Name: \(profile.name)")
-                            Text("Grade: \(profile.grade)")
-                            Text("Preferred Language: \(profile.preferredLanguage)") // choose from a list
-                            Text("Field of Interest: \(profile.fieldsOfInterest)") // choose from a list --> multiple options --> rank or top 3 (5)
-                            Text("Favorite Subjects from the last question: ") // Choose from a list --> multiple options
-                            Text("Studying Method: ") // choose from a list
-
+            List{
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white)
+                    .padding()
+                    .frame(width: UIScreen.main.bounds.width, height: 130)
+                    .overlay(
+                        VStack {
+                            Circle()
+                                .fill(Color.cyan)
+                                .frame(width: 100, height: 100)
+                                .overlay {
+                                    Image(systemName: "graduationcap.circle")  //"person.circle")
+                                        .resizable()
+                                        .fontWeight(.ultraLight)
+                                        .foregroundStyle(Color.white)
+                                }
                             
-                            Button {
-                                editProfileSheet = true
-                            } label: {
-                                Text("Edit Profile")
-                                    .foregroundStyle(.white)
-                                    .padding()
-                                    .padding(.horizontal)
-                                    .background(Color.blue)
-                                    .cornerRadius(10)
-                            }
+                            Text("\(userProfile.first?.name ?? "User Name")")
+                                .font(.caption)
                             
-                            Button {
-                                context.delete(profile)
-                            } label: {
-                                Text("Delete Profile")
-                                    .foregroundStyle(.white)
-                                    .padding()
-                                    .padding(.horizontal)
-                                    .background(Color.red.opacity(0.5))
-                                    .cornerRadius(10)
-                            }
-
+                            Spacer()
                         }
-                        else {
-                            Text("no profile found!")
+                            .padding()
+                            .padding(.horizontal, 25)
+                            .frame(width: UIScreen.main.bounds.width, height: 150, alignment: .center)
+                    )
+                
+
+                if let profile = userProfile.first {
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text("Name: \(profile.name)")
+                        Text("Grade: \(profile.grade)")
+                        Text("Preferred Language: \(profile.preferredLanguage)") // choose from a list
+                        Text("Field of Interest: \(profile.fieldsOfInterest)") // choose from a list --> multiple options --> rank or top 3 (5)
+                        Text("Favorite Subjects from the last question: ") // Choose from a list --> multiple options
+                        Text("Studying Method: ") // choose from a list
+                    }
+                    
+                    HStack {
+                        Button {
+                            editProfileSheet = true
+                        } label: {
+                            Text("Edit Profile")
+                                .foregroundStyle(.white)
+                                .padding()
+                                .padding(.horizontal)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+                        
+                        Spacer()
+                        
+                        Button {
+                            context.delete(profile)
+                        } label: {
+                            Text("Delete Profile")
+                                .foregroundStyle(.white)
+                                .padding()
+                                .padding(.horizontal)
+                                .background(Color.red.opacity(0.5))
+                                .cornerRadius(10)
                         }
                     }
-
+                    .frame(width: UIScreen.main.bounds.width - 20)
                     
+                }
+                else {
+                    VStack(spacing: 20) {
+                        Text("no profile found!")
+                        
+                        Button {
+                            showSetupProfileSheet = true
+                            
+                        } label: {
+                            Text("Setup Profile")
+                                .foregroundStyle(.white)
+                                .padding()
+                                .padding(.horizontal)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+
+                    }
+                    .frame(width: UIScreen.main.bounds.width, height: 300, alignment: .center)
+                }
+                //                    }
+                
+            }
                     
                     .listRowBackground(Color("List-Colors"))
                     .listRowSeparatorTint(Color("List-Colors"))
-                }
-                .navigationTitle("Profile")
-                .scrollContentBackground(.hidden)
-
+//                }
+                
+//            }
+            .navigationTitle("Profile")
+            .scrollContentBackground(.hidden)
                 
                 Spacer()
-//            }
             .navigationTitle("Profile")
         }
         .sheet(isPresented: $showSetupProfileSheet) {
