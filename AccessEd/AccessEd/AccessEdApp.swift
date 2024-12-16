@@ -12,10 +12,7 @@ import SwiftData
 @main
 struct AccessEdApp: App {
     @Environment(\.modelContext) private var modelContext
-    
 
-
-    
     var container: ModelContainer = {
 
         let schema = Schema([
@@ -32,39 +29,18 @@ struct AccessEdApp: App {
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-        
     }()
     
-    @Environment(\.modelContext) private var modelContext2
     
     var body: some Scene {
-        //        WindowGroup {
-        ////            ContentView()
-        //            HomePageView()
-        //        }
-        //        .modelContainer(sharedModelContainer)
-        
         WindowGroup {
             NavigationView {
                 AccessEdTabView()
                 CoursesView(viewModel: CourseViewModel(context: modelContext))
                     .environment(\.modelContext, modelContext)
-//                    .environmentObject(CourseViewModel(context: modelContext))
-//                    .modelContainer(for: [CourseModel.self])
             }
             .navigationViewStyle(StackNavigationViewStyle())
         }
         .modelContainer(container)
-        
     }
-    
 }
-
-//struct AppContentView: View {
-//    @Environment(\.modelContext) private var modelContext
-//
-//    var body: some View {
-//        ContentView()
-//            .environmentObject(CourseViewModel(context: modelContext)) // Inject the view model
-//    }
-//}
