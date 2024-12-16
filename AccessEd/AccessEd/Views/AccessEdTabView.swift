@@ -38,7 +38,7 @@ struct AccessEdTabView: View {
             
             // Course page
             VStack {
-                CoursesView(viewModel: CourseViewModel(context: modelContext))
+                CoursesView()
                 Spacer().frame(height: 10)
             }
             .tabItem {
@@ -61,7 +61,8 @@ struct AccessEdTabView: View {
             
             // Profile page
             VStack {
-                ProfileView()
+//                ProfileView()
+                TestingViewModel()
                 Spacer().frame(height: 10)
             }
             .tabItem {

@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct CoursesLayerView: View {
-    
+    @Environment(\.modelContext) var modelContext
+    @State var viewModel = CourseViewModel()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -57,7 +58,7 @@ struct CoursesLayerView: View {
                         .cornerRadius(15)
                         .shadow(radius: 3)
                         .contextMenu(menuItems: {
-                            coursesConextMenu
+                            coursesConextMenu(viewModel: viewModel, courseCategory: category)
                                 .background(Color.red)
                         })
                     }
@@ -68,13 +69,23 @@ struct CoursesLayerView: View {
             
         }
         .padding()
+        .onAppear {
+            viewModel.modelContext = modelContext
+            viewModel.fetchCourses()
+        }
     }
+}
+
+struct coursesConextMenu: View {
+    var viewModel: CourseViewModel
+    var courseCategory: CourseCategory
     
-    var coursesConextMenu: some View {
+    var body: some View {
+       
         VStack {
             Button {
                 // add course to course model
-                
+                viewModel.addCourse(courseName: "Some Course", category: courseCategory)
             } label: {
                 Text("Add")
                     .font(.subheadline)
@@ -92,7 +103,6 @@ struct CoursesLayerView: View {
         }
     }
 }
-
 
 #Preview("Light Mode") {
     CoursesLayerView()

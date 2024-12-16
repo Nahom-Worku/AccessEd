@@ -58,18 +58,25 @@ struct CoursesTabView: View {
     @State var course: CourseModel
     
     var body: some View {
-        ScrollView {
+        List {
             
-            ZStack {
+            VStack {
 //                Color.green.opacity(0.2).cornerRadius(10)
                 
-                VStack(spacing: 20) {
-                    
-                    ForEach(0..<3) { card in
-                        StudyCards(course: $course, cardNumber: card)
-                    }
+                NavigationLink(destination: StudyCards(course: $course, cardNumber: 5)) {
+                    Text("Study Cards")
+                        .font(.title3)
+                        .foregroundStyle(Color.black)
                 }
-                .padding()
+                .navigationTitle(course.name)
+                
+//                VStack(spacing: 20) {
+//                    
+//                    ForEach(0..<3) { card in
+//                        StudyCards(course: $course, cardNumber: card)
+//                    }
+//                }
+//                .padding()
             }
         }
     }

@@ -10,10 +10,10 @@ import SwiftData
 
 struct CoursesView: View {
     
-    @Query(sort: \CourseModel.createdDate, order: .reverse) private var courses: [CourseModel]
+//    @Query(sort: \CourseModel.createdDate, order: .reverse) private var courses: [CourseModel]
     @Environment(\.modelContext) var modelContext
     
-    @ObservedObject var viewModel: CourseViewModel
+    @StateObject var viewModel = CourseViewModel()
     
     @State var showAddCoursesBottomView: Bool = false
     @State var courseName: String = ""
@@ -30,7 +30,7 @@ struct CoursesView: View {
                 
                 // TODO: can possibily do List(courses) { course in 
                 List {
-                    ForEach(courses.reversed()) { course in
+                    ForEach(viewModel.courses) { course in
                             NavigationLink {
                                 EachCoursePageView(course: course)
                             } label: {
@@ -41,12 +41,12 @@ struct CoursesView: View {
                         }
                     .onDelete { IndexSet in
                         for index in IndexSet {
-                            modelContext.delete(courses[index])
+                            viewModel.deleteCourse(course: viewModel.courses[index])
                         }
                     }
                     
                     // TODO: onMove function causing a glich and not working
-                    .onMove(perform: viewModel.moveCourse)
+//                    .onMove(perform: viewModel.moveCourse)
                     
                     .listRowBackground(Color("List-Colors"))
                     .listRowSeparatorTint(Color("List-Colors"))
@@ -55,7 +55,8 @@ struct CoursesView: View {
                 
                 
                 
-                if !courses.isEmpty {
+                
+                if !viewModel.courses.isEmpty {
                     addCourseButton
                 } else {
                     VStack {
@@ -85,6 +86,10 @@ struct CoursesView: View {
             }
             .navigationTitle("Courses")
         }
+        .onAppear {
+            viewModel.modelContext = modelContext
+            viewModel.fetchCourses()
+        }
         .sheet(isPresented: $showAddCoursesBottomView, content: {
             addCourseButtomSheet
                 .presentationDetents([.medium, .fraction(0.5)])
@@ -95,7 +100,6 @@ struct CoursesView: View {
 //                    .presentationDetents([.medium, .fraction(0.5)])
 ////            }
 //        }
-
     }
     
     
@@ -127,6 +131,7 @@ struct CoursesView: View {
             .padding(.trailing)
         }
     }
+    
     var addCourseButtomSheet: some View {
         VStack(spacing: 20) {
             Text("Add a Course")
@@ -186,7 +191,8 @@ struct CoursesView: View {
 //                        let nextOrder = (courses.last?.order ?? -1) + 1
                         
                         let newCourse = CourseModel(name: courseName, category: selectedCategory)
-                        modelContext.insert(newCourse)
+//                        modelContext.insert(newCourse)
+                        viewModel.addCourse(courseName: newCourse.name, category: newCourse.category)
                         
                         courseName = ""
                     }
@@ -389,18 +395,18 @@ struct UpdateCourseSheet: View {
 }
 
 #Preview("Light mode") {
-    @Previewable @Environment(\.modelContext) var modelContext
+//    @Previewable @Environment(\.modelContext) var modelContext
     
-    CoursesView(viewModel: CourseViewModel(context: modelContext))
+    CoursesView() //viewModel: CourseViewModel(context: modelContext))
         
         .preferredColorScheme(.light)
         .modelContainer(for: CourseModel.self, inMemory: true)
 }
 
 #Preview("Dark mode") {
-    @Previewable @Environment(\.modelContext) var modelContext
+//    @Previewable @Environment(\.modelContext) var modelContext
     
-    CoursesView(viewModel: CourseViewModel(context: modelContext))
+    CoursesView() //viewModel: CourseViewModel(context: modelContext))
         .preferredColorScheme(.dark)
         .modelContainer(for: CourseModel.self, inMemory: true)
 }

@@ -36,7 +36,7 @@ struct AccessEdApp: App {
         WindowGroup {
             NavigationView {
                 AccessEdTabView()
-                CoursesView(viewModel: CourseViewModel(context: modelContext))
+                CoursesView()
                     .environment(\.modelContext, modelContext)
             }
             .navigationViewStyle(StackNavigationViewStyle())
