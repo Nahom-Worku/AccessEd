@@ -19,18 +19,17 @@ struct CalendarView: View {
     
     //**********
     
-    @Query(sort: \Task.id) var fetchedTasks: [Task]
+    @Query(sort: \Task.persistentModelID) var fetchedTasks: [Task]
     @State private var tasks: [Task] = []
-    
-    @Environment(\.modelContext) var tasksContext
     
     //******
     
     @Query(sort: \CalendarModel.date) var calendarDates: [CalendarModel]
-        @Environment(\.modelContext) var calendarModelContext
     
     //******
     
+    @Environment(\.modelContext) var modelContext
+
     
     // Filter tasks for the selected date
     var tasksForSelectedDate: [Task] {
@@ -150,7 +149,7 @@ struct CalendarView: View {
                             
                             // Display the tasks for the selected date
                             LazyVStack(alignment: .center, spacing: 10) {
-                                ForEach(Array(tasksForSelectedDate.enumerated().reversed()), id: \.offset) { index, task in
+                                ForEach(Array(tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
                                     HStack {
                                         Text("\(task.name)")
                                             .foregroundColor(task.completed ? .gray : .primary)
@@ -191,9 +190,9 @@ struct CalendarView: View {
                                     Button(action: {
                                         let tasksToDelete = fetchedTasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
                                             for task in tasksToDelete {
-                                                tasksContext.delete(task)
+                                                modelContext.delete(task)
                                             }
-                                            try? tasksContext.save()
+                                            try? modelContext.save()
                                         
                                         tasks.removeAll { task in
                                             calendar.isDate(task.date, inSameDayAs: selectedDate)
@@ -226,7 +225,7 @@ struct CalendarView: View {
                     
                     Spacer()
                 }
-                .frame(width: fixedWidth, height: .infinity)
+                .frame(width: fixedWidth)
                 .sheet(isPresented: $isAddingTask, content: {
                     addTaskSheetView
                         .presentationDetents([.medium, .fraction(0.5)])
@@ -258,9 +257,9 @@ struct CalendarView: View {
             calendarDate.color = newColor
         } else {
             let newCalendarDate = CalendarModel(date: date, color: newColor)
-            calendarModelContext.insert(newCalendarDate)
+            modelContext.insert(newCalendarDate)
         }
-        try? calendarModelContext.save()
+        try? modelContext.save()
     }
     
     func saveTasks(_ updatedTasks: [Task]) {
@@ -272,10 +271,10 @@ struct CalendarView: View {
                 }
             } else {
                 // Insert new task
-                tasksContext.insert(task)
+                modelContext.insert(task)
             }
         }
-        try? tasksContext.save() // Save changes to SwiftData context
+        try? modelContext.save() // Save changes to SwiftData context
     }
     
     var addTaskButtonView: some View {
@@ -426,8 +425,8 @@ struct CalendarView: View {
         let newTask = Task(date: date, name: name, completed: false)
 
         // Save the new task
-        tasksContext.insert(newTask)
-        try? tasksContext.save()
+        modelContext.insert(newTask)
+        try? modelContext.save()
 
         // Update the background color for the date
         updateDynamicColor(for: date)
@@ -452,13 +451,11 @@ struct CalendarView: View {
 #Preview("Light mode") {
     CalendarView()
         .preferredColorScheme(.light)
-        .modelContainer(for: Task.self, inMemory: true)
-        .modelContainer(for: CalendarModel.self, inMemory: true)
+        .modelContainer(for: [Task.self, CalendarModel.self], inMemory: true)
 }
 
 #Preview("Dark mode") {
     CalendarView()
         .preferredColorScheme(.dark)
-        .modelContainer(for: Task.self, inMemory: true)
-        .modelContainer(for: CalendarModel.self, inMemory: true)
+        .modelContainer(for: [Task.self, CalendarModel.self], inMemory: true)
 }
