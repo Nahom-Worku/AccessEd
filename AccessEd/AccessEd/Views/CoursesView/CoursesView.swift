@@ -9,17 +9,13 @@ import SwiftUI
 import SwiftData
 
 struct CoursesView: View {
-    
-//    @Query(sort: \CourseModel.createdDate, order: .reverse) private var courses: [CourseModel]
     @Environment(\.modelContext) var modelContext
     
-    @StateObject var viewModel = CourseViewModel()
+    @StateObject private var viewModel = CourseViewModel()
     
     @State var showAddCoursesBottomView: Bool = false
     @State var courseName: String = ""
     @State private var selectedCategory: CourseCategory = .mathematics
-    
-//    @State private var courseToEdit: CourseModel = CourseModel(name: "", category: .other)
     @State private var showEditCoursesBottomView: Bool = false
     
     

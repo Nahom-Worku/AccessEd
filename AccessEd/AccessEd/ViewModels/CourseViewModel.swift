@@ -15,9 +15,6 @@ class CourseViewModel : ObservableObject {
     
     func fetchCourses() {
         let fetchDescriptor = FetchDescriptor<CourseModel>(
-            predicate: #Predicate {
-                $0.name != "Secret course"
-            },
             sortBy: [SortDescriptor(\.createdDate)]
         )
         courses = (try? (modelContext?.fetch(fetchDescriptor) ?? [])) ?? []
