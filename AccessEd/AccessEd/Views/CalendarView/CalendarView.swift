@@ -17,21 +17,19 @@ struct CalendarView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
                     VStack {
-                        CalendarTitleLayerView(viewModel: viewModel)
-                        
                         // Calendar view
+                        CalendarTitleLayerView(viewModel: viewModel)
                         CalendarEventsView (viewModel: viewModel)
-                        
                     }
-                    .frame(width: 420, height: 340, alignment: .center)
-                    .background(Color.gray.opacity(0.05).cornerRadius(40))
+                    .frame(width: UIScreen.main.bounds.width - 20, height: 300, alignment: .top)
+                    .background(Color.gray.opacity(0.05).cornerRadius(20))
+                    .padding()
                     
                     // Tasks View
                     TasksLayerView(viewModel: viewModel)
                         .frame(width: UIScreen.main.bounds.width)
                         .padding()
                 }
-                .padding(5)
                 .frame(width: UIScreen.main.bounds.width)
                 .sheet(isPresented: $viewModel.isAddingTask, content: {
                     AddTaskSheetView(viewModel: viewModel)

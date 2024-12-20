@@ -16,7 +16,8 @@ struct TasksHeaderView: View {
             Text("Tasks for")
                 .font(.subheadline)
             Text("\(viewModel.formattedDate(viewModel.selectedDate))")
-                .font(.headline)
+                .font(.subheadline)
+                .bold()
                 .padding(.trailing, 5)
             
             // number of uncompleted task for the selected date
@@ -39,7 +40,7 @@ struct TasksHeaderView: View {
             
             AddTaskButtonView(viewModel: viewModel)
         }
-        .frame(width: UIScreen.main.bounds.width - 50, alignment: .leading)
+        .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
         .padding(.leading, 30)
     }
 }
