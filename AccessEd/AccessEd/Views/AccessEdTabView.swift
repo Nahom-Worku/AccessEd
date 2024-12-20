@@ -10,7 +10,7 @@ import SwiftData
 
 struct AccessEdTabView: View {
     
-//    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
+    @StateObject private var calendarViewModel = CalendarViewModel()
     @Environment(\.modelContext) private var modelContext
     
     @State var selectedTab: Int = 0
@@ -69,6 +69,7 @@ struct AccessEdTabView: View {
             }
             .tag(3)
         }
+        .environmentObject(calendarViewModel)
     }
 }
 

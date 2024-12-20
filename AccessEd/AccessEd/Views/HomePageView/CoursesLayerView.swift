@@ -63,10 +63,8 @@ struct CoursesLayerView: View {
                         })
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: 300)
-            }
-                
-            
+                .frame(maxHeight: 300)
+            }  
         }
         .padding()
         .onAppear {

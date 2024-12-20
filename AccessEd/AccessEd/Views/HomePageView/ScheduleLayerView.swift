@@ -10,9 +10,7 @@ import SwiftUI
 struct ScheduleLayerView: View {
     var body: some View {
         VStack(alignment: .leading){
-            // Your Schedule Section
-            
-            
+
             Text("Your Schedule")
                 .font(.title)
                 .bold()

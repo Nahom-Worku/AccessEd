@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct CalendarEventsView: View {
     @ObservedObject var viewModel: CalendarViewModel
