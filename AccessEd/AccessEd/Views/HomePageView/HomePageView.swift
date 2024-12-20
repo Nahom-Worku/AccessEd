@@ -11,6 +11,7 @@ import SwiftData
 
 struct HomePageView: View {
     
+    // TODO: get rid of this by creating a viewModel for the profile view and model
     @Query var profile: [ProfileModel]
         
     var body: some View {
@@ -54,15 +55,16 @@ struct HomePageView: View {
                     // Courses and Schedule Layer
                     VStack(spacing: 0) {
                         CoursesLayerView()
-                            .frame(height: 300)
+                            .frame(height: 290) //300)
                         
 //                        ScheduleLayerView()
 //                            .frame(minHeight: 200)
                         
                         CalendarLayerView()
-                            .frame(minHeight: 100)
+                            .padding()
                     }
                     .padding(.leading, 10)
+                    .frame(width: UIScreen.main.bounds.width /*- 100*/, alignment: .center)
                     .background(
                         UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
                             .fill(Color("Light-Dark Mode Colors"))

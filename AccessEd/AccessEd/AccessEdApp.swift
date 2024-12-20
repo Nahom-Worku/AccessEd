@@ -12,6 +12,7 @@ import SwiftData
 @main
 struct AccessEdApp: App {
     @Environment(\.modelContext) private var modelContext
+    @StateObject var viewModel = CalendarViewModel()
 
     var container: ModelContainer = {
 
@@ -37,7 +38,9 @@ struct AccessEdApp: App {
             NavigationView {
                 AccessEdTabView()
                 CoursesView()
+                CalendarView()
                     .environment(\.modelContext, modelContext)
+                    .environmentObject(viewModel)
             }
             .navigationViewStyle(StackNavigationViewStyle())
         }

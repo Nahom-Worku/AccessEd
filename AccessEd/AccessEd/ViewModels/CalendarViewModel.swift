@@ -9,20 +9,6 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-/*
- @Query(sort: \CalendarModel.date) var calendarDates: [CalendarModel]
- @Environment(\.modelContext) var calendarModelContext
-
- @Binding var currentMonth: Date >
- @Binding var tasks: [Task] >
- @Binding var selectedDate: Date >
- @Binding var allTasksCompletedByDate: [Date: Bool] >
-
- var onDateSelected: (Date) -> Void
- var updateDynamicColor: (Date) -> Void
- 
- */
-
 class CalendarViewModel : ObservableObject {
     @Published var currentMonth: Date = Date()
     @Published var selectedDate: Date = Date()
@@ -41,6 +27,8 @@ class CalendarViewModel : ObservableObject {
 
     // Filter tasks for the selected date
     var tasksForSelectedDate: [Task] { tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) } }
+    
+    var tasksForCurrentDate: [Task] { tasks.filter { calendar.isDateInToday($0.date) } }
     
     // Filter the uncompleted tasks for the selected date
     var uncompletedTasksForSelectedDate: [Task] { tasksForSelectedDate.filter { !$0.completed } }

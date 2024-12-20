@@ -8,35 +8,49 @@
 import SwiftUI
 
 struct CalendarLayerView: View {
+    @Environment(\.modelContext) var modelContext
+    @EnvironmentObject var viewModel: CalendarViewModel
+    
     var body: some View {
-        VStack(alignment: .leading){
-            // Your Schedule Section
+        VStack(alignment: .leading, spacing: 0){
             
-            
-            Text("Your ToDo List")
+            Text("ToDo List")
                 .font(.title)
                 .bold()
+                .padding(.leading, 20)
             
-            Text("Tasks to complete")
-                .font(.subheadline)
-                .foregroundColor(.gray)
-                .padding(.bottom, 30)
-            
-            
-            HStack(alignment: .center) {
-                Spacer()
-                
-                // TODO: get tasks data and update code accordingly 
-                
-                Text("No tasks!")
+            HStack {
+                Text("Uncompleted tasks for today")
                     .font(.subheadline)
-                    
-                Spacer()
+                    .foregroundColor(.gray)
+                
+                Text("\(viewModel.uncompletedTasksForCurrentDate.count)")
+                    .foregroundStyle(.purple)
+                    .padding(10)
+                    .frame(maxWidth: 35, maxHeight: 30)
+                    .background(
+                        Circle()
+                            .fill(Color.gray.opacity(0.1))
+                            .frame(width: 25)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.purple, lineWidth: 0.5)
+                            )
+                    )
+                    .font(.caption)
             }
+            .padding(.leading, 25)
+            .padding(.top, 3)
+            
+            
+            CurrentDateTasksView(viewModel: viewModel)
+                .padding(.top, 10)
+            
         }
-        .padding()
-        .frame(width: 400, alignment: .leading)
-        
+        .onAppear {
+            viewModel.modelContext = modelContext
+            viewModel.fetchTasks()
+        }
     }
 }
 
