@@ -40,6 +40,8 @@ struct CalendarTitleLayerView: View {
                     .bold()
             }
         }
+        .padding()
+        .padding(.horizontal)
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchTasks()
@@ -52,8 +54,6 @@ struct CalendarTitleLayerView: View {
                 viewModel.updateDynamicColor(for: date)
             }
         }
-        .padding()
-        .padding(.horizontal)
     }
 }
 

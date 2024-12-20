@@ -67,7 +67,7 @@ struct CalendarEventsView: View {
                             Text(textValue)
                                 .font(.footnote)
                                 .bold(hasTasks && !isCompleted)
-                                .frame(width: 35, height: 35, alignment: .center)
+                                .frame(width: 30, height: 30, alignment: .center)
                             // TODO: maybe change the foreground color instead for uncompleted and completed tasks
 //                                .foregroundStyle(hasTasks && !isCompleted ? Color.red : Color("Text-Colors"))
                                 .background(backgroundColor)
