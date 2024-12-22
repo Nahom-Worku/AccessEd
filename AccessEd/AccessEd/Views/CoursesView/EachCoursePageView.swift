@@ -41,9 +41,10 @@ struct EachCoursePageView: View {
                     CoursesTabView(course: course)
                 } else if selectedTab == .Resourses {
                     ResoursesTabView(course: $course)
+                        .background(Color.cyan)
                 }
             }
-            .animation(.easeInOut, value: selectedTab)
+//            .animation(.easeInOut, value: selectedTab)
             .padding(.horizontal)
             
             Spacer()
@@ -63,7 +64,7 @@ struct CoursesTabView: View {
             VStack {
 //                Color.green.opacity(0.2).cornerRadius(10)
                 
-                NavigationLink(destination: StudyCards(course: $course, cardNumber: 5)) {
+                NavigationLink(destination: StudyCardsView(course: $course, cardNumber: 5)) {
                     Text("Study Cards")
                         .font(.title3)
                         .foregroundStyle(Color.black)
@@ -79,10 +80,12 @@ struct CoursesTabView: View {
 //                .padding()
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(Color("Light-Dark Mode Colors"))
     }
 }
 
-struct StudyCards: View {
+struct StudyCardsView: View {
     @Binding var course: CourseModel
     @State var cardNumber: Int
     
@@ -137,53 +140,58 @@ struct ResoursesTabView: View {
     @Binding var course: CourseModel
     
     var body: some View {
-            VStack(spacing: 30) {
-                      
+//        VStack {
                 // TODO: this has to be in a ForEach loop
                 
-                NavigationLink(destination: BookChapters(course: $course)) {
-//                    VStack {
-                        List {
-                            Section(
-                                header:
-                                    HStack {
-                                        Text("TextBooks")
-                                    }
-                                    .foregroundColor(.red)
-                                    .font(.headline)
-                            ){
-                                ForEach(0..<3) { resourse in
-                                    EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
+               
+                List {
+                        Section(
+                            header:
+                                HStack {
+                                    Text("TextBooks")
                                 }
-                            }
+                                .foregroundColor(.red)
+                                .font(.headline)
+                        ){
+                            NavigationLink(destination: BookChaptersView(course: $course)) {
+//                            ForEach(0..<3) { resourse in
+                                
+                                // TODO: add this in a rounded rectangle
+                                EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
+//                            }
                         }
-                        .listRowBackground(Color("List-Colors"))
-//                    }
-                    .background(Color.white)
-                }
-                            
-                NavigationLink(destination: BookChapters(course: $course)) {
-                        List {
-                            Section(
-                                header:
-                                    HStack {
-                                        Text("Notes")
-                                    }
-                                    .foregroundColor(.green)
-                                    .font(.headline)
-                            ){
-                                EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.notes)
-                            }
-                            .listRowBackground(Color.white)//Color("List-Colors"))
+                    }
+//                        .listRowBackground(Color("List-Colors"))
+//                    .background(Color.white)
+                   
+                        Section(
+                            header:
+                                HStack {
+                                    Text("Notes")
+                                }
+                                .foregroundColor(.green)
+                                .font(.headline)
+                        ){
+                            NavigationLink(destination: NotesView()) {
+                                
+                            // TODO: add this in a rounded rectangle
+                            EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.notes)
                         }
-                        
+//                            .listRowBackground(Color("List-Colors"))
+//                            .listRowSeparatorTint(Color("List-Colors"))
+                    }
+                    
                 }
+                .listStyle(InsetGroupedListStyle()) // Custom list style
+                .scrollContentBackground(.hidden)
+                .background(Color("Light-Dark Mode Colors")) // Background for the list
                 
-                Spacer()
-            }
-            .background(Color.white)
-            .frame(width: UIScreen.main.bounds.width)
-            .padding()
+//                Spacer()
+            
+//            }
+//            .background(Color.red)
+//            .frame(width: UIScreen.main.bounds.width)
+//            .padding()
         
     }
 }
@@ -195,12 +203,12 @@ struct EachCourseResoursesView: View {
     
     var body: some View {
         
-        RoundedRectangle(cornerRadius: 10)
-            .fill(course.courseColor)
-            .padding(.horizontal, 10)
-            .frame(width: UIScreen.main.bounds.width - 40, height: 70)
-            .shadow(radius: 1, x: 0, y: 1)
-            .overlay(
+//        RoundedRectangle(cornerRadius: 10)
+//            .fill(course.courseColor)
+//            .padding(.horizontal, 10)
+//            .frame(width: UIScreen.main.bounds.width - 40, height: 70)
+//            .shadow(radius: 1, x: 0, y: 1)
+//            .overlay(
                 HStack {
                     Image(systemName: resourseCategory.rawValue)
                         .resizable()
@@ -210,6 +218,7 @@ struct EachCourseResoursesView: View {
                         .foregroundStyle(Color("Text-Colors"))
                         .clipped()
                         .cornerRadius(10)
+                        .padding(.horizontal, 15)
                     
                     VStack(alignment: .leading, spacing: 3) {
                         Text("\(resourseCategory.rawValue.capitalized)")
@@ -220,7 +229,7 @@ struct EachCourseResoursesView: View {
                             .foregroundStyle(Color("Text-Colors")).opacity(0.5)
                     }
                     .padding(5)
-                    .padding(.leading, 5)
+//                    .padding(.leading, 5)
                     
                     Spacer()
                     
@@ -228,14 +237,16 @@ struct EachCourseResoursesView: View {
                         .font(.headline)
                         .foregroundStyle(Color("Text-Colors"))
                 }
-                .frame(width: 300, alignment: .leading)
-                .padding(.leading, 20)
-                .padding(.trailing, 20)
-            )
+                .padding(.horizontal, 40)
+                .frame(width: UIScreen.main.bounds.width, alignment: .leading) // w: 300
+                
+//                .padding(.leading, 20)
+//                .padding(.trailing, 20)
+//            )
     }
 }
 
-struct BookChapters: View {
+struct BookChaptersView: View {
     @Binding var course: CourseModel
     
     var body: some View {
@@ -290,6 +301,18 @@ struct BookView: View {
                 .padding()
         }
         .navigationTitle("TextBook")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+struct NotesView: View {
+    var body: some View {
+        VStack {
+            PDFViewer(pdfName: "MATH 1014 3.0 Fundamentals of Calculus") //"W1 - PartB - I")
+                .background(Color.gray.opacity(0.1))
+                .padding()
+        }
+        .navigationTitle("Notes")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
