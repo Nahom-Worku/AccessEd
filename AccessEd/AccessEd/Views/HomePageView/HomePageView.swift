@@ -57,6 +57,7 @@ struct HomePageView: View {
                         CoursesLayerView()
                             .frame(height: 290) //300)
                         
+                        // TODO: get rid of this and the file
 //                        ScheduleLayerView()
 //                            .frame(minHeight: 200)
                         
