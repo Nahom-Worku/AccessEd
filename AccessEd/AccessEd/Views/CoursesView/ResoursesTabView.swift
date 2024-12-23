@@ -30,6 +30,7 @@ struct ResoursesTabView: View {
                         EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
                     }
                 }
+                .listRowBackground(Color("Light-Dark Mode Colors"))
             }
             
             Section(
@@ -45,6 +46,7 @@ struct ResoursesTabView: View {
                     // TODO: add this in a rounded rectangle --> some sort of loop as well
                     EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.notes)
                 }
+                .listRowBackground(Color("Light-Dark Mode Colors"))
             }
             
             Section(
@@ -60,6 +62,7 @@ struct ResoursesTabView: View {
                     // TODO: add this in a rounded rectangle --> some sort of loop as well
                     EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.assignment)
                 }
+                .listRowBackground(Color("Light-Dark Mode Colors"))
             }
             
             Section(
@@ -75,10 +78,12 @@ struct ResoursesTabView: View {
                     // TODO: add this in a rounded rectangle --> some sort of loop as well
                     EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.exam)
                 }
+                .listRowBackground(Color("Light-Dark Mode Colors"))
             }
         }
         .listStyle(InsetGroupedListStyle()) // Custom list style
         .scrollContentBackground(.hidden)
+        .scrollIndicators(.hidden)
         .background(Color("Light-Dark Mode Colors")) // Background for the list
     }
 }

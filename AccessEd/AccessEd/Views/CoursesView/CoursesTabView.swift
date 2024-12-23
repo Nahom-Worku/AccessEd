@@ -41,12 +41,13 @@ struct CoursesTabView: View {
                             .padding(.horizontal, 60)
                     )
                 }
+                .listRowBackground(Color("Light-Dark Mode Colors"))
             }
-            
             .navigationTitle(course.name)
         }
         .listStyle(InsetGroupedListStyle())
         .scrollContentBackground(.hidden)
+        .background(Color("Light-Dark Mode Colors"))
     }
 }
 
