@@ -34,7 +34,7 @@ struct CoursesLayerView: View {
             .padding(.trailing, 15)
             
             ScrollView(.horizontal ,showsIndicators: true) {
-                HStack(alignment: .center, spacing: 20){
+                HStack(alignment: .center, spacing: 20) {
                     ForEach(CourseCategory.allCases, id: \.self) { category in
                         
                         VStack {
@@ -59,12 +59,12 @@ struct CoursesLayerView: View {
                         .shadow(radius: 3)
                         .contextMenu(menuItems: {
                             coursesConextMenu(viewModel: viewModel, courseCategory: category)
-                                .background(Color.red)
                         })
                     }
                 }
                 .frame(maxHeight: 300)
-            }  
+            }
+            .padding(.leading, 10) // 15
         }
         .padding()
         .onAppear {

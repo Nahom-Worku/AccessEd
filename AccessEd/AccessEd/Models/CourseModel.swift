@@ -99,3 +99,15 @@ enum CourseResourses: String, Codable, CaseIterable {
         }
     }
 }
+
+enum tabs: String, CaseIterable {
+    case Course
+    case Resourses
+}
+
+enum ResoursesCategory: String, Codable, CaseIterable {
+    case textbook = "book.pages"
+    case notes = "pencil.and.scribble"
+    case assignment = "pencil.and.list.clipboard"
+    case exam = "text.document"
+}

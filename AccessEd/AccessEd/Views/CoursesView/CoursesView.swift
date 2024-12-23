@@ -236,7 +236,6 @@ struct EachCourseView: View {
             .padding(.horizontal, 10)
             .frame(width: UIScreen.main.bounds.width - 20, height: 100)
             .padding(.leading)
-        
             .shadow(radius: 1, x: 0, y: 1)
             .overlay(
                 HStack {
@@ -264,9 +263,8 @@ struct EachCourseView: View {
                         .font(.headline)
                         .foregroundStyle(Color("Text-Colors"))
                 }
-                .frame(width: 320, alignment: .leading)
-                .padding(.leading, 25)
-                .padding(.trailing, 10)
+                .padding(.horizontal, 50)
+                .frame(width: UIScreen.main.bounds.width, alignment: .leading) // 320
             )
     }
 }
