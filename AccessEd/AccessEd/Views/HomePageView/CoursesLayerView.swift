@@ -157,7 +157,7 @@ struct EachRecommendedCourseCardView: View {
             }
             .padding()
             .frame(width: 300, height: 350)
-            .background(Color.white.opacity(0.9))
+            .background(Color("Courses-Colors").opacity(0.9))
             .cornerRadius(15)
             .shadow(radius: 10, x: 10, y: 10)
             .padding()
