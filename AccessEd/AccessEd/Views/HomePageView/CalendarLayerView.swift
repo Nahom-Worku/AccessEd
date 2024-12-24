@@ -12,12 +12,12 @@ struct CalendarLayerView: View {
     @EnvironmentObject var viewModel: CalendarViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0){
+        VStack(alignment: .leading, spacing: 0) {
             
             Text("ToDo List")
                 .font(.title)
                 .bold()
-                .padding(.leading, 20)
+                .padding(.leading, 25) // 20
             
             HStack {
                 Text("Uncompleted tasks for today")
@@ -39,14 +39,17 @@ struct CalendarLayerView: View {
                     )
                     .font(.caption)
             }
-            .padding(.leading, 25)
+            .padding(.horizontal, 30) // .leading, 25
             .padding(.top, 3)
-            
+            .frame(width: UIScreen.main.bounds.width, alignment: .leading)
             
             CurrentDateTasksView(viewModel: viewModel)
                 .padding(.top, 10)
             
         }
+        .padding()
+        
+        .frame(width: UIScreen.main.bounds.width)
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchTasks()

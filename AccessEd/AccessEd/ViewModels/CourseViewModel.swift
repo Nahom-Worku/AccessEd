@@ -7,11 +7,14 @@
 
 import Foundation
 import SwiftData
-
+import SwiftUI
 
 class CourseViewModel : ObservableObject {
     var modelContext: ModelContext? = nil
     @Published var courses: [CourseModel] = []
+    @Published var isCardVisible: Bool = false
+    @Published var alertType: MyAlerts? = nil
+    @Published var showAlert: Bool = false
     
     func fetchCourses() {
         let fetchDescriptor = FetchDescriptor<CourseModel>(
@@ -56,4 +59,20 @@ class CourseViewModel : ObservableObject {
     //func moveCourse(from source: IndexSet, to destination: Int) {
     //    coursesList.move(fromOffsets: source, toOffset: destination)
     //}
+    
+    func getAlert() -> Alert {
+        switch alertType {
+        case .courseAdded:
+            return Alert(title: Text("Course Added"), message: Text("Your course has been added"))
+        case .courseDismissed:
+            return Alert(title: Text("Course Dismissed"), message: Text("Your course has been dismissed"))
+        default:
+            return Alert(title: Text("Error"), message: Text("Something went wrong"))
+        }
+    }
+}
+
+enum MyAlerts {
+    case courseAdded
+    case courseDismissed
 }

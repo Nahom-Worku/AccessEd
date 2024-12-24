@@ -13,17 +13,20 @@ struct HomePageView: View {
     
     // TODO: get rid of this by creating a viewModel for the profile view and model
     @Query var profile: [ProfileModel]
+    @StateObject var viewModel = CourseViewModel()
         
     var body: some View {
         
-//        NavigationView {
+        ZStack {
             ScrollView(.vertical, showsIndicators: false) {
                 
                 VStack {
                     
                     // Perview Layer
                     ZStack {
-//                        emptyPreviewLayer
+                        //       emptyPreviewLayer
+                        
+                        // TODO: might need to get rid of this
                         if !profile.isEmpty {
                             
                             VStack(spacing: 20) {
@@ -36,7 +39,7 @@ struct HomePageView: View {
                                 ]
                                 
                                 let excludedCourses: [String] = [
-//                                    "Chemistry",
+                                    //                                    "Chemistry",
                                     ""
                                 ]
                                 
@@ -54,12 +57,12 @@ struct HomePageView: View {
                     
                     // Courses and Schedule Layer
                     VStack(spacing: 0) {
-                        CoursesLayerView()
+                        CoursesLayerView(viewModel: viewModel)
                             .frame(height: 290) //300)
                         
                         // TODO: get rid of this and the file
-//                        ScheduleLayerView()
-//                            .frame(minHeight: 200)
+                        //                        ScheduleLayerView()
+                        //                            .frame(minHeight: 200)
                         
                         CalendarLayerView()
                             .padding()
@@ -78,11 +81,17 @@ struct HomePageView: View {
                         endPoint: .topLeading)
                 )
             }
-            .edgesIgnoringSafeArea(.top)
-            .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
+            
+            EachRecommendedCourseCardView(viewModel: viewModel)
+        }
+        .edgesIgnoringSafeArea(.top)
+        .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
+        .alert(isPresented: $viewModel.showAlert, content: {
+            viewModel.getAlert()
+        })
     }
     
-    
+    // TODO: might need to get rid of this subView
     var emptyPreviewLayer: some View {
         HStack {
             Text("AccessEd")
@@ -102,6 +111,7 @@ struct HomePageView: View {
         .frame(maxWidth: 240, maxHeight: 150)
     }
     
+    // TODO: might need to get rid of this subView
     var nonEmptyPreviewLayer: some View {
         VStack {
             Text("You have tasks in your To-Do List")
@@ -118,7 +128,7 @@ struct HomePageView: View {
     
 }
 
-
+// TODO: get rid of this view
 struct AddCourseSheet: View {
     @State private var courseName: String = ""
     @State private var grade: String = ""
@@ -214,15 +224,20 @@ struct AddCourseSheet: View {
 //}
 
 struct HomePageView_Previews: PreviewProvider {
+   
     static var previews: some View {
+        let viewModel = CalendarViewModel()
+        let courseViewModel = CourseViewModel()
         Group {
             HomePageView()
                 .preferredColorScheme(.light)
                 .previewDisplayName("Light mode")
+                .environmentObject(viewModel)
             
             HomePageView()
                 .preferredColorScheme(.dark)
                 .previewDisplayName("Dark mode")
+                .environmentObject(viewModel)
         }
     }
 }
