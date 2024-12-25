@@ -77,6 +77,7 @@ struct AllRecommendedCoursesView: View {
 
 struct EachRecommendedCourseCardView: View {
     @ObservedObject var viewModel: CourseViewModel
+    let courseName: String = "History"
     
     var body: some View {
         // Overlay for Card View
@@ -89,13 +90,19 @@ struct EachRecommendedCourseCardView: View {
 
             VStack {
                 // TODO: replace this text with the name of the course
-                Text("A Course") //course)
-                    .font(.title)
+                Text(courseName)
+                    .font(.title3)
+                    .bold()
                     .padding()
 
                 // TODO: replace this text with the description of the course
-                Text("Detailed information about A Course. This Course is very nice indeed. wow!") // \(course).")
+                Text(NSLocalizedString(courseName, tableName: "CourseInfo", bundle: .main, value: "", comment: ""))
+                    .font(.subheadline)
+                    .foregroundColor(Color("Text-Colors").opacity(0.8))
+                    .padding(.horizontal, 5)
                     .multilineTextAlignment(.center)
+                    .lineLimit(nil)
+                    .minimumScaleFactor(0.90)
 
                 Spacer()
                 
@@ -128,7 +135,7 @@ struct EachRecommendedCourseCardView: View {
                 .padding(.top)
             }
             .padding()
-            .frame(width: 300, height: 350)
+            .frame(width: 300, height: 340) //UIScreen.main.bounds.width * 0.7, height: UIScreen.main.bounds.height * 0.35) // 300 , 350
             .background(Color("Courses-Colors").opacity(0.9))
             .cornerRadius(15)
             .shadow(radius: 10, x: 10, y: 10)
@@ -158,7 +165,7 @@ struct RecommendedCoursesView: View {
                             .font(.footnote)
                             .foregroundColor(.primary)
                             .multilineTextAlignment(.center)
-                            .lineLimit(1)
+                            .lineLimit(nil) // 1
                             .minimumScaleFactor(0.93)
                             .padding(5)
                     }

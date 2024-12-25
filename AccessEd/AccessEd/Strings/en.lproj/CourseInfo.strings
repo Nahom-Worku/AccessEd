@@ -1,0 +1,69 @@
+/* 
+  CourseInfo.strings
+  AccessEd
+
+  Created by Nahom Worku on 2024-12-25.
+  
+*/
+
+"Language Arts" = "This course belongs to the Arts & Humanities category. It focuses on reading, writing, and literature. Expect to learn critical analysis, creative writing techniques, and appreciation for various literary works.";
+
+"History" = "This course belongs to the Arts & Humanities category. It explores past events and their impact on the present. Expect to learn about major historical events, influential figures, and how history shapes modern society.";
+
+"Philosophy" = "This course belongs to the Arts & Humanities category. It examines fundamental questions about existence, knowledge, and ethics. Expect to learn critical thinking, ethical reasoning, and philosophical perspectives on life.";
+
+"Religious Studies" = "This course belongs to the Arts & Humanities category. It studies various religious beliefs and practices. Expect to learn about world religions, their histories, and their cultural significance.";
+
+"Visual and Performing Arts" = "This course belongs to the Arts & Humanities category. It includes subjects like music, theater, and visual arts. Expect to learn creative expression, technical skills, and appreciation for the arts.";
+
+"Geography" = "This course belongs to the Social Sciences category. It studies the Earth's landscapes, environments, and human relationships. Expect to learn about physical geography, human geography, and the interaction between humans and the environment.";
+
+"Economics" = "This course belongs to the Social Sciences category. It analyzes the production, distribution, and consumption of goods and services. Expect to learn economic principles, market behavior, and financial decision-making.";
+
+"Political Science" = "This course belongs to the Social Sciences category. It examines government systems and political activities. Expect to learn about political theories, institutions, and policies affecting societies.";
+
+"Psychology" = "This course belongs to the Social Sciences category. It explores human behavior and mental processes. Expect to learn about cognition, emotions, development, and psychological disorders.";
+
+"Sociology" = "This course belongs to the Social Sciences category. It investigates the development, structure, and functioning of societies. Expect to learn about social structures, cultural norms, and human interactions.";
+
+"Biology" = "This course belongs to the Natural Sciences category. It studies living organisms and life processes. Expect to learn about genetics, ecosystems, and the fundamental principles of life sciences.";
+
+"Chemistry" = "This course belongs to the Natural Sciences category. It focuses on substances, their properties, and reactions. Expect to learn chemical equations, reactions, and applications in everyday life.";
+
+"Physics" = "This course belongs to the Natural Sciences category. It explores matter, energy, and the fundamental forces of nature. Expect to learn about mechanics, thermodynamics, and electromagnetic phenomena.";
+
+"Earth Science" = "This course belongs to the Natural Sciences category. It includes geology, meteorology, and oceanography. Expect to learn about Earth's physical features, processes, and the environment.";
+
+"Environmental Science" = "This course belongs to the Natural Sciences category. It examines the interactions between humans and the environment. Expect to learn about sustainability, conservation, and environmental impact.";
+
+"Arithmetic" = "This course belongs to the Mathematics category. It covers basic number operations. Expect to learn addition, subtraction, multiplication, division, and foundational mathematical skills.";
+
+"Algebra" = "This course belongs to the Mathematics category. It studies symbols and the rules for manipulating them. Expect to learn equations, inequalities, and functions.";
+
+"Geometry" = "This course belongs to the Mathematics category. It focuses on the properties and relations of points, lines, surfaces, and solids. Expect to learn about shapes, angles, and spatial reasoning.";
+
+"Calculus" = "This course belongs to the Mathematics category. It explores change and motion through derivatives and integrals. Expect to learn differentiation, integration, and their applications.";
+
+"Statistics" = "This course belongs to the Mathematics category. It analyzes data and probability. Expect to learn statistical methods, data analysis, and interpretation.";
+
+"Information Technology" = "This course belongs to the Tech & Engineering category. It covers computer systems and software applications. Expect to learn about networks, databases, and IT solutions.";
+
+"Engineering" = "This course belongs to the Tech & Engineering category. It applies scientific principles to design and build structures, machines, and systems. Expect to learn problem-solving, technical skills, and innovative design.";
+
+"Robotics" = "This course belongs to the Tech & Engineering category. It focuses on the design and operation of robots. Expect to learn automation, control systems, and programming robots.";
+
+"Computer Science" = "This course belongs to the Tech & Engineering category. It studies computation, algorithms, and data structures. Expect to learn coding, software development, and problem-solving skills.";
+
+"Physical Education" = "This course belongs to the Health & PE category. It promotes physical fitness and motor skills. Expect to learn exercise techniques, team sports, and healthy living.";
+
+"Health Education" = "This course belongs to the Health & PE category. It teaches about personal health, nutrition, and wellness. Expect to learn about healthy habits, mental health, and disease prevention.";
+
+"Sex Education" = "This course belongs to the Health & PE category. It provides information on human sexuality and reproductive health. Expect to learn about relationships, sexual health, and family planning.";
+
+"Agricultural Education" = "This course belongs to the Career & Tech category. It focuses on farming and agribusiness. Expect to learn about crop management, animal husbandry, and agricultural economics.";
+
+"Business Education" = "This course belongs to the Career & Tech category. It covers management, finance, and entrepreneurship. Expect to learn about business planning, marketing, and financial literacy.";
+
+"Trade Skills" = "This course belongs to the Career & Tech category. It includes carpentry, plumbing, and electrical work. Expect to learn practical skills, tool use, and trade techniques.";
+
+"Culinary Arts" = "This course belongs to the Career & Tech category. It teaches cooking and food preparation. Expect to learn culinary techniques, recipe creation, and kitchen management.";
