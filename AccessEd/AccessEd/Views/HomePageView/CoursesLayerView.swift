@@ -52,34 +52,6 @@ struct CoursesLayerView: View {
     }
 }
 
-struct CoursesConextMenu: View {
-    var viewModel: CourseViewModel
-    var courseCategory: CourseCategory
-    
-    var body: some View {
-       
-        VStack {
-            Button {
-                // add course to course model
-                viewModel.addCourse(courseName: "Some Course", category: courseCategory)
-            } label: {
-                Text("Add")
-                    .font(.subheadline)
-                    .foregroundStyle(.green)
-            }
-
-            Button {
-                // add course to course model
-                
-            } label: {
-                Text("Dismiss")
-                    .font(.subheadline)
-                    .foregroundStyle(.red)
-            }
-        }
-    }
-}
-
 struct AllRecommendedCoursesView: View {
     @ObservedObject var viewModel: CourseViewModel
     
@@ -164,6 +136,7 @@ struct EachRecommendedCourseCardView: View {
         }
     }
 }
+
 struct RecommendedCoursesView: View {
     @ObservedObject var viewModel: CourseViewModel
     
@@ -176,7 +149,7 @@ struct RecommendedCoursesView: View {
                     Image(category.imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(height: 100) // 120
+                        .frame(height: UIScreen.main.bounds.width * 0.26) //100) // 120
                         .clipped()
                         .cornerRadius(10)
                     
@@ -184,35 +157,18 @@ struct RecommendedCoursesView: View {
                         Text(category.rawValue)
                             .font(.footnote)
                             .foregroundColor(.primary)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.93)
                             .padding(5)
                     }
                     .padding([.leading, .trailing, .bottom], 8)
                 }
-                .frame(width: 150) // 180
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.35) //150) // 180
                 .background(Color("Courses-Colors"))
                 .cornerRadius(15)
                 .shadow(radius: 3)
             }
-
-            
-//            .contextMenu(menuItems: {
-//                CoursesConextMenu(viewModel: viewModel, courseCategory: category)
-//            })
-        }
-    }
-}
-
-// testing this thing
-struct CourseCard: View {
-    let courseName: String = "Test Courses Info"
-
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.gray.opacity(0.2))
-                .frame(height: 100)
-            Text(courseName)
-                .font(.headline)
         }
     }
 }
