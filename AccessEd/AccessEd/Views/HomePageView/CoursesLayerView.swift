@@ -23,7 +23,6 @@ struct CoursesLayerView: View {
                     Text("Recommendations for you")
                         .font(.subheadline)
                         .foregroundColor(.gray)
-                        
                 }
                 
                 Spacer()
@@ -46,8 +45,48 @@ struct CoursesLayerView: View {
         }
         .padding()
         .onAppear {
+            viewModel.inputCourses["Chemistry"] = 1.0
             viewModel.modelContext = modelContext
+//            viewModel.fetchInputCourses()
+//            viewModel.fetchExcludeList()
             viewModel.fetchCourses()
+        }
+    }
+}
+
+struct RecommendedCoursesView: View {
+    @ObservedObject var viewModel: CourseViewModel
+    
+    var body: some View {
+        ForEach(viewModel.recommendedCourses, id: \.id) { course in
+            Button {
+                viewModel.selectedCourse = course
+                viewModel.isCardVisible = true
+            } label: {
+                VStack {
+                    course.courseImage
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: UIScreen.main.bounds.width * 0.26) //100) // 120
+                        .clipped()
+                        .cornerRadius(10)
+                        
+                    VStack(alignment: .center, spacing: 4) {
+                        Text(course.name)
+                            .font(.footnote)
+                            .foregroundColor(.primary)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(nil) // 1
+                            .minimumScaleFactor(0.93)
+                            .padding(5)
+                    }
+                    .padding([.leading, .trailing, .bottom], 8)
+                }
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.35) //150) // 180
+                .background(Color("Courses-Colors"))
+                .cornerRadius(15)
+                .shadow(radius: 3)
+            }
         }
     }
 }
@@ -77,7 +116,6 @@ struct AllRecommendedCoursesView: View {
 
 struct EachRecommendedCourseCardView: View {
     @ObservedObject var viewModel: CourseViewModel
-    let courseName: String = "History"
     
     var body: some View {
         // Overlay for Card View
@@ -88,15 +126,13 @@ struct EachRecommendedCourseCardView: View {
                     viewModel.isCardVisible = false
                 } // Dismiss on tap outside
 
-            VStack {
-                // TODO: replace this text with the name of the course
-                Text(courseName)
+            LazyVStack {
+                Text(viewModel.selectedCourse?.name ?? "")
                     .font(.title3)
                     .bold()
                     .padding()
 
-                // TODO: replace this text with the description of the course
-                Text(NSLocalizedString(courseName, tableName: "CourseInfo", bundle: .main, value: "", comment: ""))
+                Text(NSLocalizedString(viewModel.selectedCourse?.name ?? "", tableName: "CourseInfo", bundle: .main, value: "", comment: ""))
                     .font(.subheadline)
                     .foregroundColor(Color("Text-Colors").opacity(0.8))
                     .padding(.horizontal, 5)
@@ -109,9 +145,16 @@ struct EachRecommendedCourseCardView: View {
                 HStack {
                     // TODO: add the functionality to dismiss the recommended courses
                     Button {
+                        if let courseName = viewModel.selectedCourse?.name {
+//                            viewModel.addExcludeList(courseName: courseName)
+                            viewModel.excludeList.append(courseName)
+                        }
+                        print("input courses: \(viewModel.inputCourses)")
+                        print("excluded courses: \(viewModel.excludeList)")
+                        
                         viewModel.alertType = .courseDismissed
-                        viewModel.showAlert.toggle()
                         viewModel.isCardVisible = false
+                        viewModel.showAlert = true //.toggle()
                     } label: {
                         Text("Dismiss")
                             .foregroundStyle(.red)
@@ -120,7 +163,14 @@ struct EachRecommendedCourseCardView: View {
                     Spacer()
                     
                     Button {
-                        viewModel.addCourse(courseName: "A Course from view all page", category: .mathematics)
+                        if let course = viewModel.selectedCourse {
+//                            viewModel.addToInputCourses(courseName: course.name)
+                            viewModel.inputCourses[course.name] = 1.0
+                            viewModel.addCourse(courseName: course.name, category: viewModel.courseCategoryMap[course.name] ?? .other)
+                        }
+                        print("input courses: \(viewModel.inputCourses)")
+                        print("excluded courses: \(viewModel.excludeList)")
+                        
                         viewModel.alertType = .courseAdded
                         viewModel.isCardVisible = false
                         viewModel.showAlert = true
@@ -132,10 +182,10 @@ struct EachRecommendedCourseCardView: View {
                 }
                 .padding(.horizontal, 60) // 50
                 .frame(width: 300)
-                .padding(.top)
+                .padding(.top, 30)
             }
             .padding()
-            .frame(width: 300, height: 340) //UIScreen.main.bounds.width * 0.7, height: UIScreen.main.bounds.height * 0.35) // 300 , 350
+            .frame(width: 300) //, height: 340) //UIScreen.main.bounds.width * 0.7, height: UIScreen.main.bounds.height * 0.35) // 300 , 350
             .background(Color("Courses-Colors").opacity(0.9))
             .cornerRadius(15)
             .shadow(radius: 10, x: 10, y: 10)
@@ -144,41 +194,6 @@ struct EachRecommendedCourseCardView: View {
     }
 }
 
-struct RecommendedCoursesView: View {
-    @ObservedObject var viewModel: CourseViewModel
-    
-    var body: some View {
-        ForEach(CourseCategory.allCases, id: \.self) { category in
-            Button {
-                viewModel.isCardVisible = true
-            } label: {
-                VStack {
-                    Image(category.imageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: UIScreen.main.bounds.width * 0.26) //100) // 120
-                        .clipped()
-                        .cornerRadius(10)
-                    
-                    VStack(alignment: .center, spacing: 4) {
-                        Text(category.rawValue)
-                            .font(.footnote)
-                            .foregroundColor(.primary)
-                            .multilineTextAlignment(.center)
-                            .lineLimit(nil) // 1
-                            .minimumScaleFactor(0.93)
-                            .padding(5)
-                    }
-                    .padding([.leading, .trailing, .bottom], 8)
-                }
-                .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.35) //150) // 180
-                .background(Color("Courses-Colors"))
-                .cornerRadius(15)
-                .shadow(radius: 3)
-            }
-        }
-    }
-}
 
 #Preview("Light Mode") {
     let viewModel = CourseViewModel()

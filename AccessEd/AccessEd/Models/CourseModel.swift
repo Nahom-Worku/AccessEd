@@ -56,6 +56,28 @@ class CourseModel: Identifiable {
     }
 }
 
+@Model
+class InputCourseModel {
+    @Attribute(.unique) var id: UUID = UUID()
+    var name: String
+    var rating: Double
+
+    init(name: String, rating: Double) {
+        self.name = name
+        self.rating = rating
+    }
+}
+
+@Model
+class ExcludeListModel {
+    @Attribute(.unique) var id: UUID = UUID()
+    var courseName: String
+
+    init(courseName: String) {
+        self.courseName = courseName
+    }
+}
+
 enum CourseCategory: String, Codable, CaseIterable {
     case mathematics = "Mathematics"
     case naturalSciences = "Natural Sciences"
@@ -110,4 +132,9 @@ enum ResoursesCategory: String, Codable, CaseIterable {
     case notes = "pencil.and.scribble"
     case assignment = "pencil.and.list.clipboard"
     case exam = "text.document"
+}
+
+enum MyAlerts {
+    case courseAdded
+    case courseDismissed
 }

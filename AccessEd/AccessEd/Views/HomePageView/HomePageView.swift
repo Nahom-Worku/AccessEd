@@ -43,7 +43,7 @@ struct HomePageView: View {
                                     ""
                                 ]
                                 
-                                Text("\(getRecommendedCourses(for: input, excludeList: excludedCourses))")
+                                Text("\(CoursesRecommender(userPreferences: input, excludeList: excludedCourses))")
                             }
                             .frame(width: 300)
                             
@@ -227,7 +227,6 @@ struct HomePageView_Previews: PreviewProvider {
    
     static var previews: some View {
         let viewModel = CalendarViewModel()
-        let courseViewModel = CourseViewModel()
         Group {
             HomePageView()
                 .preferredColorScheme(.light)

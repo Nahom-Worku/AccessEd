@@ -9,7 +9,7 @@ import Foundation
 import CoreML
 
 
-func getRecommendedCourses(for userPreferences: [String: Double], excludeList: [String]) -> [String] {
+func CoursesRecommender(userPreferences: [String: Double], excludeList: [String]) -> [String] {
     do {
         // Load the CoursesRecommendationModel
         let model = try CoursesRecommendationModel(configuration: MLModelConfiguration())
