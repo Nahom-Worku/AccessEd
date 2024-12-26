@@ -21,6 +21,7 @@ struct AccessEdApp: App {
             CalendarModel.self,
             Task.self,
             ProfileModel.self,
+            UserPreferences.self,
         ])
         
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
