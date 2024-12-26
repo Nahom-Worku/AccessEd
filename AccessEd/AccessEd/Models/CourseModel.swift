@@ -57,24 +57,15 @@ class CourseModel: Identifiable {
 }
 
 @Model
-class InputCourseModel {
-    @Attribute(.unique) var id: UUID = UUID()
-    var name: String
-    var rating: Double
-
-    init(name: String, rating: Double) {
-        self.name = name
-        self.rating = rating
-    }
-}
-
-@Model
-class ExcludeListModel {
-    @Attribute(.unique) var id: UUID = UUID()
-    var courseName: String
-
-    init(courseName: String) {
-        self.courseName = courseName
+class UserPreferences {
+    @Attribute(.unique) var id: UUID
+    var inputCourses: [String: Double]
+    var excludeList: [String]
+    
+    init() {
+        self.id = UUID()
+        self.inputCourses = [:]
+        self.excludeList = []
     }
 }
 

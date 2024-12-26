@@ -53,14 +53,26 @@ class CourseViewModel : ObservableObject {
         "Culinary Arts": .careerAndTech,
     ]
     
-    @Published var inputCourses: [String : Double] = [:]
-    @Published var excludeList: [String] = []
+    let predefinedCourses: [String] = ["Physics", "Calculus", "History"]
+    let defaultWeight: Double = 1.0
     
+    @Published var userPreferences: UserPreferences?
     
     var recommendedCourses: [CourseModel] {
-        let mlOutput: [String] = CoursesRecommender(userPreferences: inputCourses, excludeList: excludeList)
+        var mlOutput: [String] = []
+        
+        if let userPreferences = userPreferences {
+            mlOutput = CoursesRecommender(userPreferences: userPreferences.inputCourses, excludeList: userPreferences.excludeList)
+        }
+        
         return mlOutput.map(getCourse)
     }
+    
+    
+    init() {
+        loadUserPreferences()
+    }
+    
     
     func fetchCourses() {
         let fetchDescriptor = FetchDescriptor<CourseModel>(
@@ -125,55 +137,80 @@ class CourseViewModel : ObservableObject {
         }
     }
     
-//    func addCourseToInput(course: CourseModel) {
-//        inputCourses[course.name] = 1.0
-//        addCourse(courseName: course.name, category: course.category)
-//    }
-//    
-//    func dismissCourse(course: CourseModel) {
-//        if !excludeList.contains(course.name) {
-//            excludeList.append(course.name)
-//        }
-//    }
-    
-    func fetchInputCourses() {
-        guard let context = modelContext else { return }
-        let fetchDescriptor = FetchDescriptor<InputCourseModel>()
-        let fetchedCourses = (try? context.fetch(fetchDescriptor)) ?? []
-        
-        inputCourses = Dictionary(uniqueKeysWithValues: fetchedCourses.map { ($0.name, $0.rating) })
-    }
-
-    func fetchExcludeList() {
-        guard let context = modelContext else { return }
-        let fetchDescriptor = FetchDescriptor<ExcludeListModel>()
-        let fetchedExcludes = (try? context.fetch(fetchDescriptor)) ?? []
-        
-        excludeList = fetchedExcludes.map { $0.courseName }
-    }
-
-    func addToInputCourses(courseName: String) {
-        guard !inputCourses.keys.contains(courseName) else { return }
-//        inputCourses[courseName] = 1.0
-        let newinputCourse = InputCourseModel(name: courseName, rating: 1.0)
-        modelContext?.insert(newinputCourse)
-        try? modelContext?.save()
-        
-        fetchInputCourses()
-        fetchCourses()
-        
-        addCourse(courseName: courseName, category: courseCategoryMap[courseName] ?? .other)
-    }
-
-    func addExcludeList(courseName: String) {
-        guard let context = modelContext else { return }
-        if !excludeList.contains(courseName) {
-            let newExclude = ExcludeListModel(courseName: courseName)
-            context.insert(newExclude)
-            try? context.save()
-            fetchExcludeList()
-            
-            fetchCourses()
+    func loadUserPreferences() {
+        guard let modelContext = modelContext else {
+            print("Model context is not available.")
+            return
         }
+
+        let fetchDescriptor = FetchDescriptor<UserPreferences>()
+        if let existingPreferences = try? modelContext.fetch(fetchDescriptor).first {
+            userPreferences = existingPreferences
+        } else {
+            let newPreferences = UserPreferences()
+            modelContext.insert(newPreferences)
+            try? modelContext.save()
+            userPreferences = newPreferences
+        }
+    }
+    
+    func addPredefinedCoursesToInput() {
+        guard let preferences = userPreferences else { return }
+        for course in predefinedCourses {
+            if preferences.inputCourses[course] == nil {
+                preferences.inputCourses[course] = defaultWeight
+            }
+        }
+        saveUserPreferences()
+    }
+    
+    func addInputCourse(courseName: String, weight: Double = 1.0) {
+        guard let preferences = userPreferences else { return }
+        preferences.inputCourses[courseName] = weight
+        addCourse(courseName: courseName, category: courseCategoryMap[courseName] ?? .other)
+        fetchCourses()
+        saveUserPreferences()
+    }
+
+    func addToExcludeList(courseName: String) {
+        guard let preferences = userPreferences else { return }
+        if !preferences.excludeList.contains(courseName) {
+            preferences.excludeList.append(courseName)
+            saveUserPreferences()
+        }
+    }
+
+    func saveUserPreferences() {
+        try? modelContext?.save()
+    }
+    
+    func clearUserPreferences() {
+        guard let modelContext = modelContext else {
+            print("Model context is not available.")
+            return
+        }
+
+        // Fetch the UserPreferences instance
+        let fetchDescriptor = FetchDescriptor<UserPreferences>()
+        if let preferencesToDelete = try? modelContext.fetch(fetchDescriptor).first {
+            // Delete the fetched UserPreferences instance
+            modelContext.delete(preferencesToDelete)
+            do {
+                // Save the context to persist changes
+                try modelContext.save()
+                userPreferences = nil // Clear the local reference
+                print("User preferences cleared successfully.")
+            } catch {
+                print("Error saving after deleting user preferences: \(error)")
+            }
+        } else {
+            print("No UserPreferences data found to delete.")
+        }
+    }
+
+    func resetUserPreferences() {
+        userPreferences?.inputCourses = [:]
+        userPreferences?.excludeList = []
+        saveUserPreferences()
     }
 }

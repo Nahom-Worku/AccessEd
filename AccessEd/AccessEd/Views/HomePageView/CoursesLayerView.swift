@@ -45,10 +45,9 @@ struct CoursesLayerView: View {
         }
         .padding()
         .onAppear {
-            viewModel.inputCourses["Chemistry"] = 1.0
             viewModel.modelContext = modelContext
-//            viewModel.fetchInputCourses()
-//            viewModel.fetchExcludeList()
+            viewModel.loadUserPreferences()
+            viewModel.addPredefinedCoursesToInput()
             viewModel.fetchCourses()
         }
     }
@@ -143,14 +142,13 @@ struct EachRecommendedCourseCardView: View {
                 Spacer()
                 
                 HStack {
-                    // TODO: add the functionality to dismiss the recommended courses
                     Button {
                         if let courseName = viewModel.selectedCourse?.name {
-//                            viewModel.addExcludeList(courseName: courseName)
-                            viewModel.excludeList.append(courseName)
+                            viewModel.addToExcludeList(courseName: courseName)
+                            
+                            // TODO: deal with this somehow
+//                            viewModel.clearUserPreferences()
                         }
-                        print("input courses: \(viewModel.inputCourses)")
-                        print("excluded courses: \(viewModel.excludeList)")
                         
                         viewModel.alertType = .courseDismissed
                         viewModel.isCardVisible = false
@@ -164,12 +162,8 @@ struct EachRecommendedCourseCardView: View {
                     
                     Button {
                         if let course = viewModel.selectedCourse {
-//                            viewModel.addToInputCourses(courseName: course.name)
-                            viewModel.inputCourses[course.name] = 1.0
-                            viewModel.addCourse(courseName: course.name, category: viewModel.courseCategoryMap[course.name] ?? .other)
+                            viewModel.addInputCourse(courseName: course.name)
                         }
-                        print("input courses: \(viewModel.inputCourses)")
-                        print("excluded courses: \(viewModel.excludeList)")
                         
                         viewModel.alertType = .courseAdded
                         viewModel.isCardVisible = false
