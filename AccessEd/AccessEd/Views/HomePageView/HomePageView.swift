@@ -19,12 +19,24 @@ struct HomePageView: View {
         
         ZStack {
             ScrollView(.vertical, showsIndicators: false) {
-                
                 VStack {
-                    
-                    // Perview Layer
                     ZStack {
-                        emptyPreviewLayer
+                        HStack {
+                            Text("AccessEd")
+                                .font(.title)
+                            
+                            Spacer()
+                            
+                            Image("education")
+                                .renderingMode(.original)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 70)
+                                .clipped()
+                        }
+                        .padding()
+                        .padding(.top, 50)
+                        .frame(maxWidth: 240, maxHeight: 150)
                     }
                     .frame(height: 150)
                     
@@ -32,13 +44,13 @@ struct HomePageView: View {
                     // Courses and Schedule Layer
                     VStack(spacing: 0) {
                         CoursesLayerView(viewModel: viewModel)
-                            .frame(height: 290) //300)
+//                            .frame(height: 290) //300)
                         
                         CalendarLayerView()
-                            .padding()
+//                            .padding()
                     }
-                    .padding(.leading, 10)
-                    .frame(width: UIScreen.main.bounds.width /*- 100*/, alignment: .center)
+//                    .padding(.leading, 10)
+                    .frame(width: UIScreen.main.bounds.width /*- 100*/, alignment: .leading)
                     .background(
                         UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
                             .fill(Color("Light-Dark Mode Colors"))
@@ -59,127 +71,6 @@ struct HomePageView: View {
         .alert(isPresented: $viewModel.showAlert, content: {
             viewModel.getAlert()
         })
-    }
-    
-    // TODO: might need to get rid of this subView
-    var emptyPreviewLayer: some View {
-        HStack {
-            Text("AccessEd")
-                .font(.title)
-            
-            Spacer()
-            
-            Image("education")
-                .renderingMode(.original)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 70)
-                .clipped()
-        }
-        .padding()
-        .padding(.top, 50)
-        .frame(maxWidth: 240, maxHeight: 150)
-    }
-    
-    // TODO: might need to get rid of this subView
-    var nonEmptyPreviewLayer: some View {
-        VStack {
-            Text("You have tasks in your To-Do List")
-                .font(.headline)
-        }
-        .background(
-            RoundedRectangle(cornerRadius: 25)
-                .fill(Color.white)
-                .padding()
-                .frame(width: .infinity, height: 120)
-                .padding(.top, 60)
-        )
-    }
-    
-}
-
-// TODO: get rid of this view
-struct AddCourseSheet: View {
-    @State private var courseName: String = ""
-    @State private var grade: String = ""
-    
-    @Environment(\.dismiss) var dismissScreen
-    @Environment(\.colorScheme) var colorScheme
-    
-    var body: some View {
-        
-        VStack (alignment: .center) {
-            Text("Enter Course Information")
-                .font(Font.system(size: 20))
-                .padding()
-                .padding(.top, 10)
-            
-            TextField("Enter Course Name", text: $courseName)
-                .padding(10)
-                .background(colorScheme == .light ? .white : .gray.opacity(0.1))
-                .cornerRadius(10.0)
-                .padding(.horizontal, 20)
-                .foregroundStyle(Color.white)
-                .font(.subheadline)
-            
-            TextField("Choose Category", text: $grade)
-                .padding(10)
-                .background(colorScheme == .light ? .white : .gray.opacity(0.1))
-                .cornerRadius(10.0)
-                .padding(.horizontal, 20)
-                .padding(.top, 10)
-                .foregroundStyle(Color.white)
-                .font(.subheadline)
-            
-            
-            // Buttons
-            HStack {
-                
-                // Cancel button
-                Button {
-                    dismissScreen()
-                } label: {
-                    Text("Canel")
-                        .font(.subheadline)
-                        .bold()
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(
-                            
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.red.opacity(0.6))
-                                .frame(width: 120, height: 40)
-                        )
-                }
-
-                Spacer()
-                
-                // Add course button
-                Button {
-                    
-                } label: {
-                    Text("Add")
-                        .font(.subheadline)
-                        .bold()
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.blue.opacity(0.6))
-                                .frame(width: 120, height: 40)
-                        )
-                }
-            }
-            .padding()
-            .frame(maxWidth: 240, maxHeight: 100)
-        }
-        .frame(maxWidth: 300, maxHeight: 250)
-        .padding()
-        .padding(.vertical, 10)
-        .background(colorScheme == .light ? .gray.opacity(0.2) : Color(#colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)).opacity(0.5))
-        .padding(.horizontal, 10)
-        .padding(.bottom, 10)
-        
     }
 }
 

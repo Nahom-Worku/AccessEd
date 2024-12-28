@@ -31,19 +31,20 @@ struct CoursesLayerView: View {
                     Text("View All")
                         .font(.subheadline)
                 }
+                .disabled(viewModel.allRecommendedCourses.isEmpty)
             }
             .padding(.top, 15)
-            .padding(.horizontal, 10)
+            .padding(.trailing, 25)
             
-            ScrollView(.horizontal ,showsIndicators: true) {
+            ScrollView(.horizontal, showsIndicators: true) {
                 HStack(alignment: .center, spacing: 20) {
-                    RecommendedCoursesView(viewModel: viewModel)
+                    RecommendedCoursesView(viewModel: viewModel, recommendedCourses: viewModel.topSixRecommendedCourses)
                 }
                 .frame(maxHeight: 300)
             }
-            .padding(.leading, 10)
         }
         .padding()
+        .frame(height: viewModel.allRecommendedCourses.isEmpty ? 250 : 290)
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.addPredefinedCoursesToInput()
@@ -55,28 +56,23 @@ struct CoursesLayerView: View {
 
 struct RecommendedCoursesView: View {
     @ObservedObject var viewModel: CourseViewModel
+    var recommendedCourses: [CourseModel]
     
     var body: some View {
-        if viewModel.recommendedCourses.isEmpty {
-            VStack{
+        if viewModel.allRecommendedCourses.isEmpty {
+            VStack(spacing: 10) {
+                Image(systemName: "rectangle.on.rectangle.slash")
+                    .font(.system(size: 40))
+                    .foregroundColor(.gray)
+                
                 Text("There are no recommendations available")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                
-                Button("Clear recommendations") {
-                    viewModel.clearUserPreferences()
-                    viewModel.addPredefinedCoursesToInput()
-                    viewModel.loadUserPreferences()
-                    viewModel.fetchCourses()
-                }
             }
-            .padding()
-            .background(Color.yellow)
-            .frame(width: 300, height: 50, alignment: .center)
-            
+            .frame(width: UIScreen.main.bounds.width - 50)
         }
         else {
-            ForEach(viewModel.recommendedCourses, id: \.id) { course in
+            ForEach(recommendedCourses, id: \.id) { course in
                 Button {
                     viewModel.selectedCourse = course
                     viewModel.isCardVisible = true
@@ -115,15 +111,28 @@ struct AllRecommendedCoursesView: View {
     
     var body: some View {
         ZStack {
-            ScrollView(.vertical) {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 30) {
-                    RecommendedCoursesView(viewModel: viewModel)
+            if viewModel.allRecommendedCourses.isEmpty {
+                VStack(spacing: 20) {
+                    Image(systemName: "rectangle.on.rectangle.slash")
+                        .font(.system(size: 40))
+                        .foregroundColor(.gray)
+                    
+                    Text("There are no recommendations available")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                 }
-                .padding()
-                .padding(.top, 10)
-                .padding(.horizontal, 20)
+                .navigationTitle("All Recommended Courses")
+            } else {
+                ScrollView(.vertical) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 30) {
+                        RecommendedCoursesView(viewModel: viewModel, recommendedCourses: viewModel.allRecommendedCourses)
+                    }
+                    .padding()
+                    .padding(.top, 10)
+                    .padding(.horizontal, 20)
+                }
+                .navigationTitle("All Recommended Courses")
             }
-            .navigationTitle("All Recommended Courses")
             
             EachRecommendedCourseCardView(viewModel: viewModel)
         }
@@ -165,9 +174,6 @@ struct EachRecommendedCourseCardView: View {
                     Button {
                         if let courseName = viewModel.selectedCourse?.name {
                             viewModel.addToExcludeList(courseName: courseName)
-                            
-                            // TODO: deal with this somehow
-//                            viewModel.clearUserPreferences()
                         }
                         
                         viewModel.alertType = .courseDismissed

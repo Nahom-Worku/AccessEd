@@ -53,21 +53,35 @@ class CourseViewModel : ObservableObject {
         "Culinary Arts": .careerAndTech,
     ]
     
-    let predefinedCourses: [String] = ["Physics", "Calculus", "History"]
+    let predefinedCourses: [String] = ["Calculus", "History", "Physics"]
     let defaultWeight: Double = 1.0
     
     @Published var userPreferences: UserPreferences?
     
-    var recommendedCourses: [CourseModel] {
+    var allRecommendedCourses: [CourseModel] {
         var mlOutput: [String] = []
         
         if let userPreferences = userPreferences {
-            mlOutput = CoursesRecommender(userPreferences: userPreferences.inputCourses, excludeList: userPreferences.excludeList)
+            var unfilteredCourses: [String] = []
+            
+            unfilteredCourses = CoursesRecommender(userPreferences: userPreferences.inputCourses, excludeList: userPreferences.excludeList)
+            
+            // Filter out courses that are already in inputCourses or excludeList
+            unfilteredCourses = unfilteredCourses.filter { courseName in
+                !(userPreferences.inputCourses.keys.contains(courseName) || userPreferences.excludeList.contains(courseName))
+            }
+            
+            mlOutput = unfilteredCourses
         }
         
-        return mlOutput.map(getCourse)
+        return mlOutput.map { courseName in
+            getCourse(courseName: courseName)
+        }
     }
     
+    var topSixRecommendedCourses: [CourseModel] {
+        return Array(allRecommendedCourses.prefix(6))
+    }
     
     init() {
         loadUserPreferences()
