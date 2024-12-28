@@ -46,8 +46,8 @@ struct CoursesLayerView: View {
         .padding()
         .onAppear {
             viewModel.modelContext = modelContext
-            viewModel.loadUserPreferences()
             viewModel.addPredefinedCoursesToInput()
+            viewModel.loadUserPreferences()
             viewModel.fetchCourses()
         }
     }
@@ -57,34 +57,54 @@ struct RecommendedCoursesView: View {
     @ObservedObject var viewModel: CourseViewModel
     
     var body: some View {
-        ForEach(viewModel.recommendedCourses, id: \.id) { course in
-            Button {
-                viewModel.selectedCourse = course
-                viewModel.isCardVisible = true
-            } label: {
-                VStack {
-                    course.courseImage
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: UIScreen.main.bounds.width * 0.26) //100) // 120
-                        .clipped()
-                        .cornerRadius(10)
-                        
-                    VStack(alignment: .center, spacing: 4) {
-                        Text(course.name)
-                            .font(.footnote)
-                            .foregroundColor(.primary)
-                            .multilineTextAlignment(.center)
-                            .lineLimit(nil) // 1
-                            .minimumScaleFactor(0.93)
-                            .padding(5)
-                    }
-                    .padding([.leading, .trailing, .bottom], 8)
+        if viewModel.recommendedCourses.isEmpty {
+            VStack{
+                Text("There are no recommendations available")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                
+                Button("Clear recommendations") {
+                    viewModel.clearUserPreferences()
+                    viewModel.addPredefinedCoursesToInput()
+                    viewModel.loadUserPreferences()
+                    viewModel.fetchCourses()
                 }
-                .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.35) //150) // 180
-                .background(Color("Courses-Colors"))
-                .cornerRadius(15)
-                .shadow(radius: 3)
+            }
+            .padding()
+            .background(Color.yellow)
+            .frame(width: 300, height: 50, alignment: .center)
+            
+        }
+        else {
+            ForEach(viewModel.recommendedCourses, id: \.id) { course in
+                Button {
+                    viewModel.selectedCourse = course
+                    viewModel.isCardVisible = true
+                } label: {
+                    VStack {
+                        course.courseImage
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: UIScreen.main.bounds.width * 0.26) //100) // 120
+                            .clipped()
+                            .cornerRadius(10)
+                        
+                        VStack(alignment: .center, spacing: 4) {
+                            Text(course.name)
+                                .font(.footnote)
+                                .foregroundColor(.primary)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(nil) // 1
+                                .minimumScaleFactor(0.93)
+                                .padding(5)
+                        }
+                        .padding([.leading, .trailing, .bottom], 8)
+                    }
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.35) //150) // 180
+                    .background(Color("Courses-Colors"))
+                    .cornerRadius(15)
+                    .shadow(radius: 3)
+                }
             }
         }
     }

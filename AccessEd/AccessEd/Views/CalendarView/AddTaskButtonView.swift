@@ -16,7 +16,7 @@ struct AddTaskButtonView: View {
                 viewModel.isAddingTask = true
             }, label: {
                 Text("Add Task")
-                    .font(.caption) // subheadline
+                    .font(.subheadline)
                     .foregroundColor(.blue)
                     .padding(10)
             })

@@ -144,6 +144,7 @@ class CourseViewModel : ObservableObject {
         }
 
         let fetchDescriptor = FetchDescriptor<UserPreferences>()
+        
         if let existingPreferences = try? modelContext.fetch(fetchDescriptor).first {
             userPreferences = existingPreferences
         } else {
@@ -192,6 +193,7 @@ class CourseViewModel : ObservableObject {
 
         // Fetch the UserPreferences instance
         let fetchDescriptor = FetchDescriptor<UserPreferences>()
+        
         if let preferencesToDelete = try? modelContext.fetch(fetchDescriptor).first {
             // Delete the fetched UserPreferences instance
             modelContext.delete(preferencesToDelete)
