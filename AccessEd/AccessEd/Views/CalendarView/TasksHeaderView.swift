@@ -13,8 +13,10 @@ struct TasksHeaderView: View {
     var body: some View {
         HStack {
             Image(systemName: "checklist")
+            
             Text("Tasks for")
                 .font(.subheadline)
+            
             Text("\(viewModel.formattedDate(viewModel.selectedDate))")
                 .font(.subheadline)
                 .bold()
@@ -23,18 +25,18 @@ struct TasksHeaderView: View {
             // number of uncompleted task for the selected date
             Text("\(viewModel.uncompletedTasksForSelectedDate.count)")
                 .foregroundStyle(.purple)
-                .padding(8)
+                .padding(10)
                 .frame(maxWidth: 35, maxHeight: 30)
                 .background(
                     Circle()
                         .fill(Color.gray.opacity(0.1))
-                        .frame(width: 30)
+                        .frame(width: 25)
                         .overlay(
-                                Circle()
-                                    .stroke(Color.purple, lineWidth: 0.5)
-                            )
+                            Circle()
+                                .stroke(Color.purple, lineWidth: 0.5)
+                        )
                 )
-                .font(.subheadline)
+                .font(.caption)
             
             Spacer()
             

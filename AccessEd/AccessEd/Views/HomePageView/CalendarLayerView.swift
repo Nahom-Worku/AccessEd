@@ -17,7 +17,7 @@ struct CalendarLayerView: View {
             Text("ToDo List")
                 .font(.title)
                 .bold()
-                .padding(.leading, 25) // 20
+                .padding(.leading, 20) // 20
             
             HStack {
                 Text("Uncompleted tasks for today")
@@ -39,17 +39,16 @@ struct CalendarLayerView: View {
                     )
                     .font(.caption)
             }
-            .padding(.horizontal, 30) // .leading, 25
+            .padding(.leading, 20) // .horizontal, 25
             .padding(.top, 3)
-            .frame(width: UIScreen.main.bounds.width, alignment: .leading)
+//            .frame(width: UIScreen.main.bounds.width, alignment: .leading)
             
             CurrentDateTasksView(viewModel: viewModel)
                 .padding(.top, 10)
             
         }
         .padding()
-        
-        .frame(width: UIScreen.main.bounds.width)
+//        .frame(width: UIScreen.main.bounds.width)
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchTasks()
