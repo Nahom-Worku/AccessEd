@@ -41,7 +41,7 @@ struct CoursesLayerView: View {
                 }
                 .frame(maxHeight: 300)
             }
-            .padding(.leading, 10) // 15
+            .padding(.leading, 10)
         }
         .padding()
         .onAppear {
@@ -172,7 +172,7 @@ struct EachRecommendedCourseCardView: View {
                         
                         viewModel.alertType = .courseDismissed
                         viewModel.isCardVisible = false
-                        viewModel.showAlert = true //.toggle()
+                        viewModel.showAlert = true
                     } label: {
                         Text("Dismiss")
                             .foregroundStyle(.red)
