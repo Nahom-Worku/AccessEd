@@ -24,33 +24,7 @@ struct HomePageView: View {
                     
                     // Perview Layer
                     ZStack {
-                        //       emptyPreviewLayer
-                        
-                        // TODO: might need to get rid of this
-                        if !profile.isEmpty {
-                            
-                            VStack(spacing: 20) {
-                                Text("The profile has been set up")
-                                let input: [String: Double] = [
-                                    "Calculus": 1.44,
-                                    "Chemistry": 1.2,
-                                    "History": 1.1,
-                                    "Robotics": 1.0
-                                ]
-                                
-                                let excludedCourses: [String] = [
-                                    //                                    "Chemistry",
-                                    ""
-                                ]
-                                
-                                Text("\(CoursesRecommender(userPreferences: input, excludeList: excludedCourses))")
-                            }
-                            .frame(width: 300)
-                            
-                        } else {
-                            emptyPreviewLayer
-                        }
-                        
+                        emptyPreviewLayer
                     }
                     .frame(height: 150)
                     
@@ -59,10 +33,6 @@ struct HomePageView: View {
                     VStack(spacing: 0) {
                         CoursesLayerView(viewModel: viewModel)
                             .frame(height: 290) //300)
-                        
-                        // TODO: get rid of this and the file
-                        //                        ScheduleLayerView()
-                        //                            .frame(minHeight: 200)
                         
                         CalendarLayerView()
                             .padding()
