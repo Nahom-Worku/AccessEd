@@ -22,7 +22,7 @@ struct TasksView: View {
             
             // Display the tasks for the selected date
             LazyVStack(alignment: .center, spacing: 10) {
-                ForEach(Array(viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in  // tasksForSelectedDate
+                ForEach(Array(viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
                     HStack {
                         Text("\(task.name)")
                             .foregroundColor(task.completed ? .gray : .primary)
@@ -45,8 +45,8 @@ struct TasksView: View {
                     .padding(.horizontal, 13)
                     .background(Color("Courses-Colors"))
                     .cornerRadius(8)
-                    .padding(.trailing, 20) // horizontal
-                    .frame(width: UIScreen.main.bounds.width - 60) // 20
+                    .padding(.trailing, 20)
+                    .frame(width: UIScreen.main.bounds.width - 60)
                     .padding(.leading, 20)
                     .shadow(radius: 1, x: 1, y: 1)
                     .onTapGesture(count: 2) {
@@ -82,7 +82,7 @@ struct TasksView: View {
             }
             .padding()
             .padding(.horizontal)
-            .frame(width: UIScreen.main.bounds.width, alignment: .leading)
+            .frame(width: UIScreen.main.bounds.width)
         }
     }
 }
