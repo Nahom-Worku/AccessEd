@@ -18,7 +18,7 @@ struct CurrentDateTasksView: View {
                 .padding(.top, 30)
         } else {
             LazyVStack(alignment: .center, spacing: 10) {
-                ForEach(Array(viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
+                ForEach(Array(viewModel.tasksForCurrentDate.enumerated()), id: \.offset) { index, task in
                     HStack {
                         Text("\(task.name)")
                             .foregroundColor(task.completed ? .gray : .primary)
@@ -41,8 +41,8 @@ struct CurrentDateTasksView: View {
                     .padding(.horizontal, 13)
                     .background(Color("Courses-Colors"))
                     .cornerRadius(8)
-                    .padding(.trailing, 20) // horizontal
-                    .frame(width: UIScreen.main.bounds.width - 60) // 20
+                    .padding(.trailing, 20)
+                    .frame(width: UIScreen.main.bounds.width - 60)
                     .shadow(radius: 1, x: 1, y: 1)
                     .onTapGesture(count: 2) {
                         if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
@@ -54,7 +54,7 @@ struct CurrentDateTasksView: View {
             }
             .padding()
             .padding(.horizontal)
-            .frame(width: UIScreen.main.bounds.width, alignment: .center)
+            .frame(width: UIScreen.main.bounds.width)
         }
     }
 }

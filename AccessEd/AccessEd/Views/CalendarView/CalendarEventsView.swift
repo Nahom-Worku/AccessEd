@@ -37,7 +37,7 @@ struct CalendarEventsView: View {
 
                         // Get stored color if any
                         let storedColorName = viewModel.getColorForDate(date) ?? "blue"
-                        let storedColor = Color.fromString(storedColorName).opacity(0.2)
+                        let storedColor = Color.fromString(storedColorName).opacity(0.025)
 
                         // Determine final background color based on conditions
                         let backgroundColor: Color = {
@@ -52,7 +52,7 @@ struct CalendarEventsView: View {
                             } else if hasTasks && isCompleted {
                                 return Color.green.opacity(0.3) // All tasks completed
                             } else {
-                                return storedColor.opacity(0.5) // Stored or default color
+                                return storedColor // Stored or default color
                             }
                         }()
 
