@@ -20,25 +20,23 @@ struct HomePageView: View {
         ZStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
-                    ZStack {
-                        HStack {
-                            Text("AccessEd")
-                                .font(.title)
-                            
-                            Spacer()
-                            
-                            Image("education")
-                                .renderingMode(.original)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 70)
-                                .clipped()
-                        }
-                        .padding()
-                        .padding(.top, 50)
-                        .frame(maxWidth: 240, maxHeight: 150)
+                    HStack {
+                        Text("AccessEd")
+                            .font(.title)
+                        
+                        Spacer()
+                        
+                        Image("education")
+                            .renderingMode(.original)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 70)
+                            .clipped()
                     }
-                    .frame(height: 150)
+                    .padding()
+                    .padding(.top, 50)
+                    .frame(maxWidth: 240, maxHeight: 150)
+
                     
                     
                     // Courses and Schedule Layer

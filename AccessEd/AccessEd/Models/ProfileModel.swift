@@ -15,6 +15,7 @@ class ProfileModel: Identifiable {
     var grade: String
     var preferredLanguage: String
     var fieldsOfInterest: [String]
+    var userSignedIn: Bool = false
   
     init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String]) {
         self.name = name
