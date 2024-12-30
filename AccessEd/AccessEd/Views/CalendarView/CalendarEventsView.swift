@@ -48,9 +48,9 @@ struct CalendarEventsView: View {
                             } else if isSelected {
                                 return Color.blue.opacity(0.4) // Selected date
                             } else if hasTasks && !isCompleted {
-                                return Color.red.opacity(0.3) // Incomplete tasks
+                                return Color.red.opacity(0.25) // Incomplete tasks
                             } else if hasTasks && isCompleted {
-                                return Color.green.opacity(0.3) // All tasks completed
+                                return Color.green.opacity(0.2) // All tasks completed
                             } else {
                                 return storedColor // Stored or default color
                             }
@@ -71,7 +71,7 @@ struct CalendarEventsView: View {
                             // TODO: maybe change the foreground color instead for uncompleted and completed tasks
 //                                .foregroundStyle(hasTasks && !isCompleted ? Color.red : Color("Text-Colors"))
                                 .background(backgroundColor)
-                                .cornerRadius(8)
+                                .cornerRadius(10) // 8
                         }
                         .buttonStyle(PlainButtonStyle())
                     } else {
