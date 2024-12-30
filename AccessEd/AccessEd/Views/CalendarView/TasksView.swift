@@ -13,11 +13,11 @@ struct TasksView: View {
     
     var body: some View {
         
-        if viewModel.tasksForSelectedDate.isEmpty { // tasksForSelectedDate
+        if viewModel.tasksForSelectedDate.isEmpty {
             Text("No tasks for this date.")
                 .foregroundColor(.gray)
                 .frame(width: UIScreen.main.bounds.width)
-                .padding(.top, 30)
+                .padding(.top, 50)
         } else {
             
             // Display the tasks for the selected date
@@ -25,6 +25,7 @@ struct TasksView: View {
                 ForEach(Array(viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
                     HStack {
                         Text("\(task.name)")
+                            .font(.subheadline)
                             .foregroundColor(task.completed ? .gray : .primary)
                             .strikethrough(task.completed, color: .gray)
                         
@@ -61,7 +62,7 @@ struct TasksView: View {
                 // Remove all tasks for a day button
                 VStack (alignment: .center) {
                     Button(action: {
-                        viewModel.deleteAllTasks(for: viewModel.selectedDate) // selectedDate
+                        viewModel.deleteAllTasks(for: viewModel.selectedDate)
                     }) {
                         Text("Remove All Tasks")
                             .font(.callout)

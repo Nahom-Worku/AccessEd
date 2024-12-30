@@ -14,8 +14,9 @@ struct CurrentDateTasksView: View {
         if viewModel.tasksForCurrentDate.isEmpty {
             Text("No tasks for today.")
                 .foregroundColor(.gray)
-                .frame(width: UIScreen.main.bounds.width)
-                .padding(.top, 30)
+                .padding(.trailing, 40)
+                .padding(.top, 50)
+                .frame(width: UIScreen.main.bounds.width, alignment: .center)
         } else {
             LazyVStack(alignment: .center, spacing: 10) {
                 ForEach(Array(viewModel.tasksForCurrentDate.enumerated()), id: \.offset) { index, task in
