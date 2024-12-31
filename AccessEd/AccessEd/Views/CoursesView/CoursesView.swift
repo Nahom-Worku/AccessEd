@@ -65,6 +65,7 @@ struct CoursesView: View {
                         Text("No Courses")
                             .font(.title2)
                             .bold()
+                            .opacity(0.8)
                         
                         Text("Start adding courses to get started!")
                             .font(.subheadline)

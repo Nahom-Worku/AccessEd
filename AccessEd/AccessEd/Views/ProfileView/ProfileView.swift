@@ -1,454 +1,337 @@
-////
-////  ProfileView.swift
-////  AccessEd
-////
-////  Created by Nahom Worku on 2024-11-03.
-////
 //
-//import SwiftUI
-//import SwiftData
+//  ProfileView.swift
+//  AccessEd
 //
-//struct ProfileView: View {
-//    
-//    @State var showSetupProfileSheet: Bool = false
-//    @State var editProfileSheet: Bool = false
-//    
-//    @Environment(\.modelContext) private var context
-//    @Query var userProfile: [ProfileModel]
-//    
+//  Created by Nahom Worku on 2024-11-03.
 //
-//
-//    
-//    var body: some View {
-//        // MARK: - Header Section
-//                ZStack(alignment: .top) {
-//                    
-//                    // Background behind the profile details
-//                    // Could be an image if you have a golf background image
-//                    Rectangle()
-//                        .fill(Color.green) // or .background(Image("YourGolfImageName").resizable()...)
-//                        .frame(height: 300)
-//                        .overlay(
-//                            // Possibly put a blurred or gradient overlay
-//                            LinearGradient(colors: [.green.opacity(0.6), .green],
-//                                           startPoint: .top, endPoint: .bottom)
-//                        )
-//                    
-//                    // Profile details on top
-//                    VStack(spacing: 8) {
-//                        // Circular profile image
-//                        // Replace “person.fill” with your own image asset
-//                        ZStack {
-//                            Circle()
-//                                .fill(Color.white)
-//                                .frame(width: 120, height: 120)
-//                            
-//                            Image(systemName: "person.fill")
-//                                .resizable()
-//                                .scaledToFit()
-//                                .frame(width: 60, height: 60)
-//                                .foregroundColor(.gray)
-//                        }
-//                        .padding(.top, 40)
-//                        
-//                        // Name
-//                        Text("ALEX PLATONOV")
-//                            .font(.title)
-//                            .fontWeight(.bold)
-//                            .foregroundColor(.white)
-//                        
-//                        // Location (with SF Symbol)
-//                        HStack {
-//                            Image(systemName: "mappin.and.ellipse")
-//                                .font(.subheadline)
-//                            Text("LOS ANGELES")
-//                        }
-//                        .foregroundColor(.white)
-//                        
-//                        // Rating or Handicap label (the 54.0)
-//                        Text("54.0")
-//                            .font(.headline)
-//                            .padding(10)
-//                            .foregroundColor(.white)
-//                            .background(Color.black.opacity(0.2))
-//                            .clipShape(Circle())
-//                        
-//                        // "Start Round" button
-//                        Button(action: {
-//                            // handle “start round” logic
-//                        }) {
-//                            Text("START ROUND")
-//                                .font(.headline)
-//                                .padding()
-//                                .frame(maxWidth: .infinity)
-//                                .foregroundColor(.white)
-//                                .background(Color.black.opacity(0.3))
-//                                .cornerRadius(10)
-//                        }
-//                        .padding(.horizontal, 40)
-//                        .padding(.top, 16)
-//                        .padding(.bottom, 20)
-//                    }
-//                }
-//    }
-//}
-//
-//struct SetUpProfileView: View {
-//    @Environment(\.modelContext) var context
-//    @Environment(\.dismiss) var dismiss
-//    
-//    @State private var name: String = ""
-//    @State private var grade: String = ""
-//    @State private var preferredLanguage: String = "English"
-//    @State private var fieldsOfInterest: [String] = []
-//    
-//    
-//    var body: some View {
-//        NavigationView {
-//            ScrollView {
-//                VStack(alignment: .leading) {
-//                    QuestionView(question: "What is your name?") {
-//                        TextField("Enter your name", text: $name)
-//                            .textFieldStyle(RoundedBorderTextFieldStyle())
-//                    }
-//                    QuestionView(question: "What is your current grade?") {
-//                        TextField("Enter your grade", text: $grade)
-//                    }
-//                    
-//                    QuestionView(question: "Which language do you prefer for learning materials?") {
-//                        Picker("Select Language", selection: $preferredLanguage) {
-//                            ForEach(Language.allLanguages, id: \.self) { language in
-//                                Text(language).tag(language)
-//                            }
-//                        }
-//                        .pickerStyle(MenuPickerStyle())
-//                    }
-//                    
-//                    QuestionView(question: "What are your fields of interest in education?") {
-//                        MultiSelectList(title: "Fields of Interest", items: FieldOfStudy.allFields, selectedItems: $fieldsOfInterest)
-//                    }
-//                    
-//                    
-//                    Button {
-//                        let profile = ProfileModel(name: name, grade: grade, preferredLanguage: preferredLanguage, fieldsOfInterest: fieldsOfInterest)
-//                        
-//                        context.insert(profile)
-//                        try? context.save()
-//                        
-//                        dismiss()
-//                        
-//                    } label: {
-//                        Text("Save")
-//                            .foregroundStyle(.white)
-//                            .padding()
-//                            .padding(.horizontal)
-//                            .background(Color.blue)
-//                            .cornerRadius(10)
-//                    }
-//
-//                }
-//                .padding()
-//                .padding(.horizontal)
-//                .frame(width: UIScreen.main.bounds.width, alignment: .leading)
-//            }
-//            .navigationTitle("Set Up Profile")
-//        }
-//    }
-//}
-//
-//struct QuestionView<Content: View>: View {
-//    let question: String
-//    @ViewBuilder let content: Content
-//    
-//    var body: some View {
-//        VStack(alignment: .leading) {
-//            Text(question)
-//                .font(.subheadline)
-//            content
-//        }
-//        .padding(.vertical, 10)
-//    }
-//}
-//
-//struct MultiSelectList: View {
-//    let title: String
-//    let items: [String]
-//    @Binding var selectedItems: [String]
-//
-//    var body: some View {
-//        NavigationLink(destination: MultiSelectDetailView(items: items, selectedItems: $selectedItems)) {
-//            VStack(alignment: .leading) {
-//                Text(title)
-//                    .font(.headline)
-//                if selectedItems.isEmpty {
-//                    Text("None selected").foregroundColor(.gray)
-//                } else {
-//                    Text(selectedItems.joined(separator: ", "))
-//                        .font(.subheadline)
-//                        .foregroundColor(.secondary)
-//                }
-//            }
-//            .padding(.vertical, 10)
-//        }
-//    }
-//}
-//
-//struct MultiSelectDetailView: View {
-//    let items: [String]
-//    @Binding var selectedItems: [String]
-//
-//    var body: some View {
-//        List(items, id: \.self) { item in
-//            Button(action: {
-//                if selectedItems.contains(item) {
-//                    selectedItems.removeAll { $0 == item }
-//                } else {
-//                    selectedItems.append(item)
-//                }
-//            }) {
-//                HStack {
-//                    Text(item)
-//                    Spacer()
-//                    if selectedItems.contains(item) {
-//                        Image(systemName: "checkmark")
-//                            .foregroundColor(.black)
-//                    }
-//                }
-//            }
-//            .buttonStyle(.plain)
-//        }
-//        .navigationTitle("Select Options")
-//    }
-//}
-//
-//struct EditProfileView: View {
-//    @Environment(\.modelContext) private var context
-//    @Environment(\.dismiss) private var dismiss
-//    @Bindable var profile: ProfileModel
-//    
-//    var body: some View {
-//        NavigationView {
-//            ScrollView {
-//                VStack(alignment: .leading) {
-//                    QuestionView(question: "What is your name?") {
-//                        TextField("Enter your name", text: $profile.name)
-//                            .textFieldStyle(RoundedBorderTextFieldStyle())
-//                    }
-//                    QuestionView(question: "What is your current grade?") {
-//                        TextField("Enter your grade", text: $profile.grade)
-//                    }
-//                    
-//                    QuestionView(question: "Which language do you prefer for learning materials?") {
-//                        Picker("Select Language", selection: $profile.preferredLanguage) {
-//                            ForEach(Language.allLanguages, id: \.self) { language in
-//                                Text(language).tag(language)
-//                            }
-//                        }
-//                        .pickerStyle(MenuPickerStyle())
-//                    }
-//                    
-//                    QuestionView(question: "What are your fields of interest in education?") {
-//                        MultiSelectList(title: "Fields of Interest", items: FieldOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
-//                    }
-//                    
-//                    
-//                    Button {
-//                        try? context.save()
-//                        
-//                        dismiss()
-//                        
-//                    } label: {
-//                        Text("Save Changes")
-//                            .foregroundStyle(.white)
-//                            .padding()
-//                            .padding(.horizontal)
-//                            .background(Color.blue)
-//                            .cornerRadius(10)
-//                    }
-//
-//                }
-//                .padding()
-//                .padding(.horizontal)
-//                .frame(width: UIScreen.main.bounds.width, alignment: .leading)
-//            }
-//            .navigationTitle("Set Up Profile")
-//        }
-//    }
-//}
-//
-//import SwiftUI
-//
-//struct ProfileView2: View {
-//    @State private var showingImagePicker = false
-//    @State private var profileImage: Image? = Image(systemName: "person.crop.circle.fill")
-//
-//    var body: some View {
-//        NavigationView {
-//            VStack(spacing: 20) {
-//                // Profile Image & Edit Button
-//                ZStack {
-//                    if let image = profileImage {
-//                        image
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fill)
-//                            .frame(width: 120, height: 120)
-//                            .clipShape(Circle())
-//                            .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-//                            .shadow(radius: 5)
-//                    }
-//                    Button(action: {
-//                        showingImagePicker.toggle()
-//                    }) {
-//                        Circle()
-//                            .fill(Color.black.opacity(0.5))
-//                            .frame(width: 40, height: 40)
-//                            .overlay(Image(systemName: "pencil")
-//                                        .foregroundColor(.white))
-//                            .offset(x: 40, y: 40)
-//                    }
-//                    .buttonStyle(PlainButtonStyle())
-//                }
-//
-//                // Name & Username
-//                Text("Jai Y Chetram")
-//                    .font(.title2)
-//                    .fontWeight(.semibold)
-//                Text("@jaiychetram")
-//                    .font(.caption)
-//                    .foregroundColor(.gray)
-//
-//                // A small progress or stats section
-//                VStack(alignment: .leading, spacing: 8) {
-//                    Text("Learning Progress")
-//                        .font(.headline)
-//                    ProgressView(value: 0.6)
-//                        .progressViewStyle(LinearProgressViewStyle(tint: Color.blue))
-//                    Text("60% Complete")
-//                        .font(.footnote)
-//                        .foregroundColor(.gray)
-//                }
-//                .padding()
-//
-//                // Settings / Options List
-//                Form {
-//                    Section(header: Text("Account")) {
-//                        NavigationLink(destination: AccountSettingsView()) {
-//                            Label("Account Settings", systemImage: "gearshape")
-//                        }
-//                        NavigationLink(destination: NotificationsView()) {
-//                            Label("Notifications", systemImage: "bell")
-//                        }
-//                        NavigationLink(destination: PrivacyView()) {
-//                            Label("Privacy", systemImage: "hand.raised.slash")
-//                        }
-//                    }
-//
-//                    Section {
-//                        Button(action: {
-//                            // Handle log out logic
-//                        }) {
-//                            Text("Log Out")
-//                                .foregroundColor(.red)
-//                        }
-//                    }
-//                }
-//            }
-//            .padding()
-//            .navigationTitle("Profile")
-//            .sheet(isPresented: $showingImagePicker) {
-//                // Image picker implementation here
-//                Text("Image Picker Placeholder")
-//            }
-//        }
-//    }
-//}
-//
-//// Placeholder Views
-//struct AccountSettingsView: View {
-//    var body: some View {
-//        Text("Account Settings")
-//            .navigationTitle("Account Settings")
-//    }
-//}
-//
-//struct NotificationsView: View {
-//    var body: some View {
-//        Text("Notifications")
-//            .navigationTitle("Notifications")
-//    }
-//}
-//
-//struct PrivacyView: View {
-//    var body: some View {
-//        Text("Privacy")
-//            .navigationTitle("Privacy")
-//    }
-//}
-//
-//
-//
-////*********$$$$$$$$$$$$$$$$$$$$$##############
-//
-//import SwiftUI
-//
-//struct ProfileView3: View {
-//    @State private var username: String = "John Doe"
-//    @State private var bio: String = "iOS Developer and Educator"
-//    
-//    var body: some View {
-//        NavigationView {
-//            VStack {
-//                Image(systemName: "person.fill")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(width: 100, height: 100)
-//                    .clipShape(Circle())
-//                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
-//                    .shadow(radius: 10)
-//                
-//                Text(username)
-//                    .font(.title)
-//                    .fontWeight(.bold)
-//                
-//                Text(bio)
-//                    .font(.subheadline)
-//                    .foregroundColor(.gray)
-//                
-//                Form {
-//                    Section(header: Text("Settings")) {
-//                        NavigationLink(destination: Text("Account Details")) {
-//                            Text("Account Details")
-//                        }
-//                        NavigationLink(destination: Text("Privacy Settings")) {
-//                            Text("Privacy Settings")
-//                        }
-//                    }
-//                }
-//            }
-//            .navigationBarTitle("Profile", displayMode: .inline)
-//        }
-//    }
-//}
-//
-//
-//
-//#Preview("Profile page main") {
-//    ProfileView()
-//}
-//
-//#Preview("set up page") {
-//    SetUpProfileView()
-//}
-//
-//#Preview("Test 2") {
-//    ProfileView2()
-//}
-//
-//#Preview("Test 3") {
-//    ProfileView3()
-//}
 
 import SwiftUI
+import SwiftData
+
+
+struct SetUpProfileView: View {
+    @Environment(\.modelContext) var context
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var name: String = ""
+    @State private var grade: String = ""
+    @State private var preferredLanguage: String = "English"
+    @State private var fieldsOfInterest: [String] = []
+    
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    QuestionView(question: "What is your name?") {
+                        TextField("Enter your name", text: $name)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
+                    QuestionView(question: "What is your current grade?") {
+                        TextField("Enter your grade", text: $grade)
+                    }
+                    
+                    QuestionView(question: "Which language do you prefer for learning materials?") {
+                        Picker("Select Language", selection: $preferredLanguage) {
+                            ForEach(Language.allLanguages, id: \.self) { language in
+                                Text(language).tag(language)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                    }
+                    
+                    QuestionView(question: "What are your fields of interest in education?") {
+                        MultiSelectList(title: "Fields of Interest", items: FieldOfStudy.allFields, selectedItems: $fieldsOfInterest)
+                    }
+                    
+                    
+//                    // Learning Style
+//                    Picker("Learning Style", selection: $profile.learningStyle) {
+//                        Text("Visual").tag("Visual")
+//                        Text("Auditory").tag("Auditory")
+//                        Text("Hands-On").tag("Hands-On")
+//                    }
+//
+//                    // Study Hours
+//                    Picker("Study Hours", selection: $profile.studyHours) {
+//                        Text("Morning").tag("Morning")
+//                        Text("Afternoon").tag("Afternoon")
+//                        Text("Evening").tag("Evening")
+//                    }
+//
+//                    // Time Zone
+//                    Picker("Time Zone", selection: $profile.timeZone) {
+//                        ForEach(TimeZone.knownTimeZoneIdentifiers, id: \.self) { timeZone in
+//                            Text(timeZone).tag(timeZone)
+//                        }
+//                    }
+                    
+                    
+                    Button {
+//                        let profile = ProfileModel(name: name, grade: grade, preferredLanguage: preferredLanguage, fieldsOfInterest: fieldsOfInterest)
+                        
+//                        context.insert(profile)
+//                        try? context.save()
+                        
+                        dismiss()
+                        
+                    } label: {
+                        Text("Save")
+                            .foregroundStyle(.white)
+                            .padding()
+                            .padding(.horizontal)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
+
+                }
+                .padding()
+                .padding(.horizontal)
+                .frame(width: UIScreen.main.bounds.width, alignment: .leading)
+            }
+            .navigationTitle("Set Up Profile")
+        }
+    }
+}
+
+struct QuestionView<Content: View>: View {
+    let question: String
+    @ViewBuilder let content: Content
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(question)
+                .font(.subheadline)
+            content
+        }
+        .padding(.vertical, 10)
+    }
+}
+
+struct MultiSelectList: View {
+    let title: String
+    let items: [String]
+    @Binding var selectedItems: [String]
+
+    var body: some View {
+        NavigationLink(destination: MultiSelectDetailView(items: items, selectedItems: $selectedItems)) {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.headline)
+                if selectedItems.isEmpty {
+                    Text("None selected").foregroundColor(.gray)
+                } else {
+                    Text(selectedItems.joined(separator: ", "))
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(.vertical, 10)
+        }
+    }
+}
+
+struct MultiSelectDetailView: View {
+    let items: [String]
+    @Binding var selectedItems: [String]
+
+    var body: some View {
+        List(items, id: \.self) { item in
+            Button(action: {
+                if selectedItems.contains(item) {
+                    selectedItems.removeAll { $0 == item }
+                } else {
+                    selectedItems.append(item)
+                }
+            }) {
+                HStack {
+                    Text(item)
+                    Spacer()
+                    if selectedItems.contains(item) {
+                        Image(systemName: "checkmark")
+                            .foregroundColor(.black)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        .navigationTitle("Select Options")
+    }
+}
+
+struct EditProfileView: View {
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+    @Bindable var profile: ProfileModel
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    QuestionView(question: "What is your name?") {
+                        TextField("Enter your name", text: $profile.name)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
+                    QuestionView(question: "What is your current grade?") {
+                        TextField("Enter your grade", text: $profile.grade)
+                    }
+                    
+                    QuestionView(question: "Which language do you prefer for learning materials?") {
+                        Picker("Select Language", selection: $profile.preferredLanguage) {
+                            ForEach(Language.allLanguages, id: \.self) { language in
+                                Text(language).tag(language)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                    }
+                    
+                    QuestionView(question: "What are your fields of interest in education?") {
+                        MultiSelectList(title: "Fields of Interest", items: FieldOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
+                    }
+                    
+                    
+                    Button {
+                        try? context.save()
+                        
+                        dismiss()
+                        
+                    } label: {
+                        Text("Save Changes")
+                            .foregroundStyle(.white)
+                            .padding()
+                            .padding(.horizontal)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
+
+                }
+                .padding()
+                .padding(.horizontal)
+                .frame(width: UIScreen.main.bounds.width, alignment: .leading)
+            }
+            .navigationTitle("Set Up Profile")
+        }
+    }
+}
+
+
+// MARK: - design 2
+
+struct ProfileView2: View {
+    @State private var showingImagePicker = false
+    @State private var profileImage: Image? = Image("Profile pic")
+
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                
+                // Profile Image & Edit Button
+                ZStack {
+                    
+                    if let image = profileImage {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
+                            .shadow(radius: 2)
+                    }
+                    Button(action: {
+                        showingImagePicker.toggle()
+                    }) {
+                        Circle()
+                            .fill(Color.black.opacity(0.5))
+                            .frame(width: 30, height: 30)
+                            .overlay(Image(systemName: "pencil")
+                            .foregroundColor(.white))
+                            .offset(x: 40, y: 40)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+
+                // Name & Username
+                Text("John Doe")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                Text("@jaiychetram")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+
+                // Settings / Options List
+                Form {
+                    Section(header: Text("Account")) {
+                        NavigationLink(destination: AccountSettingsView()) {
+                            Label("Account Settings", systemImage: "gearshape")
+                        }
+                        NavigationLink(destination: NotificationsView()) {
+                            Label("Notifications", systemImage: "bell")
+                        }
+                        NavigationLink(destination: PrivacyView()) {
+                            Label("Privacy", systemImage: "hand.raised.slash")
+                        }
+                    }
+
+                    Section {
+                        Button(action: {
+                            // Handle log out logic
+                        }) {
+                            Text("Log Out")
+                                .foregroundColor(.red)
+                        }
+                    }
+                    
+                    .listRowBackground(Color("List-Colors"))
+                    .listRowSeparatorTint(Color("List-Colors"))
+                }
+                .scrollDisabled(true)
+                .scrollContentBackground(.hidden)
+                .padding(.vertical)
+                .frame(width: UIScreen.main.bounds.width)
+
+            }
+            .padding()
+            .navigationTitle("Profile")
+            .sheet(isPresented: $showingImagePicker) {
+                // Image picker implementation here
+                Text("Image Picker Placeholder")
+            }
+        }
+    }
+}
+
+// Placeholder Views
+struct AccountSettingsView: View {
+    var body: some View {
+        Text("Account Settings")
+            .navigationTitle("Account Settings")
+    }
+}
+
+struct NotificationsView: View {
+    var body: some View {
+        Text("Notifications")
+            .navigationTitle("Notifications")
+    }
+}
+
+struct PrivacyView: View {
+    var body: some View {
+        Text("Privacy")
+            .navigationTitle("Privacy")
+    }
+}
+
+
+#Preview("set up page") {
+    SetUpProfileView()
+}
+
+#Preview("Test 2") {
+    ProfileView2()
+}
+
+
+// MARK: - 4th design
 
 struct ProfileView: View {
     
@@ -460,10 +343,9 @@ struct ProfileView: View {
                 WaveShape()
                     .fill(
                         LinearGradient(
-                            gradient: Gradient(colors: [Color.blue, Color.cyan]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                            gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
+                            startPoint: .top,
+                            endPoint: .bottom)
                     )
                     .frame(height: 220)
                 
@@ -494,7 +376,7 @@ struct ProfileView: View {
                     Text("Nahom Worku")
                         .font(.title2)
                         .fontWeight(.semibold)
-                        .padding(.top, 25)
+//                        .padding(.top, 25)
                         .padding()
                     
                     // 2c) Profile details below
