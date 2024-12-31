@@ -22,6 +22,7 @@ struct CurrentDateTasksView: View {
                 ForEach(Array(viewModel.tasksForCurrentDate.enumerated()), id: \.offset) { index, task in
                     HStack {
                         Text("\(task.name)")
+                            .font(.subheadline)
                             .foregroundColor(task.completed ? .gray : .primary)
                             .strikethrough(task.completed, color: .gray)
                         

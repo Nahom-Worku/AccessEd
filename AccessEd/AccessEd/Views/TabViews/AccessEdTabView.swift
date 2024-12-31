@@ -13,13 +13,8 @@ struct AccessEdTabView: View {
     @StateObject private var calendarViewModel = CalendarViewModel()
     @Environment(\.modelContext) private var modelContext
     
+    // TODO: might need to get rid of this variable
     @State var selectedTab: Int = 0
-    
-    @Query var allTasks: [Task]
-    
-    var uncompletedTasks: [Task] {
-        allTasks.filter { !$0.completed }
-    }
     
     var body: some View {
         
@@ -56,7 +51,7 @@ struct AccessEdTabView: View {
                 Label("Calendar", systemImage: "calendar")
             }
             .tag(2)
-            .badge(uncompletedTasks.count)
+            .badge(calendarViewModel.uncompletedTasks.count)
             
             
             // Profile page

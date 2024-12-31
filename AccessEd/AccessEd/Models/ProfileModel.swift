@@ -15,15 +15,24 @@ class ProfileModel: Identifiable {
     var grade: String
     var preferredLanguage: String
     var fieldsOfInterest: [String]
+    var learningStyle: String // e.g., "Visual", "Auditory", "Hands-On"
+    var studyHours: String // e.g., "Morning", "Afternoon", "Evening"
+    var timeZone: String // e.g., "America/New_York"
+    var userSignedIn: Bool = false
   
-    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String]) {
+    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String], learningStyle: String, studyHours: String, timeZone: String = TimeZone.current.identifier) {
         self.name = name
         self.grade = grade
         self.preferredLanguage = preferredLanguage
         self.fieldsOfInterest = fieldsOfInterest
+        self.self.learningStyle = learningStyle
+        self.studyHours = studyHours
+        self.timeZone = timeZone
     }
 }
 
+
+// MARK: - enums
 enum Language: String, CaseIterable {
     case english = "English"
     case spanish = "Spanish"
