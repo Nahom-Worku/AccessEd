@@ -17,6 +17,7 @@ class CourseViewModel : ObservableObject {
     @Published var alertType: MyAlerts? = nil
     @Published var showAlert: Bool = false
     
+    // TODO: - might need to add this in the CourseModel
     let courseCategoryMap: [String: CourseCategory] = [
         "Language Arts": .artsAndHumanities,
         "History": .artsAndHumanities,
