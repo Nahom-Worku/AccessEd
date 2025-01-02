@@ -9,9 +9,37 @@ import Foundation
 import SwiftData
 
 class ProfileViewModel : ObservableObject {
-    private var modelContext: ModelContext? = nil
+    var modelContext: ModelContext? = nil
     @Published var profile: ProfileModel?
     
+    @Published var name: String = ""
+    @Published var grade: String = "9"
+    @Published var preferredLanguage: String = "English"
+    @Published var selectedFieldsOfStudy: Set<FieldsOfStudy> = []
+    
+    @Published var onboardingState: Int = 0
+    
+    @Published var alertTitle: String = ""
+    @Published var showAlert: Bool = false
+    
+    
+    func fetchProfile() {
+        guard let context = modelContext else {
+            print("ModelContext is not set.")
+            return
+        }
+
+        do {
+            // Fetch the profile from the database
+            if let fetchedProfile = try context.fetch(FetchDescriptor<ProfileModel>()).first {
+                self.profile = fetchedProfile
+            } else {
+                print("No profile found.")
+            }
+        } catch {
+            print("Failed to fetch profile: \(error.localizedDescription)")
+        }
+    }
     
     func setUpProfile(profile: ProfileModel) {
         guard let context = modelContext else {
@@ -49,8 +77,6 @@ class ProfileViewModel : ObservableObject {
             existingProfile.grade = updatedProfile.grade
             existingProfile.preferredLanguage = updatedProfile.preferredLanguage
             existingProfile.fieldsOfInterest = updatedProfile.fieldsOfInterest
-            existingProfile.learningStyle = updatedProfile.learningStyle
-            existingProfile.studyHours = updatedProfile.studyHours
             existingProfile.timeZone = updatedProfile.timeZone
 
             // Save changes to the database

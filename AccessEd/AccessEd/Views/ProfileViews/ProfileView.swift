@@ -186,9 +186,9 @@ struct EditProfileView: View {
                         .pickerStyle(MenuPickerStyle())
                     }
                     
-                    QuestionView(question: "What are your fields of interest in education?") {
-                        MultiSelectList(title: "Fields of Interest", items: FieldsOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
-                    }
+//                    QuestionView(question: "What are your fields of interest in education?") {
+//                        MultiSelectList(title: "Fields of Interest", items: FieldsOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
+//                    }
                     
                     
                     Button {

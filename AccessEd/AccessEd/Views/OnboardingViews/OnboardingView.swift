@@ -10,17 +10,8 @@ import SwiftUI
 struct OnboardingView: View {
     
     @Environment(\.modelContext) var modelContext
-    @StateObject var viewModel: CourseViewModel = CourseViewModel()
-    
-    @State var name: String = ""
-    @State var grade: String = "9"
-    @State var preferredLanguage: String = "English"
-    @State var selectedFieldsOfStudy: Set<FieldsOfStudy> = []
-    
-    @State var onboardingState: Int = 0
-    
-    @State var alertTitle: String = ""
-    @State var showAlert: Bool = false
+    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
+    @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
     
     let transition: AnyTransition = .asymmetric(
         insertion: .move(edge: .trailing),
@@ -30,7 +21,7 @@ struct OnboardingView: View {
         ZStack {
             // content
             ZStack {
-                switch onboardingState {
+                switch profileViewModel.onboardingState {
                 case 0:
                     WelcomeView()
                         .transition(transition)
@@ -52,7 +43,7 @@ struct OnboardingView: View {
                 }
             }
             
-            if onboardingState <= 4 {
+            if profileViewModel.onboardingState <= 4 {
                 // buttons
                 VStack {
                     Spacer()
@@ -63,17 +54,21 @@ struct OnboardingView: View {
                 .padding(30)
             }
         }
-        .alert(isPresented: $showAlert, content: {
-            return Alert(title: Text(alertTitle))
+        .alert(isPresented: $profileViewModel.showAlert, content: {
+            return Alert(title: Text(profileViewModel.alertTitle))
         })
+        .onAppear{
+            profileViewModel.modelContext = modelContext
+            profileViewModel.fetchProfile()
+        }
     }
 }
 
 extension OnboardingView {
     
     private var bottomButton: some View {
-        Text(onboardingState == 0 ? "Get Started" :
-            onboardingState == 4 ? "Finish" :
+        Text(profileViewModel.onboardingState == 0 ? "Get Started" :
+                profileViewModel.onboardingState == 4 ? "Finish" :
             "Next"
         )
         .font(.system(size: 17, weight: .bold))
@@ -86,11 +81,13 @@ extension OnboardingView {
             .onTapGesture {
                 handleNextButtonPressed()
                 
-                if onboardingState == 4 {
-                    viewModel.modelContext = modelContext
-                    viewModel.addPredefinedCoursesToInput()
-                    viewModel.loadUserPreferences()
-                    viewModel.fetchCourses()
+                if profileViewModel.onboardingState == 4 {
+                    let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.selectedFieldsOfStudy)
+                    
+                    courseViewModel.modelContext = modelContext
+                    courseViewModel.addPredefinedCoursesToInput()
+                    courseViewModel.loadUserPreferences()
+                    courseViewModel.fetchCourses()
                 }
             }
     }
@@ -102,7 +99,7 @@ extension OnboardingView {
                 .font(.largeTitle)
                 .fontWeight(.semibold)
                 .foregroundColor(Color("Text-Colors"))
-            TextField("Your name here...", text: $name)
+            TextField("Your name here...", text: $profileViewModel.name)
                 .font(.headline)
                 .frame(height: 50)
                 .padding(.horizontal, 20)
@@ -127,7 +124,7 @@ extension OnboardingView {
             HStack {
                 Text("Grade: ")
                 
-                Picker(selection: $grade,
+                Picker(selection: $profileViewModel.grade,
                        label:
                         Text("Grade: ")
                     .font(.headline)
@@ -162,7 +159,7 @@ extension OnboardingView {
             HStack {
                 Text("Language: ")
                 
-                Picker("Select Language", selection: $preferredLanguage) {
+                Picker("Select Language", selection: $profileViewModel.preferredLanguage) {
                     ForEach(Languages.allLanguages, id: \.self) { language in
                         Text(language).tag(language)
                     }
@@ -201,7 +198,7 @@ extension OnboardingView {
                 HStack {
                     Text(field.rawValue)
                     Spacer()
-                    if selectedFieldsOfStudy.contains(field) {
+                    if profileViewModel.selectedFieldsOfStudy.contains(field) {
                         Image(systemName: "checkmark")
                             .foregroundColor(.blue)
                     }
@@ -210,10 +207,10 @@ extension OnboardingView {
                 .padding(.horizontal)
                 .frame(width: UIScreen.main.bounds.width - 100)
                 .onTapGesture {
-                    if selectedFieldsOfStudy.contains(field) {
-                        selectedFieldsOfStudy.remove(field)
+                    if profileViewModel.selectedFieldsOfStudy.contains(field) {
+                        profileViewModel.selectedFieldsOfStudy.remove(field)
                     } else {
-                        selectedFieldsOfStudy.insert(field)
+                        profileViewModel.selectedFieldsOfStudy.insert(field)
                     }
                 }
                 
@@ -232,7 +229,7 @@ extension OnboardingView {
     }
     
     func displaySelectedFieldsOfStudy() -> String {
-        return selectedFieldsOfStudy.map { $0.rawValue }.joined(separator: ", ")
+        return profileViewModel.selectedFieldsOfStudy.map { $0.rawValue }.joined(separator: ", ")
     }
 }
 
@@ -245,9 +242,9 @@ extension OnboardingView {
     func handleNextButtonPressed() {
         
         // CHECK INPUTS
-        switch onboardingState {
+        switch profileViewModel.onboardingState {
         case 1:
-            guard name.count >= 1 else {
+            guard profileViewModel.name.count > 0 else {
                 showAlert(title: "Please enter your name before proceeding!")
                 return
             }
@@ -257,7 +254,7 @@ extension OnboardingView {
 //                return
 //            }
         case 4:
-            guard !selectedFieldsOfStudy.isEmpty else {
+            guard !profileViewModel.selectedFieldsOfStudy.isEmpty else {
                 showAlert(title: "You must select at least one field of interest!")
                 return
             }
@@ -267,11 +264,11 @@ extension OnboardingView {
         
         
         // GO TO NEXT SECTION
-        if onboardingState == 5 {
+        if profileViewModel.onboardingState == 5 {
             signIn()
         } else {
             withAnimation(.spring()) {
-                onboardingState += 1
+                profileViewModel.onboardingState += 1
             }
         }
     }
@@ -290,8 +287,8 @@ extension OnboardingView {
     }
     
     func showAlert(title: String) {
-        alertTitle = title
-        showAlert.toggle()
+        profileViewModel.alertTitle = title
+        profileViewModel.showAlert.toggle()
     }
     
     
