@@ -44,7 +44,7 @@ struct AccessEdApp: App {
                     OnboardingView()
                 }
                 CoursesView()  // TODO: might need to get rid of these
-                CalendarView()
+                CalendarView(viewModel: viewModel)
                     .environment(\.modelContext, modelContext)
                     .environmentObject(viewModel)
             }

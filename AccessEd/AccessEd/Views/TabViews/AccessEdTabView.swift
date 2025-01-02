@@ -44,7 +44,7 @@ struct AccessEdTabView: View {
             
             // Calendar/ToDo List page
             VStack {
-                CalendarView()
+                CalendarView(viewModel: calendarViewModel)
                 Spacer().frame(height: 10)
             }
             .tabItem {
