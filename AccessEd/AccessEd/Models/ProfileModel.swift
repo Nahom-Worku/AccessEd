@@ -20,6 +20,8 @@ class ProfileModel: Identifiable {
     var timeZone: String // e.g., "America/New_York"
     var userSignedIn: Bool = false
   
+    // TODO: - get rid of learningStyle, studyHours and set timeZone = TimeZone.current.identifier
+    
     init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String], learningStyle: String, studyHours: String, timeZone: String = TimeZone.current.identifier) {
         self.name = name
         self.grade = grade
@@ -33,20 +35,26 @@ class ProfileModel: Identifiable {
 
 
 // MARK: - enums
-enum Language: String, CaseIterable {
-    case english = "English"
-    case spanish = "Spanish"
-    case french = "French"
-    case mandarin = "Mandarin"
+enum Languages: String, CaseIterable {
     case arabic = "Arabic"
+    case chineseSimplified = "Chinese (Mandarin – simplified)"
+    case english = "English"
+    case french = "French"
+    case german = "German"
+    case italian = "Italian"
+    case japanese = "Japanese"
+    case korean = "Korean"
+    case portugueseBrazil = "Portuguese (Brazil)"
+    case russian = "Russian"
+    case spanish = "Spanish"
     
     // Optional: Add a computed property or method if needed
     static var allLanguages: [String] {
-        return Language.allCases.map { $0.rawValue }
+        return Languages.allCases.map { $0.rawValue }
     }
 }
 
-enum FieldOfStudy: String, CaseIterable {
+enum FieldsOfStudy: String, CaseIterable {
     case artsAndHumanities = "Arts & Humanities"
     case socialSciences = "Social Sciences"
     case naturalSciences = "Natural Sciences"
@@ -57,6 +65,6 @@ enum FieldOfStudy: String, CaseIterable {
     
     // Optional: Add a computed property or method if needed
     static var allFields: [String] {
-        return FieldOfStudy.allCases.map { $0.rawValue }
+        return FieldsOfStudy.allCases.map { $0.rawValue }
     }
 }

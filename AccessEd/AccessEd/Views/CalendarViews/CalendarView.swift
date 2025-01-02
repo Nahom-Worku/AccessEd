@@ -10,7 +10,7 @@ import SwiftData
 
 struct CalendarView: View {
     @Environment(\.modelContext) var modelContext
-    @EnvironmentObject var viewModel: CalendarViewModel
+    @ObservedObject var viewModel: CalendarViewModel = CalendarViewModel()
     
     var body: some View {
         NavigationView {
@@ -21,8 +21,9 @@ struct CalendarView: View {
                         CalendarTitleLayerView(viewModel: viewModel)
                         CalendarEventsView (viewModel: viewModel)
                     }
-                    .frame(width: UIScreen.main.bounds.width - 20, height: 300, alignment: .top)
-                    .background(Color.gray.opacity(0.05).cornerRadius(20))
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 300, alignment: .top)
+                    .background(Color("Light-Dark Mode Colors").cornerRadius(20))
+                    .shadow(radius: 1, x: 0, y: 0) // color: Color("Text-Colors").opacity(0.3),
                     .padding()
                     
                     // Tasks View
@@ -61,13 +62,15 @@ struct CalendarView: View {
 }
 
 #Preview("Light mode") {
-    CalendarView()
+    let viewModel = CalendarViewModel()
+    CalendarView(viewModel: viewModel)
         .preferredColorScheme(.light)
         .modelContainer(for: [Task.self, CalendarModel.self], inMemory: true)
 }
 
 #Preview("Dark mode") {
-    CalendarView()
+    let viewModel = CalendarViewModel()
+    CalendarView(viewModel: viewModel)
         .preferredColorScheme(.dark)
         .modelContainer(for: [Task.self, CalendarModel.self], inMemory: true)
 }

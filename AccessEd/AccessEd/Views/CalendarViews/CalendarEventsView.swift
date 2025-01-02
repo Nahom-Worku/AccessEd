@@ -36,8 +36,8 @@ struct CalendarEventsView: View {
                         let isToday = calendar.isDateInToday(date)
 
                         // Get stored color if any
-                        let storedColorName = viewModel.getColorForDate(date) ?? "blue"
-                        let storedColor = Color.fromString(storedColorName).opacity(0.025)
+                        let storedColorName = viewModel.getColorForDate(date) ?? "clear"
+                        let storedColor = Color.fromString(storedColorName) //.opacity(0.025)
 
                         // Determine final background color based on conditions
                         let backgroundColor: Color = {

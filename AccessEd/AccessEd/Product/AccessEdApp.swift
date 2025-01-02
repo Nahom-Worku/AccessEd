@@ -37,8 +37,13 @@ struct AccessEdApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                AccessEdTabView()
-                CoursesView()
+                if 1 == 2 {             // TODO: change this statement with the isProfileSetUp variable
+                    AccessEdTabView()
+                }
+                else {
+                    OnboardingView()
+                }
+                CoursesView()  // TODO: might need to get rid of these
                 CalendarView()
                     .environment(\.modelContext, modelContext)
                     .environmentObject(viewModel)
