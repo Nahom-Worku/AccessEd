@@ -10,7 +10,7 @@ import SwiftData
 
 struct CalendarView: View {
     @Environment(\.modelContext) var modelContext
-    @ObservedObject var viewModel: CalendarViewModel = CalendarViewModel()
+    @ObservedObject var viewModel: CalendarViewModel
     
     var body: some View {
         NavigationView {

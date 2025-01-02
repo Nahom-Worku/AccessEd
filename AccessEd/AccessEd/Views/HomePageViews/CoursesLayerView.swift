@@ -40,6 +40,8 @@ struct CoursesLayerView: View {
                 HStack(alignment: .center, spacing: 20) {
                     RecommendedCoursesView(viewModel: viewModel, recommendedCourses: viewModel.topSixRecommendedCourses)
                 }
+                .padding(.horizontal, 5)
+                .padding(.trailing, 20)
                 .frame(maxHeight: 300)
             }
         }
