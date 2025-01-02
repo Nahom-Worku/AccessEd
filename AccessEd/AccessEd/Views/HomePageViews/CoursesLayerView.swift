@@ -47,7 +47,6 @@ struct CoursesLayerView: View {
         .frame(height: viewModel.allRecommendedCourses.isEmpty ? 250 : 290)
         .onAppear {
             viewModel.modelContext = modelContext
-            viewModel.addPredefinedCoursesToInput()
             viewModel.loadUserPreferences()
             viewModel.fetchCourses()
         }

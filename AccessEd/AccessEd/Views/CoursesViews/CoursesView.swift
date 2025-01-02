@@ -264,7 +264,8 @@ struct EachCourseView: View {
                         .font(.headline)
                         .foregroundStyle(Color("Text-Colors"))
                 }
-                .padding(.horizontal, 50)
+                .padding(.horizontal, 35)
+                .padding(.leading, 15)
                 .frame(width: UIScreen.main.bounds.width, alignment: .leading) // 320
             )
     }

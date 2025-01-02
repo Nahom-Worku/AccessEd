@@ -67,6 +67,7 @@ class CourseViewModel : ObservableObject {
             
             unfilteredCourses = CoursesRecommender(userPreferences: userPreferences.inputCourses, excludeList: userPreferences.excludeList)
             
+            // MARK: - update this to re-add the courses in the initial input data for the model
             // Filter out courses that are already in inputCourses or excludeList
             unfilteredCourses = unfilteredCourses.filter { courseName in
                 !(userPreferences.inputCourses.keys.contains(courseName) || userPreferences.excludeList.contains(courseName))

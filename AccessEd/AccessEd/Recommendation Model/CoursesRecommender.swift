@@ -15,7 +15,7 @@ func CoursesRecommender(userPreferences: [String: Double], excludeList: [String]
         let model = try CoursesRecommendationModel(configuration: MLModelConfiguration())
         
         // Create an input object for the model
-        let input = CoursesRecommendationModelInput(items: userPreferences, k: 15, exclude: excludeList)
+        let input = CoursesRecommendationModelInput(items: userPreferences, k: 31, exclude: excludeList)
         
         // Perform the prediction
         let output = try model.prediction(input: input)

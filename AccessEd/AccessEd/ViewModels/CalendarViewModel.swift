@@ -122,7 +122,7 @@ class CalendarViewModel : ObservableObject {
         } else if hasTasks && isCompleted {
             newColor = "green" // All tasks completed
         } else {
-            newColor = "blue" // Default color (no tasks)
+            newColor = "clear" // Default color (no tasks)
         }
 
         // Update the color in CalendarModel
@@ -152,7 +152,7 @@ class CalendarViewModel : ObservableObject {
         if let calendarDate = calendarDates.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
             return calendarDate.color
         }
-        return "blue" // Default color
+        return "clear" // Default color
         
     }
     
@@ -174,7 +174,7 @@ extension Color {
         case "red": return .red
         case "green": return .green
         case "orange": return .orange
-        case "blue": return .blue
+        case "clear": return .clear
         default: return .gray // Default color
         }
     }
@@ -186,7 +186,7 @@ extension String {
         if color == .green { return "green" }
         if color == .orange { return "orange" }
         if color == .blue { return "blue" }
-        return "gray" // Default string
+        return "clear" // Default string
     }
 }
 

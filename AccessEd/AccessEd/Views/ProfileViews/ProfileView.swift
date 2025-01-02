@@ -33,7 +33,7 @@ struct SetUpProfileView: View {
                     
                     QuestionView(question: "Which language do you prefer for learning materials?") {
                         Picker("Select Language", selection: $preferredLanguage) {
-                            ForEach(Language.allLanguages, id: \.self) { language in
+                            ForEach(Languages.allLanguages, id: \.self) { language in
                                 Text(language).tag(language)
                             }
                         }
@@ -41,7 +41,7 @@ struct SetUpProfileView: View {
                     }
                     
                     QuestionView(question: "What are your fields of interest in education?") {
-                        MultiSelectList(title: "Fields of Interest", items: FieldOfStudy.allFields, selectedItems: $fieldsOfInterest)
+                        MultiSelectList(title: "Fields of Interest", items: FieldsOfStudy.allFields, selectedItems: $fieldsOfInterest)
                     }
                     
                     
@@ -94,6 +94,7 @@ struct SetUpProfileView: View {
     }
 }
 
+// MARK: -
 struct QuestionView<Content: View>: View {
     let question: String
     @ViewBuilder let content: Content
@@ -178,7 +179,7 @@ struct EditProfileView: View {
                     
                     QuestionView(question: "Which language do you prefer for learning materials?") {
                         Picker("Select Language", selection: $profile.preferredLanguage) {
-                            ForEach(Language.allLanguages, id: \.self) { language in
+                            ForEach(Languages.allLanguages, id: \.self) { language in
                                 Text(language).tag(language)
                             }
                         }
@@ -186,7 +187,7 @@ struct EditProfileView: View {
                     }
                     
                     QuestionView(question: "What are your fields of interest in education?") {
-                        MultiSelectList(title: "Fields of Interest", items: FieldOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
+                        MultiSelectList(title: "Fields of Interest", items: FieldsOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
                     }
                     
                     

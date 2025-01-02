@@ -26,7 +26,7 @@ struct HomePageView: View {
                         
                         Spacer()
                         
-                        Image("education")
+                        Image("App Logo")
                             .renderingMode(.original)
                             .resizable()
                             .scaledToFit()
