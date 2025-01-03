@@ -12,7 +12,8 @@ import SwiftData
 @main
 struct AccessEdApp: App {
     @Environment(\.modelContext) private var modelContext
-    @StateObject var viewModel = CalendarViewModel()
+    @StateObject var calendarViewModel = CalendarViewModel()
+    @StateObject var profileViewModel = ProfileViewModel()
 
     var container: ModelContainer = {
 
@@ -29,6 +30,7 @@ struct AccessEdApp: App {
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
+            print("Error: \(error.localizedDescription)")
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
@@ -37,16 +39,17 @@ struct AccessEdApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                if 1 == 2 {             // TODO: change this statement with the isProfileSetUp variable
-                    AccessEdTabView()
-                }
-                else {
-                    OnboardingView()
-                }
+
+                AppIntroView()
+                OnboardingView()
+                AccessEdTabView()
+
                 CoursesView()  // TODO: might need to get rid of these
-                CalendarView(viewModel: viewModel)
+                CalendarView(viewModel: calendarViewModel)
+                ProfileView()
                     .environment(\.modelContext, modelContext)
-                    .environmentObject(viewModel)
+                    .environmentObject(calendarViewModel)
+                    .environmentObject(profileViewModel)
             }
             .navigationViewStyle(StackNavigationViewStyle())
         }

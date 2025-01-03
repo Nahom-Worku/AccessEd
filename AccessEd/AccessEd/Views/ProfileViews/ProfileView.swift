@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-
+//MARK: - Set up profile View
 struct SetUpProfileView: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
@@ -94,7 +94,7 @@ struct SetUpProfileView: View {
     }
 }
 
-// MARK: -
+// MARK: - question view
 struct QuestionView<Content: View>: View {
     let question: String
     @ViewBuilder let content: Content
@@ -109,6 +109,7 @@ struct QuestionView<Content: View>: View {
     }
 }
 
+// MARK:- multi selct List
 struct MultiSelectList: View {
     let title: String
     let items: [String]
@@ -332,9 +333,12 @@ struct PrivacyView: View {
 }
 
 
-// MARK: - 4th design
+// MARK: - 4th (current )design
 
 struct ProfileView: View {
+    @Environment(\.modelContext) var modelContext
+    @StateObject var viewModel: ProfileViewModel = ProfileViewModel()
+    @State var profile: ProfileModel?
     
     var body: some View {
         NavigationView {
@@ -386,10 +390,30 @@ struct ProfileView: View {
                         ProfileRowView(icon: "book.closed.fill",   text: "CS")
                         ProfileRowView(icon: "person.fill",         text: "My Mentor")
                         ProfileRowView(icon: "phone.fill",          text: "### - #### - ####")
+                        
+                        Text("Name: \(String(describing: viewModel.profile?.name))")
+                        Text("Grade: \(String(describing: viewModel.profile?.grade))")
+                        Text("Preffered Language: \(String(describing: viewModel.profile?.preferredLanguage))")
+                        
+                        HStack(spacing: 10) {
+                            Text("Fields of Interest: ")
+                            
+                            if let fieldsOfInterest = viewModel.profile?.fieldsOfInterest,
+                               !fieldsOfInterest.isEmpty {
+                                // Option 1: show them all in a single line
+                                Text(fieldsOfInterest.map { $0.rawValue }.joined(separator: ", "))
+                            }
+                        }
+                        
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 8)
                     .background(Color("Light-Dark Mode Colors"))
+                    
+                    
+                    Button("Delete profile") {
+                        viewModel.deleteProfile()
+                    }
                     
                     Spacer()
                 }
@@ -398,6 +422,13 @@ struct ProfileView: View {
             }
             .ignoresSafeArea(edges: .top)
             .navigationTitle("Profile")
+        }
+        .onAppear{
+            viewModel.modelContext = modelContext
+            viewModel.fetchProfile()
+            
+            print("Count: \(viewModel.profile?.fieldsOfInterest.count ?? 000)")
+            print(viewModel.profile?.fieldsOfInterestRaw.count ?? 000)
         }
     }
 }

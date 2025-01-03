@@ -14,18 +14,28 @@ class ProfileModel: Identifiable {
     var name: String
     var grade: String
     var preferredLanguage: String
-    var fieldsOfInterest: Set<FieldsOfStudy>
-    var timeZone: String // e.g., "America/New_York"
-    var userSignedIn: Bool = false
-  
-    // TODO: - get rid of learningStyle, studyHours and set timeZone = TimeZone.current.identifier
     
-    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: Set<FieldsOfStudy>, timeZone: String = TimeZone.current.identifier) {
+    var fieldsOfInterestRaw: [String]
+    
+    var fieldsOfInterest: [FieldsOfStudy] {
+        get { fieldsOfInterestRaw.compactMap { FieldsOfStudy(rawValue: $0) } }
+        set { fieldsOfInterestRaw = newValue.map { $0.rawValue } }
+    }
+    
+    var timeZone: String
+    
+    // MARK: - might not even need this
+    var userSignedIn: Bool
+  
+    // TODO: - set timeZone = TimeZone.current.identifier
+    
+    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [FieldsOfStudy], timeZone: String = TimeZone.current.identifier, userSignedIn: Bool = false) {
         self.name = name
         self.grade = grade
         self.preferredLanguage = preferredLanguage
-        self.fieldsOfInterest = fieldsOfInterest
+        self.fieldsOfInterestRaw = fieldsOfInterest.map { $0.rawValue }
         self.timeZone = timeZone
+        self.userSignedIn = userSignedIn
     }
 }
 

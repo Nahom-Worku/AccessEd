@@ -15,13 +15,59 @@ class ProfileViewModel : ObservableObject {
     @Published var name: String = ""
     @Published var grade: String = "9"
     @Published var preferredLanguage: String = "English"
-    @Published var selectedFieldsOfStudy: Set<FieldsOfStudy> = []
+    @Published var fieldsOfInterest: [FieldsOfStudy] = []
+    @Published var isUserSignedIn: Bool = false
     
     @Published var onboardingState: Int = 0
     
     @Published var alertTitle: String = ""
     @Published var showAlert: Bool = false
     
+    func removeField(_ field: FieldsOfStudy) {
+        fieldsOfInterest.removeAll { $0 == field }
+        try? modelContext?.save()
+        fetchProfile()
+    }
+    
+    func addField(_ field: FieldsOfStudy) {
+        fieldsOfInterest.append(field)
+        try? modelContext?.save()
+        fetchProfile()
+    }
+    
+    func updateStatus() {
+        isUserSignedIn = true
+        try? modelContext?.save()
+        fetchProfile()
+    }
+    
+    func deleteProfile() {
+        guard let context = modelContext else {
+            print("ModelContext is not set.")
+            return
+        }
+
+        // Ensure there's a profile to delete
+        guard let profileToDelete = profile else {
+            print("No profile to delete.")
+            return
+        }
+
+        do {
+            // Remove the profile from the context
+            context.delete(profileToDelete)
+
+            // Save the context to persist the deletion
+            try context.save()
+
+            // Clear the in-memory reference
+            self.profile = nil
+
+            print("Profile successfully deleted.")
+        } catch {
+            print("Failed to delete profile: \(error.localizedDescription)")
+        }
+    }
     
     func fetchProfile() {
         guard let context = modelContext else {
@@ -54,14 +100,13 @@ class ProfileViewModel : ObservableObject {
             } else {
                 context.insert(profile)
                 self.profile = profile
+                try? modelContext?.save()
+                
+                fetchProfile()
             }
         } catch {
             print("Failed to fetch or set up profile: \(error.localizedDescription)")
         }
-    }
-    
-    func getProfile() -> ProfileModel? {
-        return profile
     }
     
     func updateProfile(updatedProfile: ProfileModel) {

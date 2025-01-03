@@ -38,8 +38,14 @@ struct OnboardingView: View {
                     addFieldsOfInterestSection
                         .transition(transition)
                 default:
-                    AccessEdTabView()
-                        .transition(.move(edge: .trailing).combined(with: .opacity))
+                    if profileViewModel.isUserSignedIn {
+                        AccessEdTabView()
+                            .transition(.move(edge: .trailing).combined(with: .opacity))
+                    } else {
+                        VStack {
+                            Text("switch statement done")
+                        }
+                    }
                 }
             }
             
@@ -82,7 +88,16 @@ extension OnboardingView {
                 handleNextButtonPressed()
                 
                 if profileViewModel.onboardingState == 4 {
-                    let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.selectedFieldsOfStudy)
+                    let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest)
+                    
+                    profileViewModel.setUpProfile(profile: profile)
+                    
+                    profileViewModel.fetchProfile()
+//                    profileViewModel.profile?.fieldsOfInterest = profileViewModel.fieldsOfInterest
+                    
+                    profileViewModel.updateStatus()
+                    
+                    print(profileViewModel.isUserSignedIn)
                     
                     courseViewModel.modelContext = modelContext
                     courseViewModel.addPredefinedCoursesToInput()
@@ -184,21 +199,12 @@ extension OnboardingView {
                 .fontWeight(.semibold)
                 .foregroundStyle(Color("Text-Colors"))
             
-            
-//            HStack {
-//                Text("Selected: ")
-//                    .font(.headline)
-//                Text(displaySelectedFieldsOfStudy())
-//                    .font(.subheadline)
-//            }
-//            .padding()
-//            .foregroundStyle(Color("Text-Colors"))
                         
             List(FieldsOfStudy.allCases, id: \.self) { field in
                 HStack {
                     Text(field.rawValue)
                     Spacer()
-                    if profileViewModel.selectedFieldsOfStudy.contains(field) {
+                    if profileViewModel.fieldsOfInterest.contains(field) {
                         Image(systemName: "checkmark")
                             .foregroundColor(.blue)
                     }
@@ -207,10 +213,10 @@ extension OnboardingView {
                 .padding(.horizontal)
                 .frame(width: UIScreen.main.bounds.width - 100)
                 .onTapGesture {
-                    if profileViewModel.selectedFieldsOfStudy.contains(field) {
-                        profileViewModel.selectedFieldsOfStudy.remove(field)
+                    if profileViewModel.fieldsOfInterest.contains(field) {
+                        profileViewModel.removeField(field)
                     } else {
-                        profileViewModel.selectedFieldsOfStudy.insert(field)
+                        profileViewModel.addField(field)
                     }
                 }
                 
@@ -226,10 +232,6 @@ extension OnboardingView {
             Spacer()
         }
         .padding(20)
-    }
-    
-    func displaySelectedFieldsOfStudy() -> String {
-        return profileViewModel.selectedFieldsOfStudy.map { $0.rawValue }.joined(separator: ", ")
     }
 }
 
@@ -254,7 +256,7 @@ extension OnboardingView {
 //                return
 //            }
         case 4:
-            guard !profileViewModel.selectedFieldsOfStudy.isEmpty else {
+            guard !profileViewModel.fieldsOfInterest.isEmpty else {
                 showAlert(title: "You must select at least one field of interest!")
                 return
             }
@@ -278,6 +280,13 @@ extension OnboardingView {
         // MARK: - TODO thing here
         // TODO: maybe set isProfileSetUp = true here
         
+        let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest)
+        
+        profileViewModel.setUpProfile(profile: profile)
+        
+        withAnimation(.spring()) {
+            profileViewModel.updateStatus()
+        }
 //        currentUserName = name
 //        currentUserAge = Int(age)
 //        currentUserGender = gender
