@@ -30,12 +30,13 @@ class CalendarViewModel : ObservableObject {
     
     var tasksForCurrentDate: [Task] { tasks.filter { calendar.isDateInToday($0.date) } }
     
+    var uncompletedTasks: [Task] { tasks.filter { !$0.completed } }
+    
     // Filter the uncompleted tasks for the selected date
     var uncompletedTasksForSelectedDate: [Task] { tasksForSelectedDate.filter { !$0.completed } }
     
     var uncompletedTasksForCurrentDate: [Task] { tasks.filter { calendar.isDateInToday($0.date) && !$0.completed }}
     
-    var uncompletedTasks: [Task] { tasks.filter { !$0.completed } }
     
     var daysInMonthWithPadding: [Date?] {
         let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: currentMonth))

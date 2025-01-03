@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-
+//MARK: - Set up profile View
 struct SetUpProfileView: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
@@ -94,7 +94,7 @@ struct SetUpProfileView: View {
     }
 }
 
-// MARK: -
+// MARK: - question view
 struct QuestionView<Content: View>: View {
     let question: String
     @ViewBuilder let content: Content
@@ -109,6 +109,7 @@ struct QuestionView<Content: View>: View {
     }
 }
 
+// MARK:- multi selct List
 struct MultiSelectList: View {
     let title: String
     let items: [String]
@@ -186,9 +187,9 @@ struct EditProfileView: View {
                         .pickerStyle(MenuPickerStyle())
                     }
                     
-                    QuestionView(question: "What are your fields of interest in education?") {
-                        MultiSelectList(title: "Fields of Interest", items: FieldsOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
-                    }
+//                    QuestionView(question: "What are your fields of interest in education?") {
+//                        MultiSelectList(title: "Fields of Interest", items: FieldsOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
+//                    }
                     
                     
                     Button {
@@ -332,9 +333,13 @@ struct PrivacyView: View {
 }
 
 
-// MARK: - 4th design
+// MARK: - 4th (current )design
 
 struct ProfileView: View {
+    @Environment(\.modelContext) var modelContext
+    @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
+    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
+    @State var profile: ProfileModel?
     
     var body: some View {
         NavigationView {
@@ -386,10 +391,45 @@ struct ProfileView: View {
                         ProfileRowView(icon: "book.closed.fill",   text: "CS")
                         ProfileRowView(icon: "person.fill",         text: "My Mentor")
                         ProfileRowView(icon: "phone.fill",          text: "### - #### - ####")
+                        
+                        if let name  = profileViewModel.profile?.name {
+                            Text("Name: \(name)")
+                        }
+                        
+                        if let grade = profileViewModel.profile?.grade {
+                            Text("Grade: \(grade)")
+                        }
+                        
+                        if let preferredLanguage = profileViewModel.profile?.preferredLanguage {
+                            Text("Preferred Language: \(preferredLanguage)")
+                        }
+                        
+                        HStack(spacing: 10) {
+                            
+                            Text("Fields of Interest: ")
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                if let fieldsOfInterest = profileViewModel.profile?.fieldsOfInterest,
+                                   !fieldsOfInterest.isEmpty {
+                                    
+                                    ForEach(fieldsOfInterest, id: \.self) { field in
+                                        Text(field)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 8)
                     .background(Color("Light-Dark Mode Colors"))
+                    
+                    
+                    Button("Delete profile") {
+                        profileViewModel.deleteProfile()
+                        courseViewModel.clearUserPreferences()
+                    }
                     
                     Spacer()
                 }
@@ -398,6 +438,11 @@ struct ProfileView: View {
             }
             .ignoresSafeArea(edges: .top)
             .navigationTitle("Profile")
+        }
+        .onAppear{
+            profileViewModel.modelContext = modelContext
+            courseViewModel.fetchCourses()
+            profileViewModel.fetchProfile()
         }
     }
 }

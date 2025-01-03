@@ -14,22 +14,17 @@ class ProfileModel: Identifiable {
     var name: String
     var grade: String
     var preferredLanguage: String
-    var fieldsOfInterest: [String]
-    var learningStyle: String // e.g., "Visual", "Auditory", "Hands-On"
-    var studyHours: String // e.g., "Morning", "Afternoon", "Evening"
-    var timeZone: String // e.g., "America/New_York"
-    var userSignedIn: Bool = false
-  
-    // TODO: - get rid of learningStyle, studyHours and set timeZone = TimeZone.current.identifier
+    var fieldsOfInterest: [String]      // TODO: add a profile picture var
+    var timeZone: String
+    var isUserSignedIn: Bool
     
-    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String], learningStyle: String, studyHours: String, timeZone: String = TimeZone.current.identifier) {
+    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String], timeZone: String = TimeZone.current.identifier, isUserSignedIn: Bool = false) {
         self.name = name
         self.grade = grade
         self.preferredLanguage = preferredLanguage
-        self.fieldsOfInterest = fieldsOfInterest
-        self.self.learningStyle = learningStyle
-        self.studyHours = studyHours
+        self.fieldsOfInterest = fieldsOfInterest 
         self.timeZone = timeZone
+        self.isUserSignedIn = isUserSignedIn
     }
 }
 
@@ -54,7 +49,7 @@ enum Languages: String, CaseIterable {
     }
 }
 
-enum FieldsOfStudy: String, CaseIterable {
+enum FieldsOfStudy: String, Codable, CaseIterable {
     case artsAndHumanities = "Arts & Humanities"
     case socialSciences = "Social Sciences"
     case naturalSciences = "Natural Sciences"
