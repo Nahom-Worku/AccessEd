@@ -13,7 +13,7 @@ struct AppIntroView: View {
     
     var body: some View {
         ZStack {
-            if ((viewModel.profile?.userSignedIn) != nil) {
+            if ((viewModel.profile?.isUserSignedIn) != nil) {
                 AccessEdTabView()
             } else {
                 OnboardingView()
@@ -22,8 +22,6 @@ struct AppIntroView: View {
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchProfile()
-            
-            print(viewModel.isUserSignedIn)
         }
     }
 }

@@ -14,28 +14,17 @@ class ProfileModel: Identifiable {
     var name: String
     var grade: String
     var preferredLanguage: String
-    
-    var fieldsOfInterestRaw: [String]
-    
-    var fieldsOfInterest: [FieldsOfStudy] {
-        get { fieldsOfInterestRaw.compactMap { FieldsOfStudy(rawValue: $0) } }
-        set { fieldsOfInterestRaw = newValue.map { $0.rawValue } }
-    }
-    
+    var fieldsOfInterest: [String]      // TODO: add a profile picture var
     var timeZone: String
+    var isUserSignedIn: Bool
     
-    // MARK: - might not even need this
-    var userSignedIn: Bool
-  
-    // TODO: - set timeZone = TimeZone.current.identifier
-    
-    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [FieldsOfStudy], timeZone: String = TimeZone.current.identifier, userSignedIn: Bool = false) {
+    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String], timeZone: String = TimeZone.current.identifier, isUserSignedIn: Bool = false) {
         self.name = name
         self.grade = grade
         self.preferredLanguage = preferredLanguage
-        self.fieldsOfInterestRaw = fieldsOfInterest.map { $0.rawValue }
+        self.fieldsOfInterest = fieldsOfInterest 
         self.timeZone = timeZone
-        self.userSignedIn = userSignedIn
+        self.isUserSignedIn = isUserSignedIn
     }
 }
 

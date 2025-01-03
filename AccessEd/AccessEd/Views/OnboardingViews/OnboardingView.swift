@@ -41,16 +41,11 @@ struct OnboardingView: View {
                     if profileViewModel.isUserSignedIn {
                         AccessEdTabView()
                             .transition(.move(edge: .trailing).combined(with: .opacity))
-                    } else {
-                        VStack {
-                            Text("switch statement done")
-                        }
                     }
                 }
             }
             
             if profileViewModel.onboardingState <= 4 {
-                // buttons
                 VStack {
                     Spacer()
                     bottomButton
@@ -91,13 +86,8 @@ extension OnboardingView {
                     let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest)
                     
                     profileViewModel.setUpProfile(profile: profile)
-                    
                     profileViewModel.fetchProfile()
-//                    profileViewModel.profile?.fieldsOfInterest = profileViewModel.fieldsOfInterest
-                    
                     profileViewModel.updateStatus()
-                    
-                    print(profileViewModel.isUserSignedIn)
                     
                     courseViewModel.modelContext = modelContext
                     courseViewModel.addPredefinedCoursesToInput()
@@ -191,7 +181,6 @@ extension OnboardingView {
     private var addFieldsOfInterestSection: some View {
         
         VStack(spacing: 20) {
-//            Spacer()
             Spacer().frame(height: 80)
             
             Text("What are your fields of interest?")
@@ -204,7 +193,7 @@ extension OnboardingView {
                 HStack {
                     Text(field.rawValue)
                     Spacer()
-                    if profileViewModel.fieldsOfInterest.contains(field) {
+                    if profileViewModel.fieldsOfInterest.contains(field.rawValue) {
                         Image(systemName: "checkmark")
                             .foregroundColor(.blue)
                     }
@@ -213,22 +202,19 @@ extension OnboardingView {
                 .padding(.horizontal)
                 .frame(width: UIScreen.main.bounds.width - 100)
                 .onTapGesture {
-                    if profileViewModel.fieldsOfInterest.contains(field) {
-                        profileViewModel.removeField(field)
+                    if profileViewModel.fieldsOfInterest.contains(field.rawValue) {
+                        profileViewModel.removeField(field.rawValue)
                     } else {
-                        profileViewModel.addField(field)
+                        profileViewModel.addField(field.rawValue)
+                        profileViewModel.profile?.fieldsOfInterest = profileViewModel.fieldsOfInterest
                     }
                 }
                 
                 .listRowBackground(Color.gray.opacity(0.1))
-//                .listRowSeparatorTint(Color("List-Colors"))
             }
             .scrollDisabled(true)
             .scrollContentBackground(.hidden)
            
-            
-            
-//            Spacer()
             Spacer()
         }
         .padding(20)

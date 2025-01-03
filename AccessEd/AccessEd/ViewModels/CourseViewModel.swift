@@ -54,6 +54,7 @@ class CourseViewModel : ObservableObject {
         "Culinary Arts": .careerAndTech,
     ]
     
+    // MARK: - TODO: - need to replace these courses with the user interests from the profile model
     let predefinedCourses: [String] = ["Calculus", "History", "Physics"]
     let defaultWeight: Double = 1.0
     
@@ -111,6 +112,8 @@ class CourseViewModel : ObservableObject {
         
         fetchCourses()
     }
+    
+    // MARK: - TODO:- might need to add a deleteAllCourses() function
     
 //    func moveCourse(from: IndexSet, to: Int) {
     //        guard let sourceIndex = from.first else {

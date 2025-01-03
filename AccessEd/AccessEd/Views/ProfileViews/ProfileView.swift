@@ -337,7 +337,8 @@ struct PrivacyView: View {
 
 struct ProfileView: View {
     @Environment(\.modelContext) var modelContext
-    @StateObject var viewModel: ProfileViewModel = ProfileViewModel()
+    @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
+    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
     @State var profile: ProfileModel?
     
     var body: some View {
@@ -391,19 +392,33 @@ struct ProfileView: View {
                         ProfileRowView(icon: "person.fill",         text: "My Mentor")
                         ProfileRowView(icon: "phone.fill",          text: "### - #### - ####")
                         
-                        Text("Name: \(String(describing: viewModel.profile?.name))")
-                        Text("Grade: \(String(describing: viewModel.profile?.grade))")
-                        Text("Preffered Language: \(String(describing: viewModel.profile?.preferredLanguage))")
+                        if let name  = profileViewModel.profile?.name {
+                            Text("Name: \(name)")
+                        }
+                        
+                        if let grade = profileViewModel.profile?.grade {
+                            Text("Grade: \(grade)")
+                        }
+                        
+                        if let preferredLanguage = profileViewModel.profile?.preferredLanguage {
+                            Text("Preferred Language: \(preferredLanguage)")
+                        }
                         
                         HStack(spacing: 10) {
+                            
                             Text("Fields of Interest: ")
                             
-                            if let fieldsOfInterest = viewModel.profile?.fieldsOfInterest,
-                               !fieldsOfInterest.isEmpty {
-                                // Option 1: show them all in a single line
-                                Text(fieldsOfInterest.map { $0.rawValue }.joined(separator: ", "))
+                            VStack(alignment: .leading, spacing: 8) {
+                                if let fieldsOfInterest = profileViewModel.profile?.fieldsOfInterest,
+                                   !fieldsOfInterest.isEmpty {
+                                    
+                                    ForEach(fieldsOfInterest, id: \.self) { field in
+                                        Text(field)
+                                    }
+                                }
                             }
                         }
+                        
                         
                     }
                     .padding(.horizontal, 16)
@@ -412,7 +427,8 @@ struct ProfileView: View {
                     
                     
                     Button("Delete profile") {
-                        viewModel.deleteProfile()
+                        profileViewModel.deleteProfile()
+                        courseViewModel.clearUserPreferences()
                     }
                     
                     Spacer()
@@ -424,11 +440,9 @@ struct ProfileView: View {
             .navigationTitle("Profile")
         }
         .onAppear{
-            viewModel.modelContext = modelContext
-            viewModel.fetchProfile()
-            
-            print("Count: \(viewModel.profile?.fieldsOfInterest.count ?? 000)")
-            print(viewModel.profile?.fieldsOfInterestRaw.count ?? 000)
+            profileViewModel.modelContext = modelContext
+            courseViewModel.fetchCourses()
+            profileViewModel.fetchProfile()
         }
     }
 }

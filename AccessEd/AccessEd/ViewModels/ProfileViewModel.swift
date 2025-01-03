@@ -10,64 +10,17 @@ import SwiftData
 
 class ProfileViewModel : ObservableObject {
     var modelContext: ModelContext? = nil
-    @Published var profile: ProfileModel?
     
+    @Published var profile: ProfileModel?
     @Published var name: String = ""
     @Published var grade: String = "9"
     @Published var preferredLanguage: String = "English"
-    @Published var fieldsOfInterest: [FieldsOfStudy] = []
+    @Published var fieldsOfInterest: [String] = []
     @Published var isUserSignedIn: Bool = false
-    
     @Published var onboardingState: Int = 0
-    
     @Published var alertTitle: String = ""
     @Published var showAlert: Bool = false
     
-    func removeField(_ field: FieldsOfStudy) {
-        fieldsOfInterest.removeAll { $0 == field }
-        try? modelContext?.save()
-        fetchProfile()
-    }
-    
-    func addField(_ field: FieldsOfStudy) {
-        fieldsOfInterest.append(field)
-        try? modelContext?.save()
-        fetchProfile()
-    }
-    
-    func updateStatus() {
-        isUserSignedIn = true
-        try? modelContext?.save()
-        fetchProfile()
-    }
-    
-    func deleteProfile() {
-        guard let context = modelContext else {
-            print("ModelContext is not set.")
-            return
-        }
-
-        // Ensure there's a profile to delete
-        guard let profileToDelete = profile else {
-            print("No profile to delete.")
-            return
-        }
-
-        do {
-            // Remove the profile from the context
-            context.delete(profileToDelete)
-
-            // Save the context to persist the deletion
-            try context.save()
-
-            // Clear the in-memory reference
-            self.profile = nil
-
-            print("Profile successfully deleted.")
-        } catch {
-            print("Failed to delete profile: \(error.localizedDescription)")
-        }
-    }
     
     func fetchProfile() {
         guard let context = modelContext else {
@@ -131,6 +84,52 @@ class ProfileViewModel : ObservableObject {
             } catch {
                 print("Failed to save profile: \(error.localizedDescription)")
             }
+        }
+    }
+    
+    func addField(_ field: String) {
+        fieldsOfInterest.append(field)
+        try? modelContext?.save()
+        fetchProfile()
+    }
+    
+    func removeField(_ field: String) {
+        fieldsOfInterest.removeAll { $0 == field }
+        try? modelContext?.save()
+        fetchProfile()
+    }
+    
+    func updateStatus() {
+        isUserSignedIn = true
+        try? modelContext?.save()
+        fetchProfile()
+    }
+    
+    func deleteProfile() {
+        guard let context = modelContext else {
+            print("ModelContext is not set.")
+            return
+        }
+
+        // Ensure there's a profile to delete
+        guard let profileToDelete = profile else {
+            print("No profile to delete.")
+            return
+        }
+
+        do {
+            // Remove the profile from the context
+            context.delete(profileToDelete)
+
+            // Save the context to persist the deletion
+            try context.save()
+
+            // Clear the in-memory reference
+            self.profile = nil
+
+            print("Profile successfully deleted.")
+        } catch {
+            print("Failed to delete profile: \(error.localizedDescription)")
         }
     }
 }

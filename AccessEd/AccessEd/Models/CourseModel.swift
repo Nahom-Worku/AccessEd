@@ -56,6 +56,8 @@ class CourseModel: Identifiable {
     }
 }
 
+// MARK: - UserPreferences Model
+
 @Model
 class UserPreferences {
     @Attribute(.unique) var id: UUID
