@@ -222,42 +222,74 @@ struct EditProfileView: View {
 struct ProfileView2: View {
     @State private var showingImagePicker = false
     @State private var profileImage: Image? = Image("Profile pic")
+    
+    @Environment(\.modelContext) var modelContext
+    @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
+    
 
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
                 
                 // Profile Image & Edit Button
-                ZStack {
+                VStack {
                     
-                    if let image = profileImage {
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 100, height: 100)
-                            .clipShape(Circle())
-                            .shadow(radius: 2)
+                    ZStack {
+                        if let image = profileImage {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 100, height: 100)
+                                .clipShape(Circle())
+                                .shadow(radius: 2)
+                        }
+                        Button(action: {
+                            showingImagePicker.toggle()
+                        }) {
+                            Circle()
+                                .fill(Color.black.opacity(0.5))
+                                .frame(width: 30, height: 30)
+                                .overlay(Image(systemName: "pencil")
+                                    .foregroundColor(.white))
+                                .offset(x: 40, y: 40)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    Button(action: {
-                        showingImagePicker.toggle()
-                    }) {
-                        Circle()
-                            .fill(Color.black.opacity(0.5))
-                            .frame(width: 30, height: 30)
-                            .overlay(Image(systemName: "pencil")
-                            .foregroundColor(.white))
-                            .offset(x: 40, y: 40)
+                    .padding(.vertical)
+                    
+//                    Spacer()
+                    
+                    VStack(spacing: 0) {
+                        if let name = profileViewModel.profile?.name {
+                            Text(name)
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        if let grade = profileViewModel.profile?.grade {
+                            Text("Grade \(grade)")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
                     }
-                    .buttonStyle(PlainButtonStyle())
+//                    .padding(.vertical)
                 }
+                .padding(.horizontal, 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(
+                            LinearGradient(
+//                                gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
+                                gradient: Gradient(colors: [Color(#colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)), Color(#colorLiteral(red: 0.2279692888, green: 0.9256613255, blue: 0.9985740781, alpha: 1))]),
+                                startPoint: .bottom,
+                                endPoint: .top)
+                        )
+                        .padding(.horizontal, 30)
+                        .frame(width: UIScreen.main.bounds.width, height: 225)
+                )
+                .padding(.top, 30)
 
-                // Name & Username
-                Text("John Doe")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                Text("@jaiychetram")
-                    .font(.caption)
-                    .foregroundColor(.gray)
+                
 
                 // Settings / Options List
                 Form {
@@ -265,17 +297,33 @@ struct ProfileView2: View {
                         NavigationLink(destination: AccountSettingsView()) {
                             Label("Account Settings", systemImage: "gearshape")
                         }
-                        NavigationLink(destination: NotificationsView()) {
+                        
+                        HStack {
                             Label("Notifications", systemImage: "bell")
+                            
+                            Spacer()
+                            
+                            Toggle("", isOn: $profileViewModel.isNotificationsOn)
+                                .labelsHidden()
+                                .scaleEffect(0.75)
                         }
+                        
                         NavigationLink(destination: PrivacyView()) {
                             Label("Privacy", systemImage: "hand.raised.slash")
                         }
+                        
+                        NavigationLink(destination: ProfileView()) {
+                            Label("Another profile view", systemImage: "plus.square.fill")
+                        }
                     }
+                    
 
                     Section {
                         Button(action: {
                             // Handle log out logic
+                            
+                            profileViewModel.deleteProfile()
+                            
                         }) {
                             Text("Log Out")
                                 .foregroundColor(.red)
@@ -288,6 +336,7 @@ struct ProfileView2: View {
                 .scrollDisabled(true)
                 .scrollContentBackground(.hidden)
                 .padding(.vertical)
+                .padding(.top, 50)
                 .frame(width: UIScreen.main.bounds.width)
 
             }
@@ -298,6 +347,10 @@ struct ProfileView2: View {
                 Text("Image Picker Placeholder")
             }
         }
+        .onAppear{
+            profileViewModel.modelContext = modelContext
+            profileViewModel.fetchProfile()
+        }
     }
 }
 
@@ -306,13 +359,6 @@ struct AccountSettingsView: View {
     var body: some View {
         Text("Account Settings")
             .navigationTitle("Account Settings")
-    }
-}
-
-struct NotificationsView: View {
-    var body: some View {
-        Text("Notifications")
-            .navigationTitle("Notifications")
     }
 }
 
@@ -328,18 +374,18 @@ struct PrivacyView: View {
     SetUpProfileView()
 }
 
-#Preview("Test 2") {
+#Preview("profile view 2") {
     ProfileView2()
 }
 
 
-// MARK: - 4th (current )design
+// MARK: - 4th (current) design
 
 struct ProfileView: View {
     @Environment(\.modelContext) var modelContext
     @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
     @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
-    @State var profile: ProfileModel?
+//    @State var profile: ProfileModel?
     
     var body: some View {
         NavigationView {
@@ -486,7 +532,7 @@ struct ProfileRowView: View {
             Image(systemName: icon)
                 .foregroundColor(.blue)
             Text(text)
-                .foregroundColor(.black)
+                .foregroundStyle(Color("Text-Colors"))
             Spacer()
         }
     }

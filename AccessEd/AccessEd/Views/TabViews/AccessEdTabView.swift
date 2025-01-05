@@ -56,7 +56,8 @@ struct AccessEdTabView: View {
             
             // Profile page
             VStack {
-                ProfileView()
+//                ProfileView()
+                ProfileView2()
                 Spacer().frame(height: 10)
             }
             .tabItem {
