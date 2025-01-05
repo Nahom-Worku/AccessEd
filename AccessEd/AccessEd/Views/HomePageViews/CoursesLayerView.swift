@@ -82,9 +82,11 @@ struct RecommendedCoursesView: View {
                         course.courseImage
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(height: UIScreen.main.bounds.width * 0.26) //100) // 120
+                            .frame(height: UIScreen.main.bounds.width * 0.25) //100) // 120
                             .clipped()
                             .cornerRadius(10)
+                        
+                        Spacer().frame(height: 8)
                         
                         VStack(alignment: .center, spacing: 4) {
                             Text(course.name)
@@ -97,7 +99,7 @@ struct RecommendedCoursesView: View {
                         }
                         .padding([.leading, .trailing, .bottom], 8)
                     }
-                    .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.35) //150) // 180
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.33) //150) // 180
                     .background(Color("Courses-Colors"))
                     .cornerRadius(15)
                     .shadow(radius: 3)

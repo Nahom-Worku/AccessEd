@@ -21,6 +21,8 @@ class ProfileViewModel : ObservableObject {
     @Published var alertTitle: String = ""
     @Published var showAlert: Bool = false
     
+    @Published var isNotificationsOn: Bool = true
+    
     
     func fetchProfile() {
         guard let context = modelContext else {
