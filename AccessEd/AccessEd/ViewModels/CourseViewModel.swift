@@ -55,8 +55,8 @@ class CourseViewModel : ObservableObject {
     ]
     
     // MARK: - TODO: - need to replace these courses with the user interests from the profile model
-    let predefinedCourses: [String] = ["Calculus", "History", "Physics"]
-    let defaultWeight: Double = 1.0
+    var predefinedCourses: [String] = ["Calculus", "History", "Physics"]
+    var defaultWeight: Double = 1.0
     
     @Published var userPreferences: UserPreferences?
     
@@ -112,6 +112,21 @@ class CourseViewModel : ObservableObject {
         
         fetchCourses()
     }
+    
+    func deleteAllCourses() {
+            // Delete courses from SwiftData
+            for course in courses {
+                modelContext?.delete(course)
+            }
+
+            do {
+                try modelContext?.save() // Persist the deletions
+                courses.removeAll() // Clear the local array
+                fetchCourses()
+            } catch {
+                print("Error deleting courses: \(error.localizedDescription)")
+            }
+        }
     
     // MARK: - TODO:- might need to add a deleteAllCourses() function
     
@@ -172,6 +187,8 @@ class CourseViewModel : ObservableObject {
             try? modelContext.save()
             userPreferences = newPreferences
         }
+        
+        fetchCourses()
     }
     
     func addPredefinedCoursesToInput() {
@@ -182,6 +199,7 @@ class CourseViewModel : ObservableObject {
             }
         }
         saveUserPreferences()
+        fetchCourses()
     }
     
     func addInputCourse(courseName: String, weight: Double = 1.0) {
@@ -228,10 +246,30 @@ class CourseViewModel : ObservableObject {
             print("No UserPreferences data found to delete.")
         }
     }
+    
+    func clearAllRecommendedCourses() {
+        if var userPreferences = userPreferences {
+            // Clear the input courses and exclude list
+            userPreferences.inputCourses.removeAll()
+            userPreferences.excludeList.removeAll()
+            
+            predefinedCourses.removeAll()
+
+            // Save the changes to the model using SwiftData
+            do {
+                try modelContext?.save()
+            } catch {
+                print("Error saving changes: \(error.localizedDescription)")
+            }
+        }
+        // `allRecommendedCourses` will automatically reflect the changes as it's computed.
+        fetchCourses()
+    }
 
     func resetUserPreferences() {
         userPreferences?.inputCourses = [:]
         userPreferences?.excludeList = []
+        fetchCourses()
         saveUserPreferences()
     }
 }

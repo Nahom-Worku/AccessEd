@@ -225,7 +225,9 @@ struct ProfileView2: View {
     
     @Environment(\.modelContext) var modelContext
     @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
+    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
     
+    var courses: CourseModel?
 
     var body: some View {
         NavigationView {
@@ -260,17 +262,17 @@ struct ProfileView2: View {
 //                    Spacer()
                     
                     VStack(spacing: 0) {
-                        if let name = profileViewModel.profile?.name {
-                            Text(name)
+//                        if let name = profileViewModel.profile?.name {
+                            Text(profileViewModel.profile?.name ?? "your name")
                                 .font(.title2)
                                 .fontWeight(.semibold)
-                        }
+//                        }
                         
-                        if let grade = profileViewModel.profile?.grade {
-                            Text("Grade \(grade)")
+//                        if let grade = profileViewModel.profile?.grade {
+                            Text("Grade \(profileViewModel.profile?.grade ?? "your grade")")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
-                        }
+//                        }
                     }
 //                    .padding(.vertical)
                 }
@@ -303,7 +305,12 @@ struct ProfileView2: View {
                             
                             Spacer()
                             
-                            Toggle("", isOn: $profileViewModel.isNotificationsOn)
+                            Toggle("", isOn: Binding(
+                                get: { profileViewModel.profile?.isNotificationsOn ?? false },
+                                set: { newNotificationSetting in
+                                    profileViewModel.updateNotificationsSettings(isOn: newNotificationSetting)
+                                }
+                            ))
                                 .labelsHidden()
                                 .scaleEffect(0.75)
                         }
@@ -322,21 +329,25 @@ struct ProfileView2: View {
                         Button(action: {
                             // Handle log out logic
                             
-                            profileViewModel.deleteProfile()
                             
+                            profileViewModel.deleteProfile()
+                            courseViewModel.deleteAllCourses()
+                            courseViewModel.clearAllRecommendedCourses()
+                            
+                            print("*** Log out button pressed ***")
                         }) {
-                            Text("Log Out")
+                            Text("Delete Profile")
                                 .foregroundColor(.red)
                         }
                     }
+                    .padding(.horizontal, 100)
                     
                     .listRowBackground(Color("List-Colors"))
                     .listRowSeparatorTint(Color("List-Colors"))
                 }
                 .scrollDisabled(true)
                 .scrollContentBackground(.hidden)
-                .padding(.vertical)
-                .padding(.top, 50)
+                .padding(.top, 15)
                 .frame(width: UIScreen.main.bounds.width)
 
             }
@@ -350,6 +361,8 @@ struct ProfileView2: View {
         .onAppear{
             profileViewModel.modelContext = modelContext
             profileViewModel.fetchProfile()
+            courseViewModel.modelContext = modelContext
+            courseViewModel.fetchCourses()
         }
     }
 }

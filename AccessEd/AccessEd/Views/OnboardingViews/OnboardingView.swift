@@ -89,6 +89,7 @@ extension OnboardingView {
                     profileViewModel.fetchProfile()
                     profileViewModel.updateStatus()
                     
+                    
                     courseViewModel.modelContext = modelContext
                     courseViewModel.addPredefinedCoursesToInput()
                     courseViewModel.loadUserPreferences()

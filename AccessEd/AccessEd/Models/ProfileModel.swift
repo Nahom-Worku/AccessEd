@@ -17,14 +17,16 @@ class ProfileModel: Identifiable {
     var fieldsOfInterest: [String]      // TODO: add a profile picture var
     var timeZone: String
     var isUserSignedIn: Bool
+    var isNotificationsOn: Bool
     
-    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String], timeZone: String = TimeZone.current.identifier, isUserSignedIn: Bool = false) {
+    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String], timeZone: String = TimeZone.current.identifier, isUserSignedIn: Bool = false, isNotificationsOn: Bool = true) {
         self.name = name
         self.grade = grade
         self.preferredLanguage = preferredLanguage
         self.fieldsOfInterest = fieldsOfInterest 
         self.timeZone = timeZone
         self.isUserSignedIn = isUserSignedIn
+        self.isNotificationsOn = isNotificationsOn
     }
 }
 
