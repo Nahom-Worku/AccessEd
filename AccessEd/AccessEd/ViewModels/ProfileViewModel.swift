@@ -21,8 +21,10 @@ class ProfileViewModel : ObservableObject {
     @Published var alertTitle: String = ""
     @Published var showAlert: Bool = false
     
-    @Published var isNotificationsOn: Bool = true
     
+    init() {
+        fetchProfile()
+    }
     
     func fetchProfile() {
         guard let context = modelContext else {
@@ -101,10 +103,22 @@ class ProfileViewModel : ObservableObject {
         fetchProfile()
     }
     
-    func updateStatus() {
+    func   updateStatus() {
         isUserSignedIn = true
         try? modelContext?.save()
         fetchProfile()
+    }
+    
+    func updateNotificationsSettings(isOn: Bool) {
+        guard let profile = profile else { return }
+        
+        profile.isNotificationsOn = isOn
+        
+        do {
+            try modelContext?.save()
+        } catch {
+            print("Error saving notification settings: \(error.localizedDescription)")
+        }
     }
     
     func deleteProfile() {

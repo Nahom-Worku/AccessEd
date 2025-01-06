@@ -63,13 +63,14 @@ struct RecommendedCoursesView: View {
         if viewModel.allRecommendedCourses.isEmpty {
             VStack(spacing: 10) {
                 Image(systemName: "rectangle.on.rectangle.slash")
-                    .font(.system(size: 40))
+                    .font(.system(size: 30))
                     .foregroundColor(.gray)
                 
                 Text("There are no recommendations available")
                     .font(.subheadline)
                     .foregroundColor(.gray)
             }
+            .padding(.vertical)
             .frame(width: UIScreen.main.bounds.width - 50)
         }
         else {
@@ -146,6 +147,7 @@ struct AllRecommendedCoursesView: View {
 }
 
 struct EachRecommendedCourseCardView: View {
+    @Environment(\.modelContext) var modelContext
     @ObservedObject var viewModel: CourseViewModel
     
     var body: some View {
@@ -182,6 +184,11 @@ struct EachRecommendedCourseCardView: View {
                         viewModel.alertType = .courseDismissed
                         viewModel.isCardVisible = false
                         viewModel.showAlert = true
+                        
+                        viewModel.modelContext = modelContext
+                        viewModel.loadUserPreferences()
+                        viewModel.fetchCourses()
+                        
                     } label: {
                         Text("Dismiss")
                             .foregroundStyle(.red)
@@ -197,6 +204,11 @@ struct EachRecommendedCourseCardView: View {
                         viewModel.alertType = .courseAdded
                         viewModel.isCardVisible = false
                         viewModel.showAlert = true
+                        
+                        viewModel.modelContext = modelContext
+                        viewModel.loadUserPreferences()
+                        viewModel.fetchCourses()
+                        
                     } label: {
                         Text("Add")
                             .font(.headline)
