@@ -103,7 +103,7 @@ class ProfileViewModel : ObservableObject {
         fetchProfile()
     }
     
-    func   updateStatus() {
+    func updateStatus() {
         isUserSignedIn = true
         try? modelContext?.save()
         fetchProfile()

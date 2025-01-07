@@ -77,7 +77,6 @@ enum CourseCategory: String, Codable, CaseIterable {
     case socialSciences = "Social Sciences"
     case techAndEngineering = "Tech & Engineering"
     case healthAndPE = "Health & PE"
-    case languages = "Languages"
     case artsAndHumanities = "Arts & Humanities"
     case careerAndTech = "Career & Tech"
     case other = "Other"
@@ -90,6 +89,63 @@ enum CourseCategory: String, Codable, CaseIterable {
     // The color name directly matches the raw value
     var colorName: String {
         return self.rawValue
+    }
+    
+    static let map: [String: CourseCategory] = [
+        "Language Arts": .artsAndHumanities,
+        "History": .artsAndHumanities,
+        "Philosophy": .artsAndHumanities,
+        "Religious Studies": .artsAndHumanities,
+        "Visual and Performing Arts": .artsAndHumanities,
+        
+        "Geography": .socialSciences,
+        "Economics": .socialSciences,
+        "Political Science": .socialSciences,
+        "Psychology": .socialSciences,
+        "Sociology": .socialSciences,
+        
+        "Biology": .naturalSciences,
+        "Chemistry": .naturalSciences,
+        "Physics": .naturalSciences,
+        "Earth Science": .naturalSciences,
+        "Environmental Science": .naturalSciences,
+        
+        "Arithmetic": .mathematics,
+        "Algebra": .mathematics,
+        "Geometry": .mathematics,
+        "Calculus": .mathematics,
+        "Statistics": .mathematics,
+        
+        "Information Technology": .techAndEngineering,
+        "Engineering": .techAndEngineering,
+        "Robotics": .techAndEngineering,
+        "Computer Science": .techAndEngineering,
+        
+        "Agricultural Education": .careerAndTech,
+        "Business Education": .careerAndTech,
+        "Trade Skills": .careerAndTech,
+        "Culinary Arts": .careerAndTech,
+        
+        "Physical Education": .healthAndPE,
+        "Health Education": .healthAndPE,
+        "Sex Education": .healthAndPE
+    ]
+    
+    // MARK: - might not even need this
+    static let coursesByField: [String: [String]] = [
+        "Mathematics":       ["Arithmetic", "Algebra", "Geometry", "Calculus", "Statistics"],
+        "Natural Sciences":   ["Biology", "Chemistry", "Physics", "Earth Science", "Environmental Science"],
+        "Tech & Engineering": ["Information Technology", "Engineering", "Robotics", "Computer Science"],
+        "Career & Tech":     ["Aglicultural Education", "Business Education", "Trade Skills", "Culinary Arts"],
+        "Social Sciences":     ["Geography", "Economics", "Political Science", "Psychology", "Sociology"],
+        "Arts & Humanities": ["Language Arts", "History", "Religious Studies", "Philosophy", "Visual Arts"],
+        "Health & PE": ["Physical Education", "Health Education", "Sex Education"]
+    ]
+    
+    static func courses(for category: CourseCategory) -> [String] {
+        map
+            .filter { $0.value == category }
+            .map { $0.key }
     }
 }
  

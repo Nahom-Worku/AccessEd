@@ -18,41 +18,41 @@ class CourseViewModel : ObservableObject {
     @Published var showAlert: Bool = false
     
     // TODO: - might need to add this in the CourseModel
-    let courseCategoryMap: [String: CourseCategory] = [
-        "Language Arts": .artsAndHumanities,
-        "History": .artsAndHumanities,
-        "Philosophy": .artsAndHumanities,
-        "Religious Studies": .artsAndHumanities,
-        "Visual and Performing Arts": .artsAndHumanities,
-        
-        "Geography": .socialSciences,
-        "Economics": .socialSciences,
-        "Political Science": .socialSciences,
-        "Psychology": .socialSciences,
-        "Sociology": .socialSciences,
-        
-        "Biology": .naturalSciences,
-        "Chemistry": .naturalSciences,
-        "Physics": .naturalSciences,
-        "Earth Science": .naturalSciences,
-        "Environmental Science": .naturalSciences,
-        
-        "Arithmetic": .mathematics,
-        "Algebra": .mathematics,
-        "Geometry": .mathematics,
-        "Calculus": .mathematics,
-        "Statistics": .mathematics,
-        
-        "Information Technology": .techAndEngineering,
-        "Engineering": .techAndEngineering,
-        "Robotics": .techAndEngineering,
-        "Computer Science": .techAndEngineering,
-        
-        "Agricultural Education": .careerAndTech,
-        "Business Education": .careerAndTech,
-        "Trade Skills": .careerAndTech,
-        "Culinary Arts": .careerAndTech,
-    ]
+//    let courseCategoryMap: [String: CourseCategory] = [
+//        "Language Arts": .artsAndHumanities,
+//        "History": .artsAndHumanities,
+//        "Philosophy": .artsAndHumanities,
+//        "Religious Studies": .artsAndHumanities,
+//        "Visual and Performing Arts": .artsAndHumanities,
+//        
+//        "Geography": .socialSciences,
+//        "Economics": .socialSciences,
+//        "Political Science": .socialSciences,
+//        "Psychology": .socialSciences,
+//        "Sociology": .socialSciences,
+//        
+//        "Biology": .naturalSciences,
+//        "Chemistry": .naturalSciences,
+//        "Physics": .naturalSciences,
+//        "Earth Science": .naturalSciences,
+//        "Environmental Science": .naturalSciences,
+//        
+//        "Arithmetic": .mathematics,
+//        "Algebra": .mathematics,
+//        "Geometry": .mathematics,
+//        "Calculus": .mathematics,
+//        "Statistics": .mathematics,
+//        
+//        "Information Technology": .techAndEngineering,
+//        "Engineering": .techAndEngineering,
+//        "Robotics": .techAndEngineering,
+//        "Computer Science": .techAndEngineering,
+//        
+//        "Agricultural Education": .careerAndTech,
+//        "Business Education": .careerAndTech,
+//        "Trade Skills": .careerAndTech,
+//        "Culinary Arts": .careerAndTech,
+//    ]
     
     // MARK: - TODO: - need to replace these courses with the user interests from the profile model
     var predefinedCourses: [String] = ["Calculus", "History", "Physics"]
@@ -82,9 +82,8 @@ class CourseViewModel : ObservableObject {
         }
     }
     
-    var topSixRecommendedCourses: [CourseModel] {
-        return Array(allRecommendedCourses.prefix(6))
-    }
+    var topSixRecommendedCourses: [CourseModel] { return Array(allRecommendedCourses.prefix(6)) }
+    
     
     init() {
         loadUserPreferences()
@@ -164,7 +163,7 @@ class CourseViewModel : ObservableObject {
     }
     
     func getCourse(courseName: String) -> CourseModel {
-        if let category = courseCategoryMap[courseName] {
+        if let category = CourseCategory.map[courseName] {
             return CourseModel(name: courseName, category: category)
         } else {
             return CourseModel(name: courseName, category: .other)
@@ -205,7 +204,7 @@ class CourseViewModel : ObservableObject {
     func addInputCourse(courseName: String, weight: Double = 1.0) {
         guard let preferences = userPreferences else { return }
         preferences.inputCourses[courseName] = weight
-        addCourse(courseName: courseName, category: courseCategoryMap[courseName] ?? .other)
+        addCourse(courseName: courseName, category: CourseCategory.map[courseName] ?? .other)
         fetchCourses()
         saveUserPreferences()
     }

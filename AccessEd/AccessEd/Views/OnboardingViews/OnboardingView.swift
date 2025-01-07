@@ -37,6 +37,9 @@ struct OnboardingView: View {
                 case 4:
                     addFieldsOfInterestSection
                         .transition(transition)
+                case 5:
+                    adduserSelectedCourses
+                        .transition(transition)
                 default:
                     if profileViewModel.isUserSignedIn {
                         AccessEdTabView()
@@ -45,7 +48,7 @@ struct OnboardingView: View {
                 }
             }
             
-            if profileViewModel.onboardingState <= 4 {
+            if profileViewModel.onboardingState <= 5 {
                 VStack {
                     Spacer()
                     bottomButton
@@ -69,7 +72,7 @@ extension OnboardingView {
     
     private var bottomButton: some View {
         Text(profileViewModel.onboardingState == 0 ? "Get Started" :
-                profileViewModel.onboardingState == 4 ? "Finish" :
+                profileViewModel.onboardingState == 5 ? "Finish" :
             "Next"
         )
         .font(.system(size: 17, weight: .bold))
@@ -82,7 +85,7 @@ extension OnboardingView {
             .onTapGesture {
                 handleNextButtonPressed()
                 
-                if profileViewModel.onboardingState == 4 {
+                if profileViewModel.onboardingState > 5 {
                     let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest)
                     
                     profileViewModel.setUpProfile(profile: profile)
@@ -220,6 +223,41 @@ extension OnboardingView {
         }
         .padding(20)
     }
+    
+    private var adduserSelectedCourses: some View {
+        
+        // MARK: - TODO:- not working properly 
+        VStack {
+//            ForEach(profileViewModel.fieldsOfInterest, id: \.self) { field in
+//                if let courses = CourseCategory.coursesByField[field] {
+//                    ForEach(courses, id: \.self) { course in
+//                        HStack {
+//                            Text(course)
+//                            Spacer()
+//                            if profileViewModel.fieldsOfInterest.contains(field) {
+//                                Image(systemName: "checkmark")
+//                                    .foregroundColor(.blue)
+//                            }
+//                        }
+//                        .contentShape(Rectangle()) // So tapping anywhere in the row toggles
+//                        .padding(.horizontal)
+//                        .frame(width: UIScreen.main.bounds.width - 100)
+//                        .onTapGesture {
+//                            if profileViewModel.fieldsOfInterest.contains(field) {
+//                                profileViewModel.removeField(field)
+//                            } else {
+//                                profileViewModel.addField(field)
+//                                profileViewModel.profile?.fieldsOfInterest = profileViewModel.fieldsOfInterest
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    Text("No courses available for \(field)")
+//                }
+//            }
+
+        }
+    }
 }
 
 
@@ -253,7 +291,7 @@ extension OnboardingView {
         
         
         // GO TO NEXT SECTION
-        if profileViewModel.onboardingState == 5 {
+        if profileViewModel.onboardingState > 5 {
             signIn()
         } else {
             withAnimation(.spring()) {

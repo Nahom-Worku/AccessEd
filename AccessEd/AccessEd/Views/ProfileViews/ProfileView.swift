@@ -334,7 +334,7 @@ struct ProfileView2: View {
                             courseViewModel.deleteAllCourses()
                             courseViewModel.clearAllRecommendedCourses()
                             
-                            print("*** Log out button pressed ***")
+                            print("*** Delete profile button pressed ***")
                         }) {
                             Text("Delete Profile")
                                 .foregroundColor(.red)
