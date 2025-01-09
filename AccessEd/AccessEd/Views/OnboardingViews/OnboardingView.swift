@@ -20,6 +20,32 @@ struct OnboardingView: View {
     var body: some View {
         ZStack {
             // content
+            
+            // MARK: - TODO: add a back button here
+            if profileViewModel.onboardingState <= 5 {
+                VStack {
+                    HStack {
+                        
+                        Button {
+                            if profileViewModel.onboardingState > 0 {
+                                profileViewModel.onboardingState -= 1
+                            }
+                        } label: {
+                            Image(systemName: "arrow.left")
+                        }
+                        .disabled(profileViewModel.onboardingState < 1)
+                        
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    
+                    Spacer()
+                }
+                .padding(.vertical)
+            }
+            
+            
             ZStack {
                 switch profileViewModel.onboardingState {
                 case 0:
@@ -37,6 +63,9 @@ struct OnboardingView: View {
                 case 4:
                     addFieldsOfInterestSection
                         .transition(transition)
+                case 5:
+                    adduserSelectedCourses
+                        .transition(transition)
                 default:
                     if profileViewModel.isUserSignedIn {
                         AccessEdTabView()
@@ -45,7 +74,8 @@ struct OnboardingView: View {
                 }
             }
             
-            if profileViewModel.onboardingState <= 4 {
+            // MARK: - TODO: disable button instead of alert
+            if profileViewModel.onboardingState <= 5 {
                 VStack {
                     Spacer()
                     bottomButton
@@ -69,7 +99,7 @@ extension OnboardingView {
     
     private var bottomButton: some View {
         Text(profileViewModel.onboardingState == 0 ? "Get Started" :
-                profileViewModel.onboardingState == 4 ? "Finish" :
+                profileViewModel.onboardingState == 5 ? "Finish" :
             "Next"
         )
         .font(.system(size: 17, weight: .bold))
@@ -82,7 +112,7 @@ extension OnboardingView {
             .onTapGesture {
                 handleNextButtonPressed()
                 
-                if profileViewModel.onboardingState == 4 {
+                if profileViewModel.onboardingState > 5 {
                     let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest)
                     
                     profileViewModel.setUpProfile(profile: profile)
@@ -94,6 +124,9 @@ extension OnboardingView {
                     courseViewModel.addPredefinedCoursesToInput()
                     courseViewModel.loadUserPreferences()
                     courseViewModel.fetchCourses()
+                    
+                    print("Selected Courses: ")
+                    print(profileViewModel.selectedCourses)
                 }
             }
     }
@@ -220,6 +253,89 @@ extension OnboardingView {
         }
         .padding(20)
     }
+    
+    private var adduserSelectedCourses: some View {
+//        GeometryReader { geometry in
+            VStack {
+                Spacer() // Push content down to start in the middle of the screen
+                
+//                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 15) {
+                        Text("Select up to 3 courses you're interested in")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color("Text-Colors"))
+                            .padding(.horizontal)
+                        
+                        // Iterate through the selected fields of interest
+                        ForEach(profileViewModel.fieldsOfInterest, id: \.self) { field in
+                            VStack(alignment: .leading) {
+                                Text(field)
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(Color("Text-Colors"))
+                                    .padding(.horizontal)
+                                    .padding(.top, 3)
+                                
+                                // Horizontal ScrollView for Courses in Each Field
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 15) {
+                                        if let courses = CourseCategory.coursesByField[field] {
+                                            ForEach(courses, id: \.self) { course in
+                                                Button(action: {
+                                                    toggleCourseSelection(course: course)
+                                                }) {
+                                                    HStack {
+                                                        Text(course)
+                                                            .font(.subheadline)
+                                                            .foregroundColor(.white)
+                                                            .padding()
+                                                            .frame(width: 150, height: 30)
+                                                            .background(
+                                                                profileViewModel.selectedCourses.contains(course)
+                                                                ? Color.blue
+                                                                : Color.gray.opacity(0.5)
+                                                            )
+                                                            .cornerRadius(6)
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            Text("No courses available for \(field)")
+                                                .font(.subheadline)
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, CGFloat(profileViewModel.fieldsOfInterest.count) * 10)
+                    
+//                    .frame(maxWidth: geometry.size.width * 0.9) // Keep content centered
+//                }
+                
+//                Spacer(minLength: profileViewModel.fieldsOfInterest.count < 3 ? geometry.size.height / 3 : 20)
+                Spacer()
+                
+                Spacer().frame(height: 120)
+                    
+                
+//            }
+        }
+    }
+    
+    // Helper Function to Handle Course Selection
+    private func toggleCourseSelection(course: String) {
+        if profileViewModel.selectedCourses.contains(course) {
+            profileViewModel.removeCourse(course)
+        } else if profileViewModel.selectedCourses.count < 3 {
+            profileViewModel.addCourse(course)
+        }
+    }
+
 }
 
 
@@ -247,13 +363,18 @@ extension OnboardingView {
                 showAlert(title: "You must select at least one field of interest!")
                 return
             }
+        case 5:
+            guard profileViewModel.selectedCourses.count == 3 else {
+                showAlert(title: "You must select at least three courses!")
+                return
+            }
         default:
             break
         }
         
         
         // GO TO NEXT SECTION
-        if profileViewModel.onboardingState == 5 {
+        if profileViewModel.onboardingState > 5 {
             signIn()
         } else {
             withAnimation(.spring()) {

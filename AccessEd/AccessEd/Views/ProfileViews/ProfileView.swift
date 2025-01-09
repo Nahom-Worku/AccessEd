@@ -217,7 +217,7 @@ struct EditProfileView: View {
 }
 
 
-// MARK: - design 2
+// MARK: - design 2 :- current desgin
 
 struct ProfileView2: View {
     @State private var showingImagePicker = false
@@ -334,7 +334,7 @@ struct ProfileView2: View {
                             courseViewModel.deleteAllCourses()
                             courseViewModel.clearAllRecommendedCourses()
                             
-                            print("*** Log out button pressed ***")
+                            print("*** Delete profile button pressed ***")
                         }) {
                             Text("Delete Profile")
                                 .foregroundColor(.red)
@@ -392,7 +392,7 @@ struct PrivacyView: View {
 }
 
 
-// MARK: - 4th (current) design
+// MARK: - 4th design
 
 struct ProfileView: View {
     @Environment(\.modelContext) var modelContext
