@@ -217,7 +217,7 @@ struct EditProfileView: View {
 }
 
 
-// MARK: - design 2
+// MARK: - design 2 :- current desgin
 
 struct ProfileView2: View {
     @State private var showingImagePicker = false
@@ -392,7 +392,7 @@ struct PrivacyView: View {
 }
 
 
-// MARK: - 4th (current) design
+// MARK: - 4th design
 
 struct ProfileView: View {
     @Environment(\.modelContext) var modelContext

@@ -17,45 +17,8 @@ class CourseViewModel : ObservableObject {
     @Published var alertType: MyAlerts? = nil
     @Published var showAlert: Bool = false
     
-    // TODO: - might need to add this in the CourseModel
-//    let courseCategoryMap: [String: CourseCategory] = [
-//        "Language Arts": .artsAndHumanities,
-//        "History": .artsAndHumanities,
-//        "Philosophy": .artsAndHumanities,
-//        "Religious Studies": .artsAndHumanities,
-//        "Visual and Performing Arts": .artsAndHumanities,
-//        
-//        "Geography": .socialSciences,
-//        "Economics": .socialSciences,
-//        "Political Science": .socialSciences,
-//        "Psychology": .socialSciences,
-//        "Sociology": .socialSciences,
-//        
-//        "Biology": .naturalSciences,
-//        "Chemistry": .naturalSciences,
-//        "Physics": .naturalSciences,
-//        "Earth Science": .naturalSciences,
-//        "Environmental Science": .naturalSciences,
-//        
-//        "Arithmetic": .mathematics,
-//        "Algebra": .mathematics,
-//        "Geometry": .mathematics,
-//        "Calculus": .mathematics,
-//        "Statistics": .mathematics,
-//        
-//        "Information Technology": .techAndEngineering,
-//        "Engineering": .techAndEngineering,
-//        "Robotics": .techAndEngineering,
-//        "Computer Science": .techAndEngineering,
-//        
-//        "Agricultural Education": .careerAndTech,
-//        "Business Education": .careerAndTech,
-//        "Trade Skills": .careerAndTech,
-//        "Culinary Arts": .careerAndTech,
-//    ]
-    
     // MARK: - TODO: - need to replace these courses with the user interests from the profile model
-    var predefinedCourses: [String] = ["Calculus", "History", "Physics"]
+    var predefinedCourses: [String] = ["Calculus"]
     var defaultWeight: Double = 1.0
     
     @Published var userPreferences: UserPreferences?

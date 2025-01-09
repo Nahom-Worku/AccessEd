@@ -15,12 +15,31 @@ class ProfileViewModel : ObservableObject {
     @Published var name: String = ""
     @Published var grade: String = "9"
     @Published var preferredLanguage: String = "English"
-    @Published var fieldsOfInterest: [String] = []
+//    @Published var fieldsOfInterest: [String] = []
     @Published var isUserSignedIn: Bool = false
     @Published var onboardingState: Int = 0
     @Published var alertTitle: String = ""
     @Published var showAlert: Bool = false
     
+    
+    // ***********************
+    // for user preference for courses:
+    @Published var fieldsOfInterest: [String] = []
+    @Published var selectedCourses: [String] = []
+    
+    // Add a course to the selected list
+        func addCourse(_ course: String) {
+            if selectedCourses.count < 3 {
+                selectedCourses.append(course)
+            }
+        }
+
+        // Remove a course from the selected list
+        func removeCourse(_ course: String) {
+            selectedCourses.removeAll { $0 == course }
+        }
+    
+    // *************************
     
     init() {
         fetchProfile()

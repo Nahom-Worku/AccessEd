@@ -10,9 +10,6 @@ import SwiftData
 
 
 struct HomePageView: View {
-    
-    // TODO: get rid of this by creating a viewModel for the profile view and model
-    @Query var profile: [ProfileModel]
     @StateObject var viewModel = CourseViewModel()
         
     var body: some View {
