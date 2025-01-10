@@ -324,6 +324,9 @@ struct ProfileView2: View {
                         }
                     }
                     
+                    VStack {
+                        Text("\(profileViewModel.profile?.interestedCourses)")
+                    }
 
                     Section {
                         Button(action: {
@@ -333,6 +336,7 @@ struct ProfileView2: View {
                             profileViewModel.deleteProfile()
                             courseViewModel.deleteAllCourses()
                             courseViewModel.clearAllRecommendedCourses()
+                            courseViewModel.resetUserPreferences()
                             
                             print("*** Delete profile button pressed ***")
                         }) {
@@ -360,8 +364,8 @@ struct ProfileView2: View {
         }
         .onAppear{
             profileViewModel.modelContext = modelContext
-            profileViewModel.fetchProfile()
             courseViewModel.modelContext = modelContext
+            profileViewModel.fetchProfile()
             courseViewModel.fetchCourses()
         }
     }

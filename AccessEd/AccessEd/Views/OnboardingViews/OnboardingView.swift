@@ -91,6 +91,11 @@ struct OnboardingView: View {
         .onAppear{
             profileViewModel.modelContext = modelContext
             profileViewModel.fetchProfile()
+            
+            courseViewModel.modelContext = modelContext
+            courseViewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
+            courseViewModel.loadUserPreferences()
+            courseViewModel.fetchCourses()
         }
     }
 }
@@ -113,20 +118,21 @@ extension OnboardingView {
                 handleNextButtonPressed()
                 
                 if profileViewModel.onboardingState > 5 {
-                    let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest)
+                    let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest, interestedCourses: profileViewModel.interestedCourses)
                     
+                    profileViewModel.modelContext = modelContext
                     profileViewModel.setUpProfile(profile: profile)
                     profileViewModel.fetchProfile()
                     profileViewModel.updateStatus()
                     
                     
                     courseViewModel.modelContext = modelContext
-                    courseViewModel.addPredefinedCoursesToInput()
+                    courseViewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
                     courseViewModel.loadUserPreferences()
                     courseViewModel.fetchCourses()
                     
                     print("Selected Courses: ")
-                    print(profileViewModel.selectedCourses)
+                    print(profileViewModel.interestedCourses)
                 }
             }
     }
@@ -292,7 +298,7 @@ extension OnboardingView {
                                                             .padding()
                                                             .frame(width: 150, height: 30)
                                                             .background(
-                                                                profileViewModel.selectedCourses.contains(course)
+                                                                profileViewModel.interestedCourses.contains(course)
                                                                 ? Color.blue
                                                                 : Color.gray.opacity(0.5)
                                                             )
@@ -329,9 +335,9 @@ extension OnboardingView {
     
     // Helper Function to Handle Course Selection
     private func toggleCourseSelection(course: String) {
-        if profileViewModel.selectedCourses.contains(course) {
+        if profileViewModel.interestedCourses.contains(course) {
             profileViewModel.removeCourse(course)
-        } else if profileViewModel.selectedCourses.count < 3 {
+        } else if profileViewModel.interestedCourses.count < 3 {
             profileViewModel.addCourse(course)
         }
     }
@@ -364,7 +370,7 @@ extension OnboardingView {
                 return
             }
         case 5:
-            guard profileViewModel.selectedCourses.count == 3 else {
+            guard profileViewModel.interestedCourses.count == 3 else {
                 showAlert(title: "You must select at least three courses!")
                 return
             }
@@ -388,7 +394,7 @@ extension OnboardingView {
         // MARK: - TODO thing here
         // TODO: maybe set isProfileSetUp = true here
         
-        let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest)
+        let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest, interestedCourses: profileViewModel.interestedCourses)
         
         profileViewModel.setUpProfile(profile: profile)
         
