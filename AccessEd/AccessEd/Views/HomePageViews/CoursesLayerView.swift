@@ -10,6 +10,7 @@ import SwiftUI
 struct CoursesLayerView: View {
     @Environment(\.modelContext) var modelContext
     @ObservedObject var viewModel: CourseViewModel
+    @ObservedObject var profileViewModel: ProfileViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -48,10 +49,18 @@ struct CoursesLayerView: View {
         .padding()
         .frame(height: viewModel.allRecommendedCourses.isEmpty ? 250 : 290)
         .onAppear {
+            profileViewModel.modelContext = modelContext
             viewModel.modelContext = modelContext
+            
+            profileViewModel.fetchProfile()
+            
+            
 //            viewModel.clearUserPreferences()
 //            viewModel.resetUserPreferences()
-            viewModel.addPredefinedCoursesToInput()
+
+            
+            viewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
+            
             viewModel.loadUserPreferences()
             viewModel.fetchCourses()
         }
@@ -235,12 +244,14 @@ struct EachRecommendedCourseCardView: View {
 
 #Preview("Light Mode") {
     let viewModel = CourseViewModel()
-    CoursesLayerView(viewModel: viewModel)
+    let profileViewModel = ProfileViewModel()
+    CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
     let viewModel = CourseViewModel()
-    CoursesLayerView(viewModel: viewModel)
+    let profileViewModel = ProfileViewModel()
+    CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel)
         .preferredColorScheme(.dark)
 }

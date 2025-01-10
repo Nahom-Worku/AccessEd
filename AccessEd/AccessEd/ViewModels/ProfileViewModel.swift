@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 class ProfileViewModel : ObservableObject {
     var modelContext: ModelContext? = nil
@@ -25,18 +26,50 @@ class ProfileViewModel : ObservableObject {
     // ***********************
     // for user preference for courses:
     @Published var fieldsOfInterest: [String] = []
-    @Published var selectedCourses: [String] = []
+    @Published var interestedCourses: [String] = []
     
-    // Add a course to the selected list
+    var profilePicture: Image {
+        if let data = profile?.profilePicture, let uiImage = UIImage(data: data) {
+            return Image(uiImage: uiImage)
+        } else {
+            return Image(systemName: "person.circle") // Default placeholder image
+        }
+    }
+    
+    // Add a course to the interested list
         func addCourse(_ course: String) {
-            if selectedCourses.count < 3 {
-                selectedCourses.append(course)
+            if interestedCourses.count < 3 {
+                interestedCourses.append(course)
+                profile?.interestedCourses = interestedCourses
+                try? modelContext?.save()
+                fetchProfile()
             }
+            
+            /*
+             guard let profile = profile else { return }
+             if interestedCourses.count < 3 /*&& !interestedCourses.contains(course)*/ {
+                 interestedCourses.append(course)
+                 profile.interestedCourses = interestedCourses
+                 try? modelContext?.save()
+                 fetchProfile()
+             }
+             */
         }
 
-        // Remove a course from the selected list
+        // Remove a course from the interested list
         func removeCourse(_ course: String) {
-            selectedCourses.removeAll { $0 == course }
+            interestedCourses.removeAll { $0 == course }
+            profile?.interestedCourses = interestedCourses
+            try? modelContext?.save()
+            fetchProfile()
+            
+            /*
+             guard let profile = profile else { return }
+             interestedCourses.removeAll { $0 == course }
+             profile.interestedCourses = interestedCourses
+             try? modelContext?.save()
+             fetchProfile()
+             */
         }
     
     // *************************
@@ -110,9 +143,18 @@ class ProfileViewModel : ObservableObject {
         }
     }
     
+    func updateProfilePicture(with image: UIImage) {
+        profile?.profilePicture = image.jpegData(compressionQuality: 0.8)
+    }
+    
     func addField(_ field: String) {
         fieldsOfInterest.append(field)
-        try? modelContext?.save()
+        
+        guard let profile = profile else { return }
+        if !profile.fieldsOfInterest.contains(field) {
+            profile.fieldsOfInterest.append(field)
+            try? modelContext?.save()
+        }
         fetchProfile()
     }
     

@@ -16,6 +16,9 @@ struct AccessEdTabView: View {
     // TODO: might need to get rid of this variable
     @State var selectedTab: Int = 0
     
+    let coursesViewModel = CourseViewModel()
+    let profileViewModel = ProfileViewModel()
+    
     var body: some View {
         
         TabView(selection: $selectedTab) {

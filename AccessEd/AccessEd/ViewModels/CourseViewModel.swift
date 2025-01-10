@@ -17,8 +17,7 @@ class CourseViewModel : ObservableObject {
     @Published var alertType: MyAlerts? = nil
     @Published var showAlert: Bool = false
     
-    // MARK: - TODO: - need to replace these courses with the user interests from the profile model
-    var predefinedCourses: [String] = ["Calculus"]
+
     var defaultWeight: Double = 1.0
     
     @Published var userPreferences: UserPreferences?
@@ -153,7 +152,7 @@ class CourseViewModel : ObservableObject {
         fetchCourses()
     }
     
-    func addPredefinedCoursesToInput() {
+    func addPredefinedCoursesToInput(predefinedCourses: [String]) {
         guard let preferences = userPreferences else { return }
         for course in predefinedCourses {
             if preferences.inputCourses[course] == nil {
@@ -210,12 +209,15 @@ class CourseViewModel : ObservableObject {
     }
     
     func clearAllRecommendedCourses() {
+        
+        // MARK: - Need to update this
+        
         if var userPreferences = userPreferences {
             // Clear the input courses and exclude list
             userPreferences.inputCourses.removeAll()
             userPreferences.excludeList.removeAll()
             
-            predefinedCourses.removeAll()
+//            predefinedCourses.removeAll()
 
             // Save the changes to the model using SwiftData
             do {
@@ -233,5 +235,9 @@ class CourseViewModel : ObservableObject {
         userPreferences?.excludeList = []
         fetchCourses()
         saveUserPreferences()
+    }
+    
+    func addInterestedCourseBack(_ courses: [String]) {
+        
     }
 }
