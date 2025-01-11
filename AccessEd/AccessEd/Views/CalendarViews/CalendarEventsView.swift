@@ -71,6 +71,7 @@ struct CalendarEventsView: View {
                             // TODO: maybe change the foreground color instead for uncompleted and completed tasks
 //                                .foregroundStyle(hasTasks && !isCompleted ? Color.red : Color("Text-Colors"))
                                 .background(backgroundColor)
+                                .foregroundStyle(isToday && hasTasks && !isCompleted ? Color.red : Color("Text-Colors"))
                                 .cornerRadius(10) // 8
                         }
                         .buttonStyle(PlainButtonStyle())

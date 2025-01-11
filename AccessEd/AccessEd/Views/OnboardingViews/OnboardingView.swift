@@ -129,6 +129,11 @@ extension OnboardingView {
                     courseViewModel.modelContext = modelContext
                     courseViewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
                     courseViewModel.loadUserPreferences()
+                    
+                    for course in profileViewModel.profile?.interestedCourses ?? [] {
+                        courseViewModel.addCourse(courseName: course, category: CourseCategory.map[course] ?? .other)
+                    }
+                    
                     courseViewModel.fetchCourses()
                     
                     print("Selected Courses: ")

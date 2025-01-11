@@ -28,7 +28,7 @@ struct CoursesLayerView: View {
                 
                 Spacer()
                 
-                NavigationLink { AllRecommendedCoursesView(viewModel: viewModel) } label: {
+                NavigationLink { AllCoursesView(viewModel: viewModel) } label: {
                     Text("View All")
                         .font(.subheadline)
                 }
@@ -53,13 +53,11 @@ struct CoursesLayerView: View {
             viewModel.modelContext = modelContext
             
             profileViewModel.fetchProfile()
-            
-            
-//            viewModel.clearUserPreferences()
-//            viewModel.resetUserPreferences()
 
             
             viewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
+            
+            viewModel.setInterestedCourses(profileViewModel.profile?.interestedCourses ?? [])
             
             viewModel.loadUserPreferences()
             viewModel.fetchCourses()
@@ -122,7 +120,7 @@ struct RecommendedCoursesView: View {
     }
 }
 
-struct AllRecommendedCoursesView: View {
+struct AllCoursesView: View {
     @ObservedObject var viewModel: CourseViewModel
     
     var body: some View {
@@ -147,7 +145,7 @@ struct AllRecommendedCoursesView: View {
                     .padding(.top, 10)
                     .padding(.horizontal, 20)
                 }
-                .navigationTitle("All Recommended Courses")
+                .navigationTitle("All Courses")
             }
             
             EachRecommendedCourseCardView(viewModel: viewModel)
