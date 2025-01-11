@@ -11,7 +11,7 @@ import SwiftData
 struct CoursesView: View {
     @Environment(\.modelContext) var modelContext
     
-    @StateObject private var viewModel = CourseViewModel()
+    @ObservedObject var viewModel: CourseViewModel
     
     @State var showAddCoursesBottomView: Bool = false
     @State var courseName: String = ""
@@ -55,7 +55,7 @@ struct CoursesView: View {
                 if !viewModel.courses.isEmpty {
                     addCourseButton
                 } else {
-                    VStack {
+                    VStack(alignment: .center) {
                         Image(systemName: "books.vertical")
                             .font(Font.system(size: 60))
                             .padding(5)
@@ -66,11 +66,15 @@ struct CoursesView: View {
                             .font(.title2)
                             .bold()
                             .opacity(0.8)
+                            .padding(.bottom, 5)
                         
-                        Text("Start adding courses to get started!")
+                        Text("Start adding the recommended or your own courses to get started!")
                             .font(.subheadline)
-                            .padding(.bottom)
                             .foregroundStyle(.gray)
+                            .padding(.bottom)
+                            .padding(.horizontal, 50)
+                            .multilineTextAlignment(.center)
+                        
                         
                         Button(action: {
                             showAddCoursesBottomView = true
@@ -391,18 +395,16 @@ struct UpdateCourseSheet: View {
 }
 
 #Preview("Light mode") {
-//    @Previewable @Environment(\.modelContext) var modelContext
-    
-    CoursesView() //viewModel: CourseViewModel(context: modelContext))
+    let viewModel = CourseViewModel()
+    CoursesView(viewModel: viewModel)
         
         .preferredColorScheme(.light)
         .modelContainer(for: CourseModel.self, inMemory: true)
 }
 
 #Preview("Dark mode") {
-//    @Previewable @Environment(\.modelContext) var modelContext
-    
-    CoursesView() //viewModel: CourseViewModel(context: modelContext))
+    let viewModel = CourseViewModel()
+    CoursesView(viewModel: viewModel)
         .preferredColorScheme(.dark)
         .modelContainer(for: CourseModel.self, inMemory: true)
 }

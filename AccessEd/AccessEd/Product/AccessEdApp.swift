@@ -14,6 +14,7 @@ struct AccessEdApp: App {
     @Environment(\.modelContext) private var modelContext
     @StateObject var calendarViewModel = CalendarViewModel()
     @StateObject var profileViewModel = ProfileViewModel()
+    @StateObject var courseViewModel = CourseViewModel()
 
     var container: ModelContainer = {
 
@@ -44,7 +45,7 @@ struct AccessEdApp: App {
                 OnboardingView()
                 AccessEdTabView()
 
-                CoursesView()  // TODO: might need to get rid of these
+                CoursesView(viewModel: courseViewModel)  // TODO: might need to get rid of these
                 CalendarView(viewModel: calendarViewModel)
                 ProfileView()
                     .environment(\.modelContext, modelContext)

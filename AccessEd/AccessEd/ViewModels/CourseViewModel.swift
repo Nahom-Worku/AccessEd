@@ -17,7 +17,8 @@ class CourseViewModel : ObservableObject {
     @Published var alertType: MyAlerts? = nil
     @Published var showAlert: Bool = false
     
-
+    @Published var interestedCourses: [String] = []
+    
     var defaultWeight: Double = 1.0
     
     @Published var userPreferences: UserPreferences?
@@ -51,6 +52,9 @@ class CourseViewModel : ObservableObject {
         loadUserPreferences()
     }
     
+    func setInterestedCourses(_ courses: [String]) {
+        self.interestedCourses = courses
+    }
     
     func fetchCourses() {
         let fetchDescriptor = FetchDescriptor<CourseModel>(
@@ -75,19 +79,19 @@ class CourseViewModel : ObservableObject {
     }
     
     func deleteAllCourses() {
-            // Delete courses from SwiftData
-            for course in courses {
-                modelContext?.delete(course)
-            }
-
-            do {
-                try modelContext?.save() // Persist the deletions
-                courses.removeAll() // Clear the local array
-                fetchCourses()
-            } catch {
-                print("Error deleting courses: \(error.localizedDescription)")
-            }
+        // Delete courses from SwiftData
+        for course in courses {
+            modelContext?.delete(course)
         }
+
+        do {
+            try modelContext?.save() // Persist the deletions
+            courses.removeAll() // Clear the local array
+            fetchCourses()
+        } catch {
+            print("Error deleting courses: \(error.localizedDescription)")
+        }
+    }
     
     // MARK: - TODO:- might need to add a deleteAllCourses() function
     
@@ -212,7 +216,7 @@ class CourseViewModel : ObservableObject {
         
         // MARK: - Need to update this
         
-        if var userPreferences = userPreferences {
+        if let userPreferences = userPreferences {
             // Clear the input courses and exclude list
             userPreferences.inputCourses.removeAll()
             userPreferences.excludeList.removeAll()
@@ -235,9 +239,5 @@ class CourseViewModel : ObservableObject {
         userPreferences?.excludeList = []
         fetchCourses()
         saveUserPreferences()
-    }
-    
-    func addInterestedCourseBack(_ courses: [String]) {
-        
     }
 }

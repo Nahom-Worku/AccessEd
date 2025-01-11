@@ -1,0 +1,501 @@
+UserID,Course,Interaction,CourseCategory
+User360,Calculus,0,Mathematics
+User360,Geography,1,Social Sciences
+User360,History,1,Arts & Humanities
+User360,Information Technology,0,Tech & Engineering
+User360,Biology,1,Natural Sciences
+User360,Philosophy,0,Arts & Humanities
+User360,Physics,1,Natural Sciences
+User360,Religious Studies,1,Arts & Humanities
+User360,Political Science,1,Social Sciences
+User360,Agricultural Education,1,Career & Tech
+User38,Health Education,1,Health & PE
+User38,Business Education,1,Career & Tech
+User38,Physical Education,1,Health & PE
+User38,Robotics,1,Tech & Engineering
+User38,Language Arts,1,Arts & Humanities
+User38,Chemistry,0,Natural Sciences
+User38,Agricultural Education,1,Career & Tech
+User38,Computer Science,1,Tech & Engineering
+User38,Culinary Arts,1,Career & Tech
+User38,History,1,Arts & Humanities
+User432,Trade Skills,1,Career & Tech
+User432,Arithmetic,1,Mathematics
+User432,Calculus,1,Mathematics
+User432,Visual and Performing Arts,1,Arts & Humanities
+User432,Language Arts,1,Arts & Humanities
+User432,Economics,1,Social Sciences
+User432,Statistics,1,Mathematics
+User432,Engineering,0,Tech & Engineering
+User432,Sociology,1,Social Sciences
+User432,Geography,1,Social Sciences
+User435,Robotics,1,Tech & Engineering
+User435,Environmental Science,0,Natural Sciences
+User435,Business Education,1,Career & Tech
+User435,Culinary Arts,1,Career & Tech
+User435,Health Education,1,Health & PE
+User435,Sex Education,1,Health & PE
+User435,Biology,0,Natural Sciences
+User435,Engineering,1,Tech & Engineering
+User435,Earth Science,0,Natural Sciences
+User435,Economics,1,Social Sciences
+User294,Trade Skills,0,Career & Tech
+User294,Environmental Science,1,Natural Sciences
+User294,Robotics,1,Tech & Engineering
+User294,Visual and Performing Arts,1,Arts & Humanities
+User294,Physics,1,Natural Sciences
+User294,Philosophy,1,Arts & Humanities
+User294,Sex Education,1,Health & PE
+User294,Biology,1,Natural Sciences
+User294,Health Education,1,Health & PE
+User294,History,1,Arts & Humanities
+User433,History,1,Arts & Humanities
+User433,Physical Education,1,Health & PE
+User433,Physics,1,Natural Sciences
+User433,Biology,1,Natural Sciences
+User433,Visual and Performing Arts,1,Arts & Humanities
+User433,Philosophy,1,Arts & Humanities
+User433,Chemistry,1,Natural Sciences
+User433,Earth Science,1,Natural Sciences
+User433,Information Technology,0,Tech & Engineering
+User433,Health Education,1,Health & PE
+User399,Physical Education,1,Health & PE
+User399,Health Education,1,Health & PE
+User399,Business Education,0,Career & Tech
+User399,Earth Science,1,Natural Sciences
+User399,Computer Science,1,Tech & Engineering
+User399,Language Arts,1,Arts & Humanities
+User399,Biology,1,Natural Sciences
+User399,Physics,1,Natural Sciences
+User399,Algebra,0,Mathematics
+User399,Agricultural Education,0,Career & Tech
+User202,Geography,1,Social Sciences
+User202,Economics,1,Social Sciences
+User202,Sex Education,1,Health & PE
+User202,Health Education,1,Health & PE
+User202,Business Education,0,Career & Tech
+User202,Psychology,1,Social Sciences
+User202,Engineering,0,Tech & Engineering
+User202,Physical Education,1,Health & PE
+User202,History,1,Arts & Humanities
+User202,Earth Science,1,Natural Sciences
+User468,Algebra,1,Mathematics
+User468,Environmental Science,1,Natural Sciences
+User468,Computer Science,1,Tech & Engineering
+User468,Robotics,1,Tech & Engineering
+User468,Agricultural Education,1,Career & Tech
+User468,Engineering,1,Tech & Engineering
+User468,Political Science,0,Social Sciences
+User468,Visual and Performing Arts,0,Arts & Humanities
+User468,Geometry,1,Mathematics
+User468,Trade Skills,1,Career & Tech
+User1,Engineering,1,Tech & Engineering
+User1,Language Arts,0,Arts & Humanities
+User1,Earth Science,1,Natural Sciences
+User1,Business Education,1,Career & Tech
+User1,Culinary Arts,1,Career & Tech
+User1,Visual and Performing Arts,1,Arts & Humanities
+User1,Political Science,0,Social Sciences
+User1,History,1,Arts & Humanities
+User1,Robotics,1,Tech & Engineering
+User1,Trade Skills,1,Career & Tech
+User193,Arithmetic,1,Mathematics
+User193,Geography,1,Social Sciences
+User193,Statistics,1,Mathematics
+User193,Robotics,1,Tech & Engineering
+User193,Sex Education,1,Health & PE
+User193,Philosophy,0,Arts & Humanities
+User193,Biology,0,Natural Sciences
+User193,Economics,1,Social Sciences
+User193,Health Education,1,Health & PE
+User193,Chemistry,0,Natural Sciences
+User76,Visual and Performing Arts,1,Arts & Humanities
+User76,Algebra,1,Mathematics
+User76,Religious Studies,1,Arts & Humanities
+User76,Biology,1,Natural Sciences
+User76,Information Technology,0,Tech & Engineering
+User76,Chemistry,1,Natural Sciences
+User76,Computer Science,0,Tech & Engineering
+User76,Political Science,0,Social Sciences
+User76,Geometry,1,Mathematics
+User76,Calculus,1,Mathematics
+User359,Information Technology,1,Tech & Engineering
+User359,Statistics,1,Mathematics
+User359,Algebra,1,Mathematics
+User359,Geometry,1,Mathematics
+User359,Earth Science,0,Natural Sciences
+User359,Robotics,1,Tech & Engineering
+User359,Sociology,0,Social Sciences
+User359,Calculus,1,Mathematics
+User359,Visual and Performing Arts,1,Arts & Humanities
+User359,Language Arts,1,Arts & Humanities
+User449,Calculus,1,Mathematics
+User449,Geography,0,Social Sciences
+User449,Computer Science,0,Tech & Engineering
+User449,Arithmetic,1,Mathematics
+User449,Business Education,0,Career & Tech
+User449,Statistics,1,Mathematics
+User449,Earth Science,1,Natural Sciences
+User449,Language Arts,1,Arts & Humanities
+User449,Physics,1,Natural Sciences
+User449,Sex Education,0,Health & PE
+User269,Sociology,1,Social Sciences
+User269,History,0,Arts & Humanities
+User269,Physical Education,1,Health & PE
+User269,Psychology,1,Social Sciences
+User269,Earth Science,1,Natural Sciences
+User269,Philosophy,1,Arts & Humanities
+User269,Sex Education,1,Health & PE
+User269,Visual and Performing Arts,1,Arts & Humanities
+User269,Information Technology,0,Tech & Engineering
+User269,Algebra,0,Mathematics
+User203,Biology,1,Natural Sciences
+User203,Algebra,1,Mathematics
+User203,Environmental Science,1,Natural Sciences
+User203,Arithmetic,1,Mathematics
+User203,History,0,Arts & Humanities
+User203,Psychology,1,Social Sciences
+User203,Engineering,1,Tech & Engineering
+User203,Computer Science,1,Tech & Engineering
+User203,Language Arts,0,Arts & Humanities
+User203,Robotics,1,Tech & Engineering
+User285,Visual and Performing Arts,1,Arts & Humanities
+User285,Physics,1,Natural Sciences
+User285,Geometry,1,Mathematics
+User285,Chemistry,1,Natural Sciences
+User285,Algebra,1,Mathematics
+User285,Psychology,1,Social Sciences
+User285,Environmental Science,1,Natural Sciences
+User285,History,1,Arts & Humanities
+User285,Culinary Arts,0,Career & Tech
+User285,Earth Science,1,Natural Sciences
+User274,Geometry,1,Mathematics
+User274,Religious Studies,1,Arts & Humanities
+User274,Algebra,1,Mathematics
+User274,Business Education,1,Career & Tech
+User274,Visual and Performing Arts,1,Arts & Humanities
+User274,Culinary Arts,1,Career & Tech
+User274,Environmental Science,1,Natural Sciences
+User274,Philosophy,1,Arts & Humanities
+User274,Arithmetic,1,Mathematics
+User274,Economics,0,Social Sciences
+User184,Agricultural Education,1,Career & Tech
+User184,Geometry,0,Mathematics
+User184,Robotics,1,Tech & Engineering
+User184,Physical Education,1,Health & PE
+User184,Engineering,1,Tech & Engineering
+User184,Business Education,1,Career & Tech
+User184,Geography,1,Social Sciences
+User184,Psychology,1,Social Sciences
+User184,Health Education,1,Health & PE
+User184,Information Technology,1,Tech & Engineering
+User83,Religious Studies,1,Arts & Humanities
+User83,Earth Science,0,Natural Sciences
+User83,Arithmetic,1,Mathematics
+User83,Statistics,1,Mathematics
+User83,Robotics,0,Tech & Engineering
+User83,Sociology,0,Social Sciences
+User83,Algebra,1,Mathematics
+User83,Visual and Performing Arts,1,Arts & Humanities
+User83,History,1,Arts & Humanities
+User83,Geometry,1,Mathematics
+User19,Psychology,1,Social Sciences
+User19,Physics,0,Natural Sciences
+User19,Business Education,1,Career & Tech
+User19,Trade Skills,1,Career & Tech
+User19,Religious Studies,1,Arts & Humanities
+User19,Sociology,1,Social Sciences
+User19,Statistics,1,Mathematics
+User19,Geometry,1,Mathematics
+User19,Economics,1,Social Sciences
+User19,Chemistry,0,Natural Sciences
+User371,Trade Skills,0,Career & Tech
+User371,Language Arts,0,Arts & Humanities
+User371,Algebra,1,Mathematics
+User371,Calculus,1,Mathematics
+User371,Arithmetic,1,Mathematics
+User371,Engineering,1,Tech & Engineering
+User371,Psychology,1,Social Sciences
+User371,Religious Studies,0,Arts & Humanities
+User371,Computer Science,1,Tech & Engineering
+User371,Geography,1,Social Sciences
+User14,Psychology,1,Social Sciences
+User14,Sex Education,1,Health & PE
+User14,Business Education,1,Career & Tech
+User14,Environmental Science,1,Natural Sciences
+User14,Earth Science,1,Natural Sciences
+User14,Health Education,1,Health & PE
+User14,Trade Skills,1,Career & Tech
+User14,Language Arts,0,Arts & Humanities
+User14,History,0,Arts & Humanities
+User14,Agricultural Education,1,Career & Tech
+User485,Culinary Arts,1,Career & Tech
+User485,Physics,1,Natural Sciences
+User485,Philosophy,1,Arts & Humanities
+User485,Earth Science,1,Natural Sciences
+User485,Sex Education,1,Health & PE
+User485,Language Arts,1,Arts & Humanities
+User485,Agricultural Education,1,Career & Tech
+User485,Business Education,1,Career & Tech
+User485,Physical Education,1,Health & PE
+User485,Psychology,0,Social Sciences
+User317,Political Science,1,Social Sciences
+User317,Geography,1,Social Sciences
+User317,Biology,1,Natural Sciences
+User317,Psychology,1,Social Sciences
+User317,Chemistry,1,Natural Sciences
+User317,Environmental Science,1,Natural Sciences
+User317,Economics,1,Social Sciences
+User317,Sociology,1,Social Sciences
+User317,History,0,Arts & Humanities
+User317,Health Education,1,Health & PE
+User246,Computer Science,0,Tech & Engineering
+User246,Statistics,1,Mathematics
+User246,Agricultural Education,1,Career & Tech
+User246,Philosophy,1,Arts & Humanities
+User246,Business Education,1,Career & Tech
+User246,Geometry,1,Mathematics
+User246,Calculus,1,Mathematics
+User246,Psychology,0,Social Sciences
+User246,History,1,Arts & Humanities
+User246,Religious Studies,1,Arts & Humanities
+User77,Culinary Arts,0,Career & Tech
+User77,Language Arts,1,Arts & Humanities
+User77,Geometry,1,Mathematics
+User77,Physics,1,Natural Sciences
+User77,Biology,1,Natural Sciences
+User77,Business Education,0,Career & Tech
+User77,Sex Education,1,Health & PE
+User77,Health Education,1,Health & PE
+User77,Visual and Performing Arts,1,Arts & Humanities
+User77,Information Technology,0,Tech & Engineering
+User221,Robotics,1,Tech & Engineering
+User221,History,1,Arts & Humanities
+User221,Earth Science,1,Natural Sciences
+User221,Religious Studies,0,Arts & Humanities
+User221,Arithmetic,0,Mathematics
+User221,Psychology,1,Social Sciences
+User221,Language Arts,1,Arts & Humanities
+User221,Sociology,1,Social Sciences
+User221,Information Technology,1,Tech & Engineering
+User221,Economics,1,Social Sciences
+User85,Economics,1,Social Sciences
+User85,Visual and Performing Arts,1,Arts & Humanities
+User85,Philosophy,1,Arts & Humanities
+User85,Sex Education,1,Health & PE
+User85,Geography,1,Social Sciences
+User85,Sociology,1,Social Sciences
+User85,Arithmetic,0,Mathematics
+User85,Robotics,0,Tech & Engineering
+User85,Agricultural Education,0,Career & Tech
+User85,Biology,1,Natural Sciences
+User276,Physics,1,Natural Sciences
+User276,Arithmetic,0,Mathematics
+User276,Health Education,0,Health & PE
+User276,Chemistry,1,Natural Sciences
+User276,Information Technology,1,Tech & Engineering
+User276,Earth Science,1,Natural Sciences
+User276,History,0,Arts & Humanities
+User276,Sociology,1,Social Sciences
+User276,Culinary Arts,0,Career & Tech
+User276,Psychology,1,Social Sciences
+User58,Psychology,0,Social Sciences
+User58,Agricultural Education,1,Career & Tech
+User58,History,1,Arts & Humanities
+User58,Culinary Arts,1,Career & Tech
+User58,Robotics,0,Tech & Engineering
+User58,Sex Education,1,Health & PE
+User58,Business Education,1,Career & Tech
+User58,Calculus,1,Mathematics
+User58,Physics,0,Natural Sciences
+User58,Language Arts,1,Arts & Humanities
+User280,Philosophy,1,Arts & Humanities
+User280,Information Technology,1,Tech & Engineering
+User280,Trade Skills,1,Career & Tech
+User280,Health Education,1,Health & PE
+User280,Language Arts,1,Arts & Humanities
+User280,History,1,Arts & Humanities
+User280,Algebra,0,Mathematics
+User280,Engineering,1,Tech & Engineering
+User280,Computer Science,1,Tech & Engineering
+User280,Religious Studies,1,Arts & Humanities
+User57,Economics,1,Social Sciences
+User57,Geography,1,Social Sciences
+User57,Engineering,1,Tech & Engineering
+User57,Sex Education,1,Health & PE
+User57,Health Education,1,Health & PE
+User57,Statistics,0,Mathematics
+User57,Information Technology,1,Tech & Engineering
+User57,Earth Science,0,Natural Sciences
+User57,Political Science,1,Social Sciences
+User57,Physical Education,1,Health & PE
+User270,Economics,1,Social Sciences
+User270,Religious Studies,1,Arts & Humanities
+User270,Sex Education,0,Health & PE
+User270,Geometry,0,Mathematics
+User270,Sociology,1,Social Sciences
+User270,Environmental Science,1,Natural Sciences
+User270,Philosophy,1,Arts & Humanities
+User270,Business Education,1,Career & Tech
+User270,Trade Skills,1,Career & Tech
+User270,Earth Science,1,Natural Sciences
+User479,Economics,1,Social Sciences
+User479,Arithmetic,1,Mathematics
+User479,Business Education,0,Career & Tech
+User479,Chemistry,1,Natural Sciences
+User479,Algebra,0,Mathematics
+User479,Sociology,1,Social Sciences
+User479,Psychology,1,Social Sciences
+User479,Philosophy,1,Arts & Humanities
+User479,Earth Science,1,Natural Sciences
+User479,History,1,Arts & Humanities
+User353,Biology,1,Natural Sciences
+User353,Culinary Arts,1,Career & Tech
+User353,Trade Skills,1,Career & Tech
+User353,Agricultural Education,1,Career & Tech
+User353,Sex Education,1,Health & PE
+User353,Physics,1,Natural Sciences
+User353,Earth Science,0,Natural Sciences
+User353,Chemistry,1,Natural Sciences
+User353,Health Education,1,Health & PE
+User353,Engineering,0,Tech & Engineering
+User133,Philosophy,1,Arts & Humanities
+User133,Health Education,1,Health & PE
+User133,Culinary Arts,1,Career & Tech
+User133,Business Education,1,Career & Tech
+User133,Environmental Science,0,Natural Sciences
+User133,Sociology,1,Social Sciences
+User133,Sex Education,1,Health & PE
+User133,Trade Skills,1,Career & Tech
+User133,Robotics,0,Tech & Engineering
+User133,History,1,Arts & Humanities
+User6,Culinary Arts,1,Career & Tech
+User6,Physics,1,Natural Sciences
+User6,Trade Skills,1,Career & Tech
+User6,Sociology,1,Social Sciences
+User6,Biology,1,Natural Sciences
+User6,Engineering,0,Tech & Engineering
+User6,Environmental Science,1,Natural Sciences
+User6,Business Education,1,Career & Tech
+User6,Political Science,1,Social Sciences
+User6,Visual and Performing Arts,1,Arts & Humanities
+User493,Sex Education,1,Health & PE
+User493,Psychology,1,Social Sciences
+User493,Physics,0,Natural Sciences
+User493,Religious Studies,0,Arts & Humanities
+User493,Agricultural Education,1,Career & Tech
+User493,Robotics,1,Tech & Engineering
+User493,Computer Science,1,Tech & Engineering
+User493,Physical Education,1,Health & PE
+User493,Business Education,1,Career & Tech
+User493,Health Education,1,Health & PE
+User308,Algebra,0,Mathematics
+User308,Visual and Performing Arts,1,Arts & Humanities
+User308,Business Education,1,Career & Tech
+User308,Trade Skills,1,Career & Tech
+User308,Agricultural Education,1,Career & Tech
+User308,Philosophy,1,Arts & Humanities
+User308,Physics,1,Natural Sciences
+User308,Environmental Science,1,Natural Sciences
+User308,Culinary Arts,1,Career & Tech
+User308,Language Arts,1,Arts & Humanities
+User373,Business Education,0,Career & Tech
+User373,Political Science,1,Social Sciences
+User373,Psychology,1,Social Sciences
+User373,Earth Science,1,Natural Sciences
+User373,Visual and Performing Arts,1,Arts & Humanities
+User373,Arithmetic,0,Mathematics
+User373,Religious Studies,1,Arts & Humanities
+User373,Sociology,1,Social Sciences
+User373,Philosophy,1,Arts & Humanities
+User373,Calculus,1,Mathematics
+User275,Biology,0,Natural Sciences
+User275,Chemistry,0,Natural Sciences
+User275,Engineering,1,Tech & Engineering
+User275,Earth Science,0,Natural Sciences
+User275,Trade Skills,1,Career & Tech
+User275,Computer Science,1,Tech & Engineering
+User275,Economics,1,Social Sciences
+User275,Geography,1,Social Sciences
+User275,Language Arts,1,Arts & Humanities
+User275,Geometry,0,Mathematics
+User226,Philosophy,0,Arts & Humanities
+User226,Religious Studies,1,Arts & Humanities
+User226,Psychology,1,Social Sciences
+User226,Physical Education,1,Health & PE
+User226,Statistics,0,Mathematics
+User226,Sex Education,1,Health & PE
+User226,History,1,Arts & Humanities
+User226,Geography,1,Social Sciences
+User226,Culinary Arts,1,Career & Tech
+User226,Agricultural Education,1,Career & Tech
+User223,Calculus,1,Mathematics
+User223,History,1,Arts & Humanities
+User223,Economics,0,Social Sciences
+User223,Physics,0,Natural Sciences
+User223,Sociology,0,Social Sciences
+User223,Philosophy,1,Arts & Humanities
+User223,Physical Education,1,Health & PE
+User223,Health Education,1,Health & PE
+User223,Geometry,1,Mathematics
+User223,Visual and Performing Arts,1,Arts & Humanities
+User375,Algebra,1,Mathematics
+User375,Physical Education,1,Health & PE
+User375,Chemistry,0,Natural Sciences
+User375,Statistics,1,Mathematics
+User375,Information Technology,1,Tech & Engineering
+User375,Visual and Performing Arts,0,Arts & Humanities
+User375,Culinary Arts,1,Career & Tech
+User375,Computer Science,1,Tech & Engineering
+User375,Health Education,1,Health & PE
+User375,Geometry,1,Mathematics
+User377,Visual and Performing Arts,1,Arts & Humanities
+User377,Philosophy,1,Arts & Humanities
+User377,Engineering,1,Tech & Engineering
+User377,Physics,1,Natural Sciences
+User377,Statistics,0,Mathematics
+User377,Earth Science,1,Natural Sciences
+User377,Business Education,0,Career & Tech
+User377,Agricultural Education,0,Career & Tech
+User377,Geography,0,Social Sciences
+User377,Psychology,1,Social Sciences
+User334,Geography,1,Social Sciences
+User334,Culinary Arts,0,Career & Tech
+User334,Geometry,1,Mathematics
+User334,Information Technology,0,Tech & Engineering
+User334,Earth Science,1,Natural Sciences
+User334,Biology,1,Natural Sciences
+User334,Business Education,0,Career & Tech
+User334,Religious Studies,1,Arts & Humanities
+User334,Political Science,1,Social Sciences
+User334,Calculus,1,Mathematics
+User478,Agricultural Education,1,Career & Tech
+User478,Business Education,1,Career & Tech
+User478,Engineering,0,Tech & Engineering
+User478,Health Education,1,Health & PE
+User478,Statistics,1,Mathematics
+User478,Geometry,1,Mathematics
+User478,Trade Skills,1,Career & Tech
+User478,Calculus,1,Mathematics
+User478,Physical Education,1,Health & PE
+User478,Physics,1,Natural Sciences
+User412,Chemistry,1,Natural Sciences
+User412,Geography,1,Social Sciences
+User412,History,1,Arts & Humanities
+User412,Biology,1,Natural Sciences
+User412,Engineering,1,Tech & Engineering
+User412,Psychology,0,Social Sciences
+User412,Agricultural Education,0,Career & Tech
+User412,Business Education,0,Career & Tech
+User412,Physics,1,Natural Sciences
+User412,Religious Studies,1,Arts & Humanities
+User80,Engineering,1,Tech & Engineering
+User80,Business Education,1,Career & Tech
+User80,Language Arts,0,Arts & Humanities
+User80,Physics,1,Natural Sciences
+User80,Chemistry,1,Natural Sciences
+User80,Environmental Science,1,Natural Sciences
+User80,Sex Education,1,Health & PE
+User80,History,0,Arts & Humanities
+User80,Agricultural Education,1,Career & Tech
+User80,Earth Science,1,Natural Sciences
