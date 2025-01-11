@@ -72,6 +72,11 @@ class ProfileViewModel : ObservableObject {
              */
         }
     
+    func removeAllCourses() {
+        profile?.interestedCourses = []
+        try? modelContext?.save()
+        fetchProfile()
+    }
     // *************************
     
     init() {

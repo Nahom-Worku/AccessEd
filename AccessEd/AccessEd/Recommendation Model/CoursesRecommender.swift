@@ -21,7 +21,11 @@ func CoursesRecommender(userPreferences: [String: Double], excludeList: [String]
         let output = try model.prediction(input: input)
         
         // Return the recommended courses from the model's output
-        return output.recommendations
+        if userPreferences.isEmpty {
+            return []
+        } else {
+            return output.recommendations
+        }
     } catch {
         // Handle any errors during the model prediction
         print("Error using CoursesRecommendationModel: \(error.localizedDescription)")

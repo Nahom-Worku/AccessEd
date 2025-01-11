@@ -10,8 +10,10 @@ import SwiftData
 
 
 struct HomePageView: View {
-    @StateObject var viewModel = CourseViewModel()
-    @StateObject var profileViewModel = ProfileViewModel()
+//    @StateObject var viewModel = CourseViewModel()
+//    @StateObject var profileViewModel = ProfileViewModel()
+    @ObservedObject var viewModel: CourseViewModel
+    @ObservedObject var profileViewModel: ProfileViewModel
     
     @Environment(\.modelContext) var modelContext
     
@@ -20,34 +22,23 @@ struct HomePageView: View {
         ZStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
-                    VStack {
-                        Text("\(profileViewModel.profile?.interestedCourses)")
+                    HStack {
+                        Text("AccessEd")
+                            .font(.title)
+                        
+                        Spacer()
+                        
+                        Image("App Logo")
+                            .renderingMode(.original)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 70)
+                            .clipped()
                     }
                     .padding()
-                    .frame(width: 240, height: 150)
-                    .onAppear {
-                        profileViewModel.modelContext = modelContext
-                        profileViewModel.fetchProfile()
-                    }
-                        
-//                    HStack {
-//                        Text("AccessEd")
-//                            .font(.title)
-//                        
-//                        Spacer()
-//                        
-//                        Image("App Logo")
-//                            .renderingMode(.original)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 70)
-//                            .clipped()
-//                    }
-//                    .padding()
-//                    .padding(.top, 50)
-//                    .frame(maxWidth: 240, maxHeight: 150)
-
-                    
+                    .padding(.top, 50)
+                    .frame(maxWidth: 240, maxHeight: 150)
+  
                     
                     // Courses and Schedule Layer
                     VStack(spacing: 0) {
@@ -99,12 +90,12 @@ struct HomePageView_Previews: PreviewProvider {
         let viewModel = CourseViewModel()
         let profileViewModel = ProfileViewModel()
 //        Group {
-            HomePageView()
+        HomePageView(viewModel: viewModel, profileViewModel: profileViewModel)
                 .preferredColorScheme(.light)
                 .previewDisplayName("Light mode")
                 .environmentObject(viewModel)
             
-            HomePageView()
+        HomePageView(viewModel: viewModel, profileViewModel: profileViewModel)
                 .preferredColorScheme(.dark)
                 .previewDisplayName("Dark mode")
                 .environmentObject(viewModel)

@@ -16,8 +16,8 @@ struct AccessEdTabView: View {
     // TODO: might need to get rid of this variable
     @State var selectedTab: Int = 0
     
-    let coursesViewModel = CourseViewModel()
-    let profileViewModel = ProfileViewModel()
+    @StateObject var coursesViewModel = CourseViewModel()
+    @StateObject var profileViewModel = ProfileViewModel()
     
     var body: some View {
         
@@ -25,7 +25,7 @@ struct AccessEdTabView: View {
             
             // Home page
             VStack {
-                HomePageView()
+                HomePageView(viewModel: coursesViewModel, profileViewModel: profileViewModel)
                 Spacer().frame(height: 10)
             }
             .tabItem {
@@ -60,7 +60,8 @@ struct AccessEdTabView: View {
             // Profile page
             VStack {
 //                ProfileView()
-                ProfileView2()
+                // MARK: - TODO: rename this
+                ProfileView2(courseViewModel: coursesViewModel, profileViewModel: profileViewModel)
                 Spacer().frame(height: 10)
             }
             .tabItem {
