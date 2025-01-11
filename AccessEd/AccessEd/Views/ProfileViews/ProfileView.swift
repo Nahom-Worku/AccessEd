@@ -224,8 +224,11 @@ struct ProfileView2: View {
     @State private var profileImage: Image? = Image("Profile pic")
     
     @Environment(\.modelContext) var modelContext
-    @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
-    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
+//    @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
+//    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
+    
+    @ObservedObject var courseViewModel: CourseViewModel
+    @ObservedObject var profileViewModel: ProfileViewModel
     
     var courses: CourseModel?
 
@@ -334,9 +337,13 @@ struct ProfileView2: View {
                             
                             
                             profileViewModel.deleteProfile()
+                            profileViewModel.profile?.interestedCourses.removeAll()
                             courseViewModel.deleteAllCourses()
                             courseViewModel.clearAllRecommendedCourses()
+                            courseViewModel.clearUserPreferences()
                             courseViewModel.resetUserPreferences()
+                            courseViewModel.fetchCourses()
+                            profileViewModel.fetchProfile()
                             
                             print("*** Delete profile button pressed ***")
                         }) {
@@ -392,7 +399,9 @@ struct PrivacyView: View {
 }
 
 #Preview("profile view 2") {
-    ProfileView2()
+    let courseViewModel = CourseViewModel()
+    let profileViewModel = ProfileViewModel()
+    ProfileView2(courseViewModel: courseViewModel, profileViewModel: profileViewModel)
 }
 
 
