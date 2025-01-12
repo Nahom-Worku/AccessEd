@@ -21,7 +21,7 @@ struct AccessEdApp: App {
         let schema = Schema([
             CourseModel.self,
             CalendarModel.self,
-            Task.self,
+            TaskModel.self,
             ProfileModel.self,
             UserPreferences.self,
         ])

@@ -27,7 +27,7 @@ struct CalendarEventsView: View {
                     if let date = viewModel.daysInMonthWithPadding[index] {
                         // Filter tasks for this specific cell's date
                         let cellTasks = viewModel.tasks.filter { calendar.isDate($0.date, inSameDayAs: date) }
-                        let cellUncompletedTasks = cellTasks.filter { !$0.completed }
+                        let cellUncompletedTasks = cellTasks.filter { !$0.isCompleted }
                         
                         let hasTasks = !cellTasks.isEmpty
                         let isCompleted = !cellTasks.isEmpty && cellUncompletedTasks.isEmpty

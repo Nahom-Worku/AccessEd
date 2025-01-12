@@ -12,8 +12,8 @@ import SwiftUI
 class CalendarViewModel : ObservableObject {
     @Published var currentMonth: Date = Date()
     @Published var selectedDate: Date = Date()
-    @Published var tasks: [Task] = []
-    @Published var fetchedTasks: [Task] = []
+    @Published var tasks: [TaskModel] = []
+    @Published var fetchedTasks: [TaskModel] = []
     @Published var allTasksCompletedByDate: [Date: Bool] = [:]
     @Published var isAddingTask: Bool = false
     @Published var TaskTitle: String = ""
@@ -26,16 +26,16 @@ class CalendarViewModel : ObservableObject {
     var calendar = Calendar.current
 
     // Filter tasks for the selected date
-    var tasksForSelectedDate: [Task] { tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) } }
+    var tasksForSelectedDate: [TaskModel] { tasks.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) } }
     
-    var tasksForCurrentDate: [Task] { tasks.filter { calendar.isDateInToday($0.date) } }
+    var tasksForCurrentDate: [TaskModel] { tasks.filter { calendar.isDateInToday($0.date) } }
     
-    var uncompletedTasks: [Task] { tasks.filter { !$0.completed } }
+    var uncompletedTasks: [TaskModel] { tasks.filter { !$0.isCompleted } }
     
     // Filter the uncompleted tasks for the selected date
-    var uncompletedTasksForSelectedDate: [Task] { tasksForSelectedDate.filter { !$0.completed } }
+    var uncompletedTasksForSelectedDate: [TaskModel] { tasksForSelectedDate.filter { !$0.isCompleted } }
     
-    var uncompletedTasksForCurrentDate: [Task] { tasks.filter { calendar.isDateInToday($0.date) && !$0.completed }}
+    var uncompletedTasksForCurrentDate: [TaskModel] { tasks.filter { calendar.isDateInToday($0.date) && !$0.isCompleted }}
     
     
     var daysInMonthWithPadding: [Date?] {
@@ -59,7 +59,7 @@ class CalendarViewModel : ObservableObject {
     
     func fetchTasks() {
         guard let context = modelContext else { return }
-        let fetchDescriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor(\.persistentModelID)])
+        let fetchDescriptor = FetchDescriptor<TaskModel>(sortBy: [SortDescriptor(\.persistentModelID)])
         tasks = (try? context.fetch(fetchDescriptor)) ?? []
     }
     
@@ -74,13 +74,13 @@ class CalendarViewModel : ObservableObject {
     
     func addTask(for date: Date, name: String) {
         guard let context = modelContext, !name.isEmpty else { return }
-        let newTask = Task(date: date, name: name, completed: false)
+        let newTask = TaskModel(date: date, name: name, isCompleted: false)
         context.insert(newTask)
         try? context.save()
         fetchTasks()
     }
     
-    func deleteTask(_ task: Task) {
+    func deleteTask(_ task: TaskModel) {
         guard let context = modelContext else { return }
         context.delete(task) // Remove task from the model context
         try? context.save()  // Save the context to persist changes
@@ -103,7 +103,7 @@ class CalendarViewModel : ObservableObject {
         for task in tasks {
             let taskDate = calendar.startOfDay(for: task.date) // Normalize to the start of the day
             let tasksForDate = tasks.filter { calendar.isDate($0.date, inSameDayAs: taskDate) }
-            completionStatus[taskDate] = tasksForDate.allSatisfy { $0.completed }
+            completionStatus[taskDate] = tasksForDate.allSatisfy { $0.isCompleted }
         }
 
         allTasksCompletedByDate = completionStatus
@@ -114,7 +114,7 @@ class CalendarViewModel : ObservableObject {
     func updateDynamicColor(for date: Date) {
         // Check task state for the date
         let hasTasks = tasks.contains { calendar.isDate($0.date, inSameDayAs: date) }
-        let isCompleted = tasks.filter { calendar.isDate($0.date, inSameDayAs: date) }.allSatisfy { $0.completed }
+        let isCompleted = tasks.filter { calendar.isDate($0.date, inSameDayAs: date) }.allSatisfy { $0.isCompleted }
 
         // Determine the new color
         let newColor: String

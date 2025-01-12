@@ -26,19 +26,19 @@ struct TasksView: View {
                     HStack {
                         Text("\(task.name)")
                             .font(.subheadline)
-                            .foregroundColor(task.completed ? .gray : .primary)
-                            .strikethrough(task.completed, color: .gray)
+                            .foregroundColor(task.isCompleted ? .gray : .primary)
+                            .strikethrough(task.isCompleted, color: .gray)
                         
                         Spacer()
                         
                         Button(action: {
                             if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
-                                viewModel.tasks[index].completed.toggle() // Toggle completion
+                                viewModel.tasks[index].isCompleted.toggle() // Toggle completion
                                 viewModel.updateAllTasksCompleted()
                             }
                         }, label: {
-                            Image(systemName: task.completed ? "checkmark.circle.fill" : "circle")
-                                .foregroundColor(task.completed ? .green : .red)
+                            Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
+                                .foregroundColor(task.isCompleted ? .green : .red)
                         })
 
                     }
@@ -52,7 +52,7 @@ struct TasksView: View {
                     .shadow(radius: 1, x: 1, y: 1)
                     .onTapGesture(count: 2) {
                         if let index = viewModel.tasks.firstIndex(where: { $0.id == task.id }) {
-                            viewModel.tasks[index].completed.toggle() // Toggle completion
+                            viewModel.tasks[index].isCompleted.toggle() // Toggle completion
                             viewModel.updateAllTasksCompleted()
                         }
                     }
