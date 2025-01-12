@@ -65,12 +65,12 @@ struct CalendarView: View {
     let viewModel = CalendarViewModel()
     CalendarView(viewModel: viewModel)
         .preferredColorScheme(.light)
-        .modelContainer(for: [Task.self, CalendarModel.self], inMemory: true)
+        .modelContainer(for: [TaskModel.self, CalendarModel.self], inMemory: true)
 }
 
 #Preview("Dark mode") {
     let viewModel = CalendarViewModel()
     CalendarView(viewModel: viewModel)
         .preferredColorScheme(.dark)
-        .modelContainer(for: [Task.self, CalendarModel.self], inMemory: true)
+        .modelContainer(for: [TaskModel.self, CalendarModel.self], inMemory: true)
 }

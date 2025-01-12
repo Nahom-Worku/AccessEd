@@ -22,16 +22,16 @@ class CalendarModel: Identifiable {
 }
 
 @Model
-class Task: Identifiable {
+class TaskModel: Identifiable {
     @Attribute(.unique) var id: UUID
     var date: Date
     var name: String
-    var completed: Bool
+    var isCompleted: Bool
     
-    init(id: UUID = .init(), date: Date, name: String, completed: Bool = false) {
+    init(id: UUID = .init(), date: Date, name: String, isCompleted: Bool = false) {
         self.id = id
         self.date = date
         self.name = name
-        self.completed = completed
+        self.isCompleted = isCompleted
     }
 }
