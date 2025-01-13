@@ -26,6 +26,7 @@ struct AccessEdTabView: View {
             // Home page
             VStack {
                 HomePageView(viewModel: coursesViewModel, profileViewModel: profileViewModel)
+                
                 Spacer().frame(height: 10)
             }
             .tabItem {
@@ -37,6 +38,7 @@ struct AccessEdTabView: View {
             // Course page
             VStack {
                 CoursesView(viewModel: coursesViewModel)
+                
                 Spacer().frame(height: 10)
             }
             .tabItem {
@@ -48,6 +50,7 @@ struct AccessEdTabView: View {
             // Calendar/ToDo List page
             VStack {
                 CalendarView(viewModel: calendarViewModel)
+                
                 Spacer().frame(height: 10)
             }
             .tabItem {
@@ -62,6 +65,7 @@ struct AccessEdTabView: View {
 //                ProfileView()
                 // MARK: - TODO: rename this
                 ProfileView2(courseViewModel: coursesViewModel, profileViewModel: profileViewModel)
+                
                 Spacer().frame(height: 10)
             }
             .tabItem {
