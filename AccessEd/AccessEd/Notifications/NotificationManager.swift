@@ -8,9 +8,14 @@
 import SwiftUI
 import UserNotifications
 
-class NotificationManager: ObservableObject {
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationManager()
 
+    func configure() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+    }
+    
     func requestAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
@@ -23,10 +28,10 @@ class NotificationManager: ObservableObject {
         }
     }
 
-    func notifyProfileSetup() {
+    func notifyProfileSetup(userName: String) {
         let content = UNMutableNotificationContent()
         content.title = "Profile Setup Complete"
-        content.body = "Welcome to the app! Start exploring your tasks and other features."
+        content.body = "Hi \(userName), welcome to AccessEd! Explore your courses now."
         content.sound = .default
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
@@ -63,3 +68,17 @@ class NotificationManager: ObservableObject {
     }
 }
 
+class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    // Handle notifications while app is in the foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Display notification as a banner and play sound
+        completionHandler([.banner, .sound])
+    }
+
+    // Handle user interaction with notifications
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // Perform action when user interacts with notification
+        print("Notification tapped: \(response.notification.request.identifier)")
+        completionHandler()
+    }
+}

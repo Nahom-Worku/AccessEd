@@ -318,17 +318,10 @@ struct ProfileView2: View {
                                 .scaleEffect(0.75)
                         }
                         
-                        NavigationLink(destination: PrivacyView()) {
-                            Label("Privacy", systemImage: "hand.raised.slash")
-                        }
-                        
-                        NavigationLink(destination: ProfileView()) {
-                            Label("Another profile view", systemImage: "plus.square.fill")
-                        }
                     }
                     
                     VStack {
-                        Text("\(profileViewModel.profile?.interestedCourses)")
+                        Text("\(String(describing: profileViewModel.profile?.interestedCourses))")
                     }
 
                     Section {
@@ -356,7 +349,7 @@ struct ProfileView2: View {
                     .listRowBackground(Color("List-Colors"))
                     .listRowSeparatorTint(Color("List-Colors"))
                 }
-                .scrollDisabled(true)
+//                .scrollDisabled(true)
                 .scrollContentBackground(.hidden)
                 .padding(.top, 15)
                 .frame(width: UIScreen.main.bounds.width)

@@ -136,6 +136,10 @@ extension OnboardingView {
                     
                     courseViewModel.fetchCourses()
                     
+                    NotificationManager.shared.requestAuthorization()
+                    
+                    NotificationManager.shared.notifyProfileSetup(userName: profileViewModel.profile?.name ?? "")
+                    
                     print("Selected Courses: ")
                     print(profileViewModel.interestedCourses)
                 }
