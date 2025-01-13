@@ -37,40 +37,40 @@ class ProfileViewModel : ObservableObject {
     }
     
     // Add a course to the interested list
-        func addCourse(_ course: String) {
-            if interestedCourses.count < 3 {
-                interestedCourses.append(course)
-                profile?.interestedCourses = interestedCourses
-                try? modelContext?.save()
-                fetchProfile()
-            }
-            
-            /*
-             guard let profile = profile else { return }
-             if interestedCourses.count < 3 /*&& !interestedCourses.contains(course)*/ {
-                 interestedCourses.append(course)
-                 profile.interestedCourses = interestedCourses
-                 try? modelContext?.save()
-                 fetchProfile()
-             }
-             */
-        }
-
-        // Remove a course from the interested list
-        func removeCourse(_ course: String) {
-            interestedCourses.removeAll { $0 == course }
+    func addCourse(_ course: String) {
+        if interestedCourses.count < 3 {
+            interestedCourses.append(course)
             profile?.interestedCourses = interestedCourses
             try? modelContext?.save()
             fetchProfile()
-            
-            /*
-             guard let profile = profile else { return }
-             interestedCourses.removeAll { $0 == course }
+        }
+        
+        /*
+         guard let profile = profile else { return }
+         if interestedCourses.count < 3 /*&& !interestedCourses.contains(course)*/ {
+             interestedCourses.append(course)
              profile.interestedCourses = interestedCourses
              try? modelContext?.save()
              fetchProfile()
-             */
-        }
+         }
+         */
+    }
+
+    // Remove a course from the interested list
+    func removeCourse(_ course: String) {
+        interestedCourses.removeAll { $0 == course }
+        profile?.interestedCourses = interestedCourses
+        try? modelContext?.save()
+        fetchProfile()
+        
+        /*
+         guard let profile = profile else { return }
+         interestedCourses.removeAll { $0 == course }
+         profile.interestedCourses = interestedCourses
+         try? modelContext?.save()
+         fetchProfile()
+         */
+    }
     
     func removeAllCourses() {
         profile?.interestedCourses = []
@@ -171,6 +171,7 @@ class ProfileViewModel : ObservableObject {
     
     func updateStatus() {
         isUserSignedIn = true
+        profile?.isUserSignedIn = isUserSignedIn
         try? modelContext?.save()
         fetchProfile()
     }

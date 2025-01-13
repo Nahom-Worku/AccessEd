@@ -30,7 +30,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
     func notifyProfileSetup(userName: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Profile Setup Complete"
+        content.title = "Profile Setup Complete 🎉"
         content.body = "Hi \(userName), welcome to AccessEd! Explore your courses now."
         content.sound = .default
 

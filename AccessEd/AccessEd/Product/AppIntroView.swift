@@ -10,11 +10,25 @@ import SwiftUI
 struct AppIntroView: View {
     @Environment(\.modelContext) var modelContext
     @StateObject var viewModel = ProfileViewModel()
+    @State var navigateToHome: Bool = false
     
     var body: some View {
         ZStack {
-            if ((viewModel.profile?.isUserSignedIn) != nil) {
-                AccessEdTabView()
+            if viewModel.profile?.isUserSignedIn == true {
+                if navigateToHome {
+                    AccessEdTabView()
+                        .transition(.opacity)
+                } else {
+                    WelcomeScreenView()
+                        .transition(.opacity)
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                withAnimation {
+                                    navigateToHome = true
+                                }
+                            }
+                        }
+                }
             } else {
                 OnboardingView()
             }
@@ -23,6 +37,7 @@ struct AppIntroView: View {
             viewModel.modelContext = modelContext
             viewModel.fetchProfile()
         }
+        .animation(.easeInOut, value: navigateToHome)
     }
 }
 
