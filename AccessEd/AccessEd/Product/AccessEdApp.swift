@@ -16,6 +16,8 @@ struct AccessEdApp: App {
     @StateObject var profileViewModel = ProfileViewModel()
     @StateObject var courseViewModel = CourseViewModel()
 
+    private let notificationDelegate = NotificationDelegate()
+    
     var container: ModelContainer = {
 
         let schema = Schema([
@@ -36,6 +38,10 @@ struct AccessEdApp: App {
         }
     }()
     
+    init() {
+        NotificationManager.shared.configure()
+        UNUserNotificationCenter.current().delegate = notificationDelegate
+    }
     
     var body: some Scene {
         WindowGroup {
