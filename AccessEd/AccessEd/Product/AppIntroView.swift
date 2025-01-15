@@ -11,15 +11,15 @@ struct AppIntroView: View {
     @Environment(\.modelContext) var modelContext
     @StateObject var viewModel = ProfileViewModel()
     @State var navigateToHome: Bool = false
-    
+
     var body: some View {
         ZStack {
-            if viewModel.profile?.isUserSignedIn == true {
+            if viewModel.profile?.isUserSignedIn == true &&  viewModel.profile?.isUserSignedIn != nil {
                 if navigateToHome {
                     AccessEdTabView()
-                        .transition(.opacity)
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
                 } else {
-                    WelcomeScreenView()
+                    LoadingScreenView()
                         .transition(.opacity)
                         .onAppear {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -33,13 +33,15 @@ struct AppIntroView: View {
                 OnboardingView()
             }
         }
+        .animation(.easeInOut, value: navigateToHome)
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchProfile()
         }
-        .animation(.easeInOut, value: navigateToHome)
+        
     }
 }
+
 
 #Preview {
     AppIntroView()
