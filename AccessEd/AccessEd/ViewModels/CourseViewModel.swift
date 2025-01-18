@@ -23,23 +23,45 @@ class CourseViewModel : ObservableObject {
     
     @Published var userPreferences: UserPreferences?
     
+    private let profileViewModel: ProfileViewModel
+    
+    init(profileViewModel: ProfileViewModel) {
+        self.profileViewModel = profileViewModel
+        loadUserPreferences()
+    }
+    
     var allRecommendedCourses: [CourseModel] {
         var mlOutput: [String] = []
-        
+
         if let userPreferences = userPreferences {
             var unfilteredCourses: [String] = []
-            
+
+            // Step 1: Fetch recommendations from the ML model
             unfilteredCourses = CoursesRecommender(userPreferences: userPreferences.inputCourses, excludeList: userPreferences.excludeList)
-            
-            // MARK: - update this to re-add the courses in the initial input data for the model
-            // Filter out courses that are already in inputCourses or excludeList
+
+            // Step 2: Filter out courses already in inputCourses or excludeList
             unfilteredCourses = unfilteredCourses.filter { courseName in
-                !(userPreferences.inputCourses.keys.contains(courseName) || userPreferences.excludeList.contains(courseName))
+                let alreadyInInput = userPreferences.inputCourses.keys.contains(courseName)
+                let inExcludeList = userPreferences.excludeList.contains(courseName)
+                return !(alreadyInInput || inExcludeList)
             }
-            
+
+            // Step 3: Filter courses based on fields of interest
+            if let fieldsOfInterest = profileViewModel.profile?.fieldsOfInterest {
+                let allowedCourses = fieldsOfInterest.flatMap { category in
+                    CourseCategory.coursesByField[category] ?? []
+                }
+                
+                unfilteredCourses = unfilteredCourses.filter { courseName in
+                    allowedCourses.contains(courseName)
+                }
+            }
+
+            // Step 4: Assign final filtered list to mlOutput
             mlOutput = unfilteredCourses
         }
-        
+
+        // Step 5: Convert filtered course names into CourseModel objects
         return mlOutput.map { courseName in
             getCourse(courseName: courseName)
         }
@@ -47,10 +69,6 @@ class CourseViewModel : ObservableObject {
     
     var topSixRecommendedCourses: [CourseModel] { return Array(allRecommendedCourses.prefix(6)) }
     
-    
-    init() {
-        loadUserPreferences()
-    }
     
     func setInterestedCourses(_ courses: [String]) {
         self.interestedCourses = courses

@@ -35,7 +35,7 @@ struct WelcomeView: View {
                 .foregroundStyle(Color("Text-Colors"))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
-                .padding(.bottom, 100)
+                .padding(.bottom, 50)
             
             
             
@@ -52,7 +52,7 @@ struct WelcomeView: View {
                 .foregroundStyle(.gray)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
-//                .padding(.bottom, 40)
+                .padding(.bottom, 40)
             
             Spacer().frame(height: 40) // Bottom spacing
         }

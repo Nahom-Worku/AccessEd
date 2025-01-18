@@ -13,6 +13,7 @@ struct CoursesView: View {
     
     @ObservedObject var viewModel: CourseViewModel
     
+    // MARK: - add these variables in the course view model
     @State var showAddCoursesBottomView: Bool = false
     @State var courseName: String = ""
     @State private var selectedCategory: CourseCategory = .mathematics
@@ -395,7 +396,8 @@ struct UpdateCourseSheet: View {
 }
 
 #Preview("Light mode") {
-    let viewModel = CourseViewModel()
+    let profileViewModel = ProfileViewModel()
+    let viewModel = CourseViewModel(profileViewModel: profileViewModel)
     CoursesView(viewModel: viewModel)
         
         .preferredColorScheme(.light)
@@ -403,7 +405,8 @@ struct UpdateCourseSheet: View {
 }
 
 #Preview("Dark mode") {
-    let viewModel = CourseViewModel()
+    let profileViewModel = ProfileViewModel()
+    let viewModel = CourseViewModel(profileViewModel: profileViewModel)
     CoursesView(viewModel: viewModel)
         .preferredColorScheme(.dark)
         .modelContainer(for: CourseModel.self, inMemory: true)
