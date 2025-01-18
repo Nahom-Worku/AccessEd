@@ -14,7 +14,7 @@ struct AppIntroView: View {
 
     var body: some View {
         ZStack {
-            if viewModel.profile?.isUserSignedIn == true &&  viewModel.profile?.isUserSignedIn != nil {
+            if viewModel.profile?.isUserSignedIn == true /*&& viewModel.profile?.isUserSignedIn != nil*/ {
                 if navigateToHome {
                     AccessEdTabView()
                         .transition(.move(edge: .trailing).combined(with: .opacity))

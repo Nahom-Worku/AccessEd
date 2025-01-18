@@ -87,21 +87,21 @@ struct HomePageView: View {
 struct HomePageView_Previews: PreviewProvider {
    
     static var previews: some View {
-        let viewModel = CourseViewModel()
         let profileViewModel = ProfileViewModel()
-        let calendarViewoidModel = CalendarViewModel()
+        let viewModel = CourseViewModel(profileViewModel: profileViewModel)
+        let calendarViewModel = CalendarViewModel()
 //        Group {
         HomePageView(viewModel: viewModel, profileViewModel: profileViewModel)
                 .preferredColorScheme(.light)
                 .previewDisplayName("Light mode")
                 .environmentObject(viewModel)
-                .environmentObject(calendarViewoidModel)
+                .environmentObject(calendarViewModel)
             
         HomePageView(viewModel: viewModel, profileViewModel: profileViewModel)
                 .preferredColorScheme(.dark)
                 .previewDisplayName("Dark mode")
                 .environmentObject(viewModel)
-                .environmentObject(calendarViewoidModel)
+                .environmentObject(calendarViewModel)
 //        }
     }
 }

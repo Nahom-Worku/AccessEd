@@ -320,8 +320,10 @@ struct ProfileView2: View {
                         
                     }
                     
-                    VStack {
-                        Text("\(String(describing: profileViewModel.profile?.interestedCourses))")
+                    VStack(spacing: 10) {
+                        Text("\(String(describing: profileViewModel.profile?.interestedCourses ?? []))")
+                        
+                        Text("\(String(describing: profileViewModel.profile?.fieldsOfInterest ?? []))")
                     }
 
                     Section {
@@ -392,8 +394,8 @@ struct PrivacyView: View {
 }
 
 #Preview("profile view 2") {
-    let courseViewModel = CourseViewModel()
     let profileViewModel = ProfileViewModel()
+    let courseViewModel = CourseViewModel(profileViewModel: profileViewModel)
     ProfileView2(courseViewModel: courseViewModel, profileViewModel: profileViewModel)
 }
 
@@ -403,8 +405,14 @@ struct PrivacyView: View {
 struct ProfileView: View {
     @Environment(\.modelContext) var modelContext
     @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
-    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
+    @StateObject var courseViewModel: CourseViewModel
 //    @State var profile: ProfileModel?
+    
+    init() {
+            let profileViewModel = ProfileViewModel()
+            _profileViewModel = StateObject(wrappedValue: profileViewModel)
+            _courseViewModel = StateObject(wrappedValue: CourseViewModel(profileViewModel: profileViewModel))
+        }
     
     var body: some View {
         NavigationView {

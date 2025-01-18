@@ -10,7 +10,7 @@ import SwiftUI
 struct OnboardingView: View {
     
     @Environment(\.modelContext) var modelContext
-    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
+    @StateObject var courseViewModel: CourseViewModel
     @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
     
     @State private var isMovingForward: Bool = true
@@ -20,6 +20,12 @@ struct OnboardingView: View {
             ? .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading))
         : .asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing))
     }
+    
+    init() {
+            let profileViewModel = ProfileViewModel()
+            _profileViewModel = StateObject(wrappedValue: profileViewModel)
+        _courseViewModel = StateObject(wrappedValue: CourseViewModel(profileViewModel: profileViewModel))
+        }
     
     var body: some View {
         ZStack {

@@ -12,9 +12,9 @@ import SwiftData
 @main
 struct AccessEdApp: App {
     @Environment(\.modelContext) private var modelContext
-    @StateObject var calendarViewModel = CalendarViewModel()
+    @StateObject var calendarViewModel: CalendarViewModel = CalendarViewModel()
     @StateObject var profileViewModel = ProfileViewModel()
-    @StateObject var courseViewModel = CourseViewModel()
+    @StateObject var courseViewModel: CourseViewModel
 
     private let notificationDelegate = NotificationDelegate()
     
@@ -39,6 +39,10 @@ struct AccessEdApp: App {
     }()
     
     init() {
+        let profileViewModel = ProfileViewModel()
+        _profileViewModel = StateObject(wrappedValue: profileViewModel)
+        _courseViewModel = StateObject(wrappedValue: CourseViewModel(profileViewModel: profileViewModel))
+        
         NotificationManager.shared.configure()
         UNUserNotificationCenter.current().delegate = notificationDelegate
     }
@@ -48,11 +52,11 @@ struct AccessEdApp: App {
             NavigationView {
 
                 AppIntroView()
-                OnboardingView()
-                AccessEdTabView()
-
-                CoursesView(viewModel: courseViewModel)  // TODO: might need to get rid of these
-                CalendarView(viewModel: calendarViewModel)
+//                OnboardingView()
+//                AccessEdTabView()
+//
+//                CoursesView(viewModel: courseViewModel)  // TODO: might need to get rid of these
+//                CalendarView(viewModel: calendarViewModel)
                 ProfileView()
                     .environment(\.modelContext, modelContext)
                     .environmentObject(calendarViewModel)

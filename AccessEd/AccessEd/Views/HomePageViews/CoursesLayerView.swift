@@ -54,13 +54,14 @@ struct CoursesLayerView: View {
             
             profileViewModel.fetchProfile()
 
-            
             viewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
             
             viewModel.setInterestedCourses(profileViewModel.profile?.interestedCourses ?? [])
             
             viewModel.loadUserPreferences()
             viewModel.fetchCourses()
+            
+            print("fields of interest: \(profileViewModel.profile?.fieldsOfInterest ?? [])")
         }
     }
 }
@@ -241,15 +242,16 @@ struct EachRecommendedCourseCardView: View {
 
 
 #Preview("Light Mode") {
-    let viewModel = CourseViewModel()
     let profileViewModel = ProfileViewModel()
+    let viewModel = CourseViewModel(profileViewModel: profileViewModel)
+
     CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
-    let viewModel = CourseViewModel()
     let profileViewModel = ProfileViewModel()
+    let viewModel = CourseViewModel(profileViewModel: profileViewModel)
     CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel)
         .preferredColorScheme(.dark)
 }
