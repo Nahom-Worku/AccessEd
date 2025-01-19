@@ -21,7 +21,7 @@ struct CalendarView: View {
                         CalendarTitleLayerView(viewModel: viewModel)
                         CalendarEventsView (viewModel: viewModel)
                     }
-                    .frame(width: UIScreen.main.bounds.width - 40, height: 300, alignment: .top)
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 310, alignment: .top)
                     .background(Color("Light-Dark Mode Colors").cornerRadius(20))
                     .shadow(radius: 1, x: 0, y: 0) // color: Color("Text-Colors").opacity(0.3),
                     .padding()
@@ -29,7 +29,7 @@ struct CalendarView: View {
                     // Tasks View
                     TasksLayerView(viewModel: viewModel)
                         .frame(width: UIScreen.main.bounds.width)
-                        .padding()
+                        .padding(.horizontal)
                 }
                 .frame(width: UIScreen.main.bounds.width)
                 .sheet(isPresented: $viewModel.isAddingTask, content: {
@@ -44,8 +44,8 @@ struct CalendarView: View {
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchTasks()
-            
             viewModel.tasks = viewModel.fetchedTasks
+            
             for date in viewModel.tasks.map({ $0.date }) {
                 viewModel.updateDynamicColor(for: date)
             }
