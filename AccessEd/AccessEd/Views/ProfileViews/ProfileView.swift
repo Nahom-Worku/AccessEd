@@ -330,7 +330,6 @@ struct ProfileView2: View {
                         Button(action: {
                             // Handle log out logic
                             
-                            
                             profileViewModel.deleteProfile()
                             profileViewModel.profile?.interestedCourses.removeAll()
                             courseViewModel.deleteAllCourses()

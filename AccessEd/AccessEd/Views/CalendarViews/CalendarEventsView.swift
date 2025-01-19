@@ -16,11 +16,11 @@ struct CalendarEventsView: View {
             HStack {
                 ForEach(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], id: \.self) { day in
                     Text(day)
-                        .font(.caption)
+                        .font(.footnote) // .caption
                         .frame(maxWidth: .infinity)
                 }
             }
-            .padding(.bottom, 10)
+            .padding(.top, 5)
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
                 ForEach(viewModel.daysInMonthWithPadding.indices, id: \.self) { index in
@@ -44,13 +44,13 @@ struct CalendarEventsView: View {
                             
                             // TODO: update this if statement so that the bg color is updated as expected
                             if isToday {
-                                return Color.yellow.opacity(0.5) // Today
+                                return Color("Today-Color") // Today
                             } else if isSelected {
-                                return Color.blue.opacity(0.4) // Selected date
+                                return Color("SelectedDate-Color") // Selected date
                             } else if hasTasks && !isCompleted {
-                                return Color.red.opacity(0.25) // Incomplete tasks
+                                return Color.red.opacity(0.3) // Incomplete tasks
                             } else if hasTasks && isCompleted {
-                                return Color.green.opacity(0.2) // All tasks completed
+                                return Color.green.opacity(0.4) // All tasks completed
                             } else {
                                 return storedColor // Stored or default color
                             }
@@ -67,12 +67,11 @@ struct CalendarEventsView: View {
                             Text(textValue)
                                 .font(.footnote)
                                 .bold(hasTasks && !isCompleted)
-                                .frame(width: 30, height: 30, alignment: .center)
-                            // TODO: maybe change the foreground color instead for uncompleted and completed tasks
-//                                .foregroundStyle(hasTasks && !isCompleted ? Color.red : Color("Text-Colors"))
+//                                .fontWeight(isToday && hasTasks && !isCompleted ? .heavy : .regular)
+                                .frame(width: 35, height: 35, alignment: .center) // 30, 30
                                 .background(backgroundColor)
-                                .foregroundStyle(isToday && hasTasks && !isCompleted ? Color.red : Color("Text-Colors"))
-                                .cornerRadius(10) // 8
+                                .foregroundStyle(Color("Text-Colors"))
+                                .cornerRadius(50) // 8
                         }
                         .buttonStyle(PlainButtonStyle())
                     } else {
