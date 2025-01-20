@@ -395,8 +395,8 @@ extension OnboardingView {
                 return
             }
         case 5:
-            guard profileViewModel.interestedCourses.count == 3 else {
-                showAlert(title: "You must select at least three courses!")
+            guard profileViewModel.interestedCourses.count >= 1 else {
+                showAlert(title: "You must select at least one courses!")
                 return
             }
         default:

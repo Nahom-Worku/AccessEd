@@ -18,7 +18,7 @@ struct CoursesView: View {
     @State var courseName: String = ""
     @State private var selectedCategory: CourseCategory = .mathematics
     @State private var showEditCoursesBottomView: Bool = false
-    
+    @FocusState private var isTaskFieldFocused: Bool
     
    
     var body: some View {
@@ -146,6 +146,7 @@ struct CoursesView: View {
                     .padding(.leading)
                 
                 TextField("Enter Course Name", text: $courseName)
+                    .focused($isTaskFieldFocused)
                     .padding(10)
                     .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                     .padding([.horizontal, .bottom], 20)
@@ -165,6 +166,11 @@ struct CoursesView: View {
                 .font(.subheadline)
             }
             .foregroundStyle(Color("Text-Colors"))
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        isTaskFieldFocused = true
+                    }
+            }
 
             
             HStack(alignment: .center) {
@@ -227,6 +233,7 @@ struct CoursesView: View {
         )
         .padding(.horizontal, 10)
         .padding(.top, 10)
+        
     }
     
 

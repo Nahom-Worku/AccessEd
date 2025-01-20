@@ -40,7 +40,7 @@ struct CalendarLayerView: View {
                     .font(.caption)
             }
             .padding(.leading, 20) // .horizontal, 25
-            .padding(.top, 3)
+//            .padding(.top, 3)
 //            .frame(width: UIScreen.main.bounds.width, alignment: .leading)
             
             CurrentDateTasksView(viewModel: viewModel)
@@ -57,5 +57,7 @@ struct CalendarLayerView: View {
 }
 
 #Preview {
+    let viewModel: CalendarViewModel = CalendarViewModel()
     CalendarLayerView()
+        .environmentObject(viewModel)
 }
