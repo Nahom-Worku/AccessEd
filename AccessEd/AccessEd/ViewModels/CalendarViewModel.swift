@@ -37,6 +37,7 @@ class CalendarViewModel : ObservableObject {
     
     var uncompletedTasksForCurrentDate: [TaskModel] { tasks.filter { calendar.isDateInToday($0.date) && !$0.isCompleted }}
     
+    let soundPlayer = SoundPlayer()
     
     var daysInMonthWithPadding: [Date?] {
         let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: currentMonth))
@@ -110,6 +111,19 @@ class CalendarViewModel : ObservableObject {
         
         fetchTasks()
     }
+    
+    func handleTaskCompletion(_ task: TaskModel) {
+        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks[index].isCompleted.toggle() // Toggle completion
+            if tasks[index].isCompleted {
+                soundPlayer.playSound(named: "Task_completed.mp3", volume: 0.2)
+            } else {
+                soundPlayer.playSound(named: "Task_uncompleted.mp3", volume: 0.1)
+            }
+            updateAllTasksCompleted() // Update other state
+        }
+    }
+
     
     func updateDynamicColor(for date: Date) {
         // Check task state for the date

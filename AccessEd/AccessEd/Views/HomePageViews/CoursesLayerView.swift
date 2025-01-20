@@ -43,7 +43,7 @@ struct CoursesLayerView: View {
                 }
                 .padding(.horizontal, 5)
                 .padding(.trailing, 20)
-                .frame(maxHeight: 300)
+                .frame(maxHeight: 200)
             }
         }
         .padding()
@@ -51,17 +51,11 @@ struct CoursesLayerView: View {
         .onAppear {
             profileViewModel.modelContext = modelContext
             viewModel.modelContext = modelContext
-            
             profileViewModel.fetchProfile()
-
             viewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
-            
             viewModel.setInterestedCourses(profileViewModel.profile?.interestedCourses ?? [])
-            
             viewModel.loadUserPreferences()
             viewModel.fetchCourses()
-            
-            print("fields of interest: \(profileViewModel.profile?.fieldsOfInterest ?? [])")
         }
     }
 }

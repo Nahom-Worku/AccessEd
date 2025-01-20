@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddTaskSheetView: View {
     @ObservedObject var viewModel: CalendarViewModel
+    @FocusState private var isTaskFieldFocused: Bool
     
     var body: some View {
         VStack(spacing: 20) {
@@ -21,6 +22,7 @@ struct AddTaskSheetView: View {
                 Text("Add Task Name")
                     .padding(.leading)
                 TextField("Enter Task Name", text: $viewModel.TaskTitle)
+                    .focused($isTaskFieldFocused)
                     .padding(10)
                     .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                     .padding([.horizontal, .bottom], 20)
@@ -88,6 +90,9 @@ struct AddTaskSheetView: View {
         )
         .padding(.horizontal, 10)
         .padding(.top, 10)
+        .onAppear {
+            isTaskFieldFocused = true
+        }
     }
 }
 
