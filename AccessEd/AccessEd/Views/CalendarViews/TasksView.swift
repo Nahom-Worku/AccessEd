@@ -23,59 +23,50 @@ struct TasksView: View {
             // Display the tasks for the selected date
             LazyVStack(alignment: .center, spacing: 10) {
                 TasksSubView(viewModel: viewModel)
-//                ForEach(Array(viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
-//                    HStack {
-//                        Text("\(task.name)")
-//                            .font(.subheadline)
-//                            .foregroundColor(task.isCompleted ? .gray : .primary)
-//                            .strikethrough(task.isCompleted, color: .gray)
-//                        
-//                        Spacer()
-//                        
-//                        // complete tasks button
-//                        Button(action: {
-//                            viewModel.handleTaskCompletion(task)
-//                        }, label: {
-//                            Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-//                                .foregroundColor(task.isCompleted ? .green : .red)
-//                        })
-//
-//                    }
-//                    .padding(.vertical, 10)
-//                    .padding(.horizontal, 13)
-//                    .background(Color("Courses-Colors"))
-//                    .cornerRadius(8)
-//                    .padding(.trailing, 20)
-//                    .frame(width: UIScreen.main.bounds.width - 60)
-//                    .padding(.leading, 20)
-//                    .shadow(radius: 1, x: 1, y: 1)
-//                    .onTapGesture(count: 2) {
-//                        viewModel.handleTaskCompletion(task)
-//                    }
-//                }
-                
                 
                 // Remove all tasks for a day button
-                VStack (alignment: .center) {
+                HStack () {
                     Button(action: {
-                        viewModel.deleteAllTasks(for: viewModel.selectedDate)
+                        withAnimation(.easeOut) {
+                            viewModel.deleteAllTasks(for: viewModel.selectedDate)
+                        }
                     }) {
-                        Text("Remove All Tasks")
+                        Text("Remove All")
                             .font(.callout)
-                            .foregroundStyle(Color("Text-Colors"))
+                            .foregroundStyle(.red)//Color("Text-Colors"))
                             .padding()
                             .padding(.horizontal, 15)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(Color("Courses-Colors"))
                                     .shadow(radius: 1, x: 0, y: 1)
-                                    .frame(width: 160, height: 40)
+                                    .frame(width: 150, height: 40)
+                            )
+                    }
+                    .padding(.leading, 20)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        viewModel.completeAllTasks(for: viewModel.selectedDate)
+                    }) {
+                        Text("Complete All")
+                            .font(.system(size: 16))
+                            .foregroundStyle(.green) //Color("Text-Colors"))
+                            .padding()
+                            .padding(.horizontal, 15)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color("Courses-Colors"))
+                                    .shadow(radius: 1, x: 0, y: 1)
+                                    .frame(width: 150, height: 40)
                             )
                     }
                 }
                 .padding()
-                .padding(.top, 20)
-                .frame(width: UIScreen.main.bounds.width - 100, alignment: .center)
+                .padding(.horizontal)
+                .padding(.top, 30)
+                .frame(width: UIScreen.main.bounds.width, alignment: .center)
             }
             .padding()
             .padding(.horizontal)
@@ -86,25 +77,23 @@ struct TasksView: View {
 
 struct TasksSubView: View {
     @ObservedObject var viewModel: CalendarViewModel
-    
+
     var body: some View {
         ForEach(Array(viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
             HStack {
-                Text("\(task.name)")
+                Text(task.name)
                     .font(.subheadline)
                     .foregroundColor(task.isCompleted ? .gray : .primary)
                     .strikethrough(task.isCompleted, color: .gray)
                 
                 Spacer()
                 
-                // complete tasks button
                 Button(action: {
                     viewModel.handleTaskCompletion(task)
                 }, label: {
                     Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
                         .foregroundColor(task.isCompleted ? .green : .red)
                 })
-
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 13)
@@ -117,9 +106,38 @@ struct TasksSubView: View {
             .onTapGesture(count: 2) {
                 viewModel.handleTaskCompletion(task)
             }
+            .contextMenu {
+                Button(action: {
+                    viewModel.selectedTaskIndex = index
+                    viewModel.isEditingTask = true
+                }, label: {
+                    Label("Edit Task", systemImage: "pencil")
+                })
+                
+                Button(action: {
+                    viewModel.deleteTask(task)
+                }, label: {
+                    Label("Delete Task", systemImage: "trash")
+                })
+            }
         }
+        .sheet(isPresented: $viewModel.isEditingTask) {
+            if let taskIndex = viewModel.selectedTaskIndex {
+                if taskIndex >= 0 && taskIndex < viewModel.tasksForSelectedDate.count {
+                    EditTaskSheetView(viewModel: viewModel, taskIndex: taskIndex)
+                        .presentationDetents([.medium, .fraction(0.5)])
+                        .padding(.top)
+                }
+            } else {
+                Text("No Task Selected")
+            }
+        }
+
     }
 }
+
+
+
 #Preview {
     let viewModel = CalendarViewModel()
     TasksView(viewModel: viewModel)

@@ -16,8 +16,10 @@ class CalendarViewModel : ObservableObject {
     @Published var fetchedTasks: [TaskModel] = []
     @Published var allTasksCompletedByDate: [Date: Bool] = [:]
     @Published var isAddingTask: Bool = false
+    @Published var isEditingTask: Bool = false
     @Published var TaskTitle: String = ""
     @Published var newTaskDescription: String = ""
+    @Published var selectedTaskIndex: Int?
 
     // CalendarModel for dynamic colors (Optional)
     @Published var calendarDates: [CalendarModel] = []
@@ -81,11 +83,31 @@ class CalendarViewModel : ObservableObject {
         fetchTasks()
     }
     
+    func completeAllTasks(for date: Date) {
+        guard let context = modelContext else { return }
+        let tasksToComplete = tasks.filter { calendar.isDate($0.date, inSameDayAs: date) }
+        let wereAllTasksCompleted = tasksToComplete.allSatisfy { $0.isCompleted }
+        
+        for task in tasksToComplete {
+            task.isCompleted = true
+        }
+        try? context.save()
+        fetchTasks()
+        
+        let areAllTasksCompleted = tasksToComplete.allSatisfy { $0.isCompleted }
+
+        if areAllTasksCompleted && !wereAllTasksCompleted {
+            soundPlayer.playSound(named: "All_tasks_completed.mp3", volume: 0.025)
+        }
+    }
+    
     func deleteTask(_ task: TaskModel) {
         guard let context = modelContext else { return }
         context.delete(task) // Remove task from the model context
         try? context.save()  // Save the context to persist changes
         fetchTasks()
+        
+        soundPlayer.playSound(named: "All_Task_deleted.mp3", volume: 0.2)
     }
     
     func deleteAllTasks(for date: Date) {
@@ -96,6 +118,8 @@ class CalendarViewModel : ObservableObject {
         }
         try? context.save()
         fetchTasks()
+        
+        soundPlayer.playSound(named: "All_Task_deleted.mp3", volume: 0.2)
     }
     
     func updateAllTasksCompleted() {
@@ -108,17 +132,28 @@ class CalendarViewModel : ObservableObject {
         }
 
         allTasksCompletedByDate = completionStatus
-        
         fetchTasks()
     }
     
+    func updateTaskName(at index: Int, with newName: String) {
+        tasksForSelectedDate[index].name = newName
+        try? modelContext?.save()
+        fetchTasks()
+    }
+
+    func updateTaskDate(at index: Int, with newDate: Date) {
+        tasksForSelectedDate[index].date = newDate
+        try? modelContext?.save()
+        fetchTasks()
+    }
+
     func handleTaskCompletion(_ task: TaskModel) {
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index].isCompleted.toggle() // Toggle completion
             if tasks[index].isCompleted {
                 soundPlayer.playSound(named: "Task_completed.mp3", volume: 0.2)
             } else {
-                soundPlayer.playSound(named: "Task_uncompleted.mp3", volume: 0.1)
+                soundPlayer.playSound(named: "Task_uncompleted.mp3", volume: 0.025)
             }
             updateAllTasksCompleted() // Update other state
         }

@@ -19,9 +19,14 @@ struct CalendarTitleLayerView: View {
             }) {
                 Image(systemName: "chevron.left")
                     .font(.headline)
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(.gray)
                     .bold()
             }
+            .frame(width: 30, height: 30)
+//            .padding(3)
+            .background(Color("Light-Dark Mode Colors"))
+            .clipShape(RoundedCornerShape(corners: .allCorners, radius: 5))
+//            .shadow(radius: 1)
             
             Spacer()
             
@@ -36,19 +41,25 @@ struct CalendarTitleLayerView: View {
             }) {
                 Image(systemName: "chevron.right")
                     .font(.headline)
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(.gray)
                     .bold()
             }
+            .frame(width: 30, height: 30)
+//            .padding(3)
+            .background(Color("Light-Dark Mode Colors"))
+            .clipShape(RoundedCornerShape(corners: .allCorners, radius: 5))
+//            .shadow(radius: 1)
         }
         .padding()
         .padding(.horizontal)
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [Color("Light-Dark Mode Colors"), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)).opacity(0.3)]),
-                startPoint: .bottom,
-                endPoint: .top)
-        )
-        .clipShape( RoundedCornerShape(corners: [.topLeft, .topRight], radius: 20))
+//        .background(
+////            LinearGradient(
+////                gradient: Gradient(colors: [Color("Light-Dark Mode Colors"), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)).opacity(0.3)]),
+////                startPoint: .bottom,
+////                endPoint: .top)
+////            Color.gray.opacity(0.5)
+//        )
+//        .clipShape( RoundedCornerShape(corners: [.topLeft, .topRight], radius: 20))
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchTasks()
