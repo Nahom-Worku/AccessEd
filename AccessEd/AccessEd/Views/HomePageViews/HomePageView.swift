@@ -73,17 +73,6 @@ struct HomePageView: View {
         })
     }
 }
-
-//#Preview("Light Mode") {
-//    HomePageView()
-//        .preferredColorScheme(.light)
-//}
-//
-//#Preview("Dark Mode") {
-//    HomePageView()
-//        .preferredColorScheme(.dark)
-//}
-
 struct HomePageView_Previews: PreviewProvider {
    
     static var previews: some View {

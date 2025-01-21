@@ -45,8 +45,6 @@ struct CalendarEventsView: View {
                             // TODO: update this if statement so that the bg color is updated as expected
                             if isToday {
                                 return Color("Today-Color") // Today
-                            } else if isSelected {
-                                return Color("SelectedDate-Color") // Selected date
                             } else if hasTasks && !isCompleted {
                                 return Color.red.opacity(0.3) // Incomplete tasks
                             } else if hasTasks && isCompleted {
@@ -70,9 +68,14 @@ struct CalendarEventsView: View {
 //                                .fontWeight(isToday && hasTasks && !isCompleted ? .heavy : .regular)
                                 .frame(width: 35, height: 35, alignment: .center) // 30, 30
                                 .background(backgroundColor)
-                                .foregroundStyle(Color("Text-Colors"))
-                                .cornerRadius(50) // 8
+                                .foregroundStyle(isToday ? Color.white : Color("Text-Colors"))
+                                .cornerRadius(10) // 8
                         }
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(isSelected ? Color("SelectedDate-Color") : .clear, lineWidth: hasTasks ? 5 : 3)
+                                .frame(width: 35, height: 35, alignment: .center)
+                        )
                         .buttonStyle(PlainButtonStyle())
                     } else {
                         Text("") // Empty cell for padding days

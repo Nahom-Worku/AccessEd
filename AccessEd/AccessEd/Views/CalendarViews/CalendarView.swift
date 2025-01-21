@@ -16,14 +16,18 @@ struct CalendarView: View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
-                    VStack {
+                    VStack(spacing: 0) {
                         // Calendar view
                         CalendarTitleLayerView(viewModel: viewModel)
+                        Divider()
+                            .frame(width: UIScreen.main.bounds.width * 0.75, height: 0.21)
+                            .background(Color.gray)
+                            .padding(.bottom)
                         CalendarEventsView (viewModel: viewModel)
                     }
-                    .frame(width: UIScreen.main.bounds.width - 40, height: 310, alignment: .top)
-                    .background(Color("Light-Dark Mode Colors").cornerRadius(20))
-                    .shadow(radius: 1, x: 0, y: 0) // color: Color("Text-Colors").opacity(0.3),
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 335, alignment: .top)
+                    .background(Color("Light-Dark Mode Colors").cornerRadius(15))
+                    .shadow(radius: 3, x: 0, y: 1) // color: Color("Text-Colors").opacity(0.3),
                     .padding()
                     
                     // Tasks View
