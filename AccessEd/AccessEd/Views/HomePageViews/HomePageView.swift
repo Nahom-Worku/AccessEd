@@ -12,7 +12,8 @@ import SwiftData
 struct HomePageView: View {
 //    @StateObject var viewModel = CourseViewModel()
 //    @StateObject var profileViewModel = ProfileViewModel()
-    @ObservedObject var viewModel: CourseViewModel
+    @ObservedObject var courseViewModel: CourseViewModel
+    @ObservedObject var calendarViewModel: CalendarViewModel
     @ObservedObject var profileViewModel: ProfileViewModel
     
     @Environment(\.modelContext) var modelContext
@@ -42,7 +43,7 @@ struct HomePageView: View {
                     
                     // Courses and Schedule Layer
                     VStack(spacing: 0) {
-                        CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel)
+                        CoursesLayerView(viewModel: courseViewModel, profileViewModel: profileViewModel)
 //                            .frame(height: 290) //300)
                         
                         CalendarLayerView()
@@ -64,12 +65,16 @@ struct HomePageView: View {
                 )
             }
             
-            EachRecommendedCourseCardView(viewModel: viewModel)
+            EachRecommendedCourseCardView(viewModel: courseViewModel)
+            
+            if let taskIndex = calendarViewModel.selectedTaskIndex {
+                EditTaskView(viewModel: calendarViewModel, taskIndex: taskIndex)
+            }
         }
         .edgesIgnoringSafeArea(.top)
         .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
-        .alert(isPresented: $viewModel.showAlert, content: {
-            viewModel.getAlert()
+        .alert(isPresented: $courseViewModel.showAlert, content: {
+            courseViewModel.getAlert()
         })
     }
 }
@@ -77,19 +82,19 @@ struct HomePageView_Previews: PreviewProvider {
    
     static var previews: some View {
         let profileViewModel = ProfileViewModel()
-        let viewModel = CourseViewModel(profileViewModel: profileViewModel)
+        let courseViewModel = CourseViewModel(profileViewModel: profileViewModel)
         let calendarViewModel = CalendarViewModel()
 //        Group {
-        HomePageView(viewModel: viewModel, profileViewModel: profileViewModel)
+        HomePageView(courseViewModel: courseViewModel, calendarViewModel: calendarViewModel ,profileViewModel: profileViewModel)
                 .preferredColorScheme(.light)
                 .previewDisplayName("Light mode")
-                .environmentObject(viewModel)
+                .environmentObject(courseViewModel)
                 .environmentObject(calendarViewModel)
             
-        HomePageView(viewModel: viewModel, profileViewModel: profileViewModel)
+        HomePageView(courseViewModel: courseViewModel, calendarViewModel: calendarViewModel ,profileViewModel: profileViewModel)
                 .preferredColorScheme(.dark)
                 .previewDisplayName("Dark mode")
-                .environmentObject(viewModel)
+                .environmentObject(courseViewModel)
                 .environmentObject(calendarViewModel)
 //        }
     }

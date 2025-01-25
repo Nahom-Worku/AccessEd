@@ -81,8 +81,11 @@ struct RecommendedCoursesView: View {
         else {
             ForEach(recommendedCourses, id: \.id) { course in
                 Button {
-                    viewModel.selectedCourse = course
-                    viewModel.isCardVisible = true
+                    withAnimation(.easeIn(duration: 0.2)) {
+                        viewModel.selectedCourse = course
+                        viewModel.isCardVisible = true
+                    }
+                    
                 } label: {
                     VStack {
                         course.courseImage
