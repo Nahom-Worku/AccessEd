@@ -15,8 +15,8 @@ struct HomePageView: View {
     @ObservedObject var courseViewModel: CourseViewModel
     @ObservedObject var calendarViewModel: CalendarViewModel
     @ObservedObject var profileViewModel: ProfileViewModel
-    
     @Environment(\.modelContext) var modelContext
+    @State var isCurrentDateSelected: Bool = false
     
     var body: some View {
         
@@ -68,11 +68,14 @@ struct HomePageView: View {
             EachRecommendedCourseCardView(viewModel: courseViewModel)
             
             if let taskIndex = calendarViewModel.selectedTaskIndex {
-                EditTaskView(viewModel: calendarViewModel, taskIndex: taskIndex)
+                EditTaskView(viewModel: calendarViewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
             }
         }
         .edgesIgnoringSafeArea(.top)
         .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
+        .onAppear {
+            isCurrentDateSelected = true
+        }
         .alert(isPresented: $courseViewModel.showAlert, content: {
             courseViewModel.getAlert()
         })

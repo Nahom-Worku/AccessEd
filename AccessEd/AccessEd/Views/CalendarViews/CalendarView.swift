@@ -11,6 +11,7 @@ import SwiftData
 struct CalendarView: View {
     @Environment(\.modelContext) var modelContext
     @ObservedObject var viewModel: CalendarViewModel
+    @State var isCurrentDateSelected: Bool = false
     
     var body: some View {
         NavigationView {
@@ -47,10 +48,22 @@ struct CalendarView: View {
                     
                 
                 if let taskIndex = viewModel.selectedTaskIndex {
-                    EditTaskView(viewModel: viewModel, taskIndex: taskIndex)
+                    EditTaskView(viewModel: viewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
                 }
             }
             .navigationTitle("My Calendar")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        withAnimation(.spring()) {
+                            viewModel.isAddingTask = true
+                        }
+                    }, label: {
+                        Image(systemName: "plus")
+                            .padding()
+                    })
+                }
+            }
         }
         .onAppear {
             viewModel.modelContext = modelContext
