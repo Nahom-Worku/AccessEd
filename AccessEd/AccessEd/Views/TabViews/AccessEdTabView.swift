@@ -20,10 +20,10 @@ struct AccessEdTabView: View {
     @StateObject var profileViewModel = ProfileViewModel()
     
     init() {
-            let profileViewModel = ProfileViewModel()
-            _profileViewModel = StateObject(wrappedValue: profileViewModel)
-            _coursesViewModel = StateObject(wrappedValue: CourseViewModel(profileViewModel: profileViewModel))
-        }
+        let profileViewModel = ProfileViewModel()
+        _profileViewModel = StateObject(wrappedValue: profileViewModel)
+        _coursesViewModel = StateObject(wrappedValue: CourseViewModel(profileViewModel: profileViewModel))
+    }
     
     var body: some View {
         
@@ -31,7 +31,7 @@ struct AccessEdTabView: View {
             
             // Home page
             VStack {
-                HomePageView(viewModel: coursesViewModel, profileViewModel: profileViewModel)
+                HomePageView(courseViewModel: coursesViewModel, calendarViewModel: calendarViewModel, profileViewModel: profileViewModel)
                 
                 Spacer().frame(height: 10)
             }

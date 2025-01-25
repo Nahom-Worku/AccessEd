@@ -25,15 +25,13 @@ struct TasksView: View {
                 TasksSubView(viewModel: viewModel)
                 
                 // Remove all tasks for a day button
-                HStack () {
+                VStack(spacing: 0) {
                     Button(action: {
-                        withAnimation(.easeOut) {
-                            viewModel.deleteAllTasks(for: viewModel.selectedDate)
-                        }
+                        viewModel.completeAllTasks(for: viewModel.selectedDate)
                     }) {
-                        Text("Remove All")
-                            .font(.callout)
-                            .foregroundStyle(.red)//Color("Text-Colors"))
+                        Text("Complete All")
+                            .font(.system(size: 16))
+                            .foregroundStyle(.green) //Color("Text-Colors"))
                             .padding()
                             .padding(.horizontal, 15)
                             .background(
@@ -43,16 +41,16 @@ struct TasksView: View {
                                     .frame(width: 150, height: 40)
                             )
                     }
-                    .padding(.leading, 20)
                     
-                    Spacer()
                     
                     Button(action: {
-                        viewModel.completeAllTasks(for: viewModel.selectedDate)
+                        withAnimation(.easeOut) {
+                            viewModel.deleteAllTasks(for: viewModel.selectedDate)
+                        }
                     }) {
-                        Text("Complete All")
-                            .font(.system(size: 16))
-                            .foregroundStyle(.green) //Color("Text-Colors"))
+                        Text("Remove All")
+                            .font(.callout)
+                            .foregroundStyle(.red)//Color("Text-Colors"))
                             .padding()
                             .padding(.horizontal, 15)
                             .background(
@@ -108,8 +106,10 @@ struct TasksSubView: View {
             }
             .contextMenu {
                 Button(action: {
-                    viewModel.selectedTaskIndex = index
-                    viewModel.isEditingTask = true
+                    withAnimation(.easeIn(duration: 0.2)) {
+                        viewModel.selectedTaskIndex = index
+                        viewModel.isEditingTask = true
+                    }
                 }, label: {
                     Label("Edit Task", systemImage: "pencil")
                 })
@@ -121,17 +121,17 @@ struct TasksSubView: View {
                 })
             }
         }
-        .sheet(isPresented: $viewModel.isEditingTask) {
-            if let taskIndex = viewModel.selectedTaskIndex {
-                if taskIndex >= 0 && taskIndex < viewModel.tasksForSelectedDate.count {
-                    EditTaskSheetView(viewModel: viewModel, taskIndex: taskIndex)
-                        .presentationDetents([.medium, .fraction(0.5)])
-                        .padding(.top)
-                }
-            } else {
-                Text("No Task Selected")
-            }
-        }
+//        .sheet(isPresented: $viewModel.isEditingTask) {
+//            if let taskIndex = viewModel.selectedTaskIndex {
+//                if taskIndex >= 0 && taskIndex < viewModel.tasksForSelectedDate.count {
+//                    EditTaskSheetView(viewModel: viewModel, taskIndex: taskIndex)
+//                        .presentationDetents([.medium, .fraction(0.5)])
+//                        .padding(.top)
+//                }
+//            } else {
+//                Text("No Task Selected")
+//            }
+//        }
 
     }
 }
