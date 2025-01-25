@@ -10,6 +10,7 @@ import Foundation
 
 struct TasksView: View {
     @ObservedObject var viewModel: CalendarViewModel
+    @State var isCurrentDateSelected: Bool = false
     
     var body: some View {
         
@@ -22,7 +23,7 @@ struct TasksView: View {
             
             // Display the tasks for the selected date
             LazyVStack(alignment: .center, spacing: 10) {
-                TasksSubView(viewModel: viewModel)
+                TasksSubView(viewModel: viewModel, isCurrentDateSelected: $isCurrentDateSelected)
                 
                 // Remove all tasks for a day button
                 VStack(spacing: 0) {
@@ -75,9 +76,10 @@ struct TasksView: View {
 
 struct TasksSubView: View {
     @ObservedObject var viewModel: CalendarViewModel
-
+    @Binding var isCurrentDateSelected: Bool
+    
     var body: some View {
-        ForEach(Array(viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
+        ForEach(Array(isCurrentDateSelected ? viewModel.tasksForCurrentDate.enumerated() : viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
             HStack {
                 Text(task.name)
                     .font(.subheadline)

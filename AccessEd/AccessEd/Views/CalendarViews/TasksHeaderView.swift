@@ -38,9 +38,9 @@ struct TasksHeaderView: View {
                 )
                 .font(.caption)
             
-            Spacer()
+//            Spacer()
             
-            AddTaskButtonView(viewModel: viewModel)
+//            AddTaskButtonView(viewModel: viewModel)
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
         .padding(.leading, 30)

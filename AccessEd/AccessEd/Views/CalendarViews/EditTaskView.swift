@@ -12,6 +12,7 @@ struct EditTaskView: View {
     var taskIndex: Int
     @State private var taskName: String = ""
     @State private var taskDate: Date = Date()
+    @Binding var isCurrentDateSelected: Bool
     @FocusState private var isTaskFieldFocused: Bool
 
     var body: some View {
@@ -28,7 +29,7 @@ struct EditTaskView: View {
                     .bold()
                     .foregroundStyle(Color("Text-Colors"))
                 
-                if taskIndex >= 0 && taskIndex < viewModel.tasksForSelectedDate.count {
+                if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? viewModel.tasksForCurrentDate.count: viewModel.tasksForSelectedDate.count) {
                     VStack(alignment: .leading) {
                         Text("Update Task Name")
                             .padding(.leading)
@@ -73,7 +74,7 @@ struct EditTaskView: View {
                     // Save button
                     Button {
                         // Save the updated task
-                        if taskIndex >= 0 && taskIndex < viewModel.tasksForSelectedDate.count {
+                        if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? viewModel.tasksForCurrentDate.count: viewModel.tasksForSelectedDate.count) {
                             viewModel.updateTaskName(at: taskIndex, with: taskName)
                             viewModel.updateTaskDate(at: taskIndex, with: taskDate)
                         }
@@ -106,8 +107,8 @@ struct EditTaskView: View {
             .padding(.horizontal, 10)
             .padding(.top, 10)
             .onAppear {
-                if taskIndex >= 0 && taskIndex < viewModel.tasksForSelectedDate.count {
-                    let task = viewModel.tasksForSelectedDate[taskIndex]
+                if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? viewModel.tasksForCurrentDate.count: viewModel.tasksForSelectedDate.count) {
+                    let task = isCurrentDateSelected ? viewModel.tasksForCurrentDate[taskIndex] : viewModel.tasksForSelectedDate[taskIndex]
                     taskName = task.name
                     taskDate = task.date
                 }
@@ -120,6 +121,7 @@ struct EditTaskView: View {
 }
 
 #Preview {
+    @Previewable @State var isCurrentDateSelected: Bool = false
     let viewModel = CalendarViewModel()
-    EditTaskView(viewModel: viewModel, taskIndex: 0)
+    EditTaskView(viewModel: viewModel, taskIndex: 0, isCurrentDateSelected: $isCurrentDateSelected)
 }
