@@ -10,8 +10,6 @@ import SwiftData
 
 
 struct HomePageView: View {
-//    @StateObject var viewModel = CourseViewModel()
-//    @StateObject var profileViewModel = ProfileViewModel()
     @ObservedObject var courseViewModel: CourseViewModel
     @ObservedObject var calendarViewModel: CalendarViewModel
     @ObservedObject var profileViewModel: ProfileViewModel
@@ -75,6 +73,24 @@ struct HomePageView: View {
         .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
         .onAppear {
             isCurrentDateSelected = true
+            
+            if profileViewModel.profile?.isNotificationsOn == true {
+                // Daily reminder for uncompleted tasks for the current day
+                if calendarViewModel.tasksForCurrentDate.contains(where: { $0.isCompleted == false }) {
+                    let identifier = "dailyTasksReminderForCurrentDay"
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+                    
+                    NotificationManager.shared.scheduleNotification(
+                        at: 20,
+                        minute: 0,
+                        title: "Daily Tasks Reminder For Today",
+                        body: "You still have tasks to complete for today! Check them out before the day ends.",
+                        identifier: identifier
+                    )
+                }
+            } else {
+                print("Notification is turned off")
+            }
         }
         .alert(isPresented: $courseViewModel.showAlert, content: {
             courseViewModel.getAlert()
