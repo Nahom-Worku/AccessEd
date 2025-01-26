@@ -44,9 +44,9 @@ struct AccessEdApp: App {
         _courseViewModel = StateObject(wrappedValue: CourseViewModel(profileViewModel: profileViewModel))
         
         NotificationManager.shared.configure()
-        NotificationManager.shared.requestAuthorization()
+//        NotificationManager.shared.requestAuthorization()
 //        UNUserNotificationCenter.current().delegate = notificationDelegate
-        UNUserNotificationCenter.current().delegate = NotificationManager.shared
+//        UNUserNotificationCenter.current().delegate = NotificationManager.shared
     }
     
     var body: some Scene {

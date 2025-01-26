@@ -39,9 +39,9 @@ struct HomePageView: View {
                     .frame(maxWidth: 240, maxHeight: 150)
   
                     
-                    // Courses and Schedule Layer
+                    // Courses and Calendar Layer
                     VStack(spacing: 0) {
-                        CoursesLayerView(viewModel: courseViewModel, profileViewModel: profileViewModel)
+                        CoursesLayerView(viewModel: courseViewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
 //                            .frame(height: 290) //300)
                         
                         CalendarLayerView()
@@ -73,30 +73,13 @@ struct HomePageView: View {
         .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
         .onAppear {
             isCurrentDateSelected = true
-            
-            if profileViewModel.profile?.isNotificationsOn == true {
-                // Daily reminder for uncompleted tasks for the current day
-                if calendarViewModel.tasksForCurrentDate.contains(where: { $0.isCompleted == false }) {
-                    let identifier = "dailyTasksReminderForCurrentDay"
-                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
-                    
-                    NotificationManager.shared.scheduleNotification(
-                        at: 20,
-                        minute: 0,
-                        title: "Daily Tasks Reminder For Today",
-                        body: "You still have tasks to complete for today! Check them out before the day ends.",
-                        identifier: identifier
-                    )
-                }
-            } else {
-                print("Notification is turned off")
-            }
         }
         .alert(isPresented: $courseViewModel.showAlert, content: {
             courseViewModel.getAlert()
         })
     }
 }
+ 
 struct HomePageView_Previews: PreviewProvider {
    
     static var previews: some View {

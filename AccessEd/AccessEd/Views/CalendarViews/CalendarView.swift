@@ -62,6 +62,7 @@ struct CalendarView: View {
                         Image(systemName: "plus")
                             .padding()
                     })
+                    .disabled(viewModel.isEditingTask)
                 }
             }
         }

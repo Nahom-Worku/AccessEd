@@ -312,6 +312,7 @@ struct ProfileView2: View {
                                 get: { profileViewModel.profile?.isNotificationsOn ?? false },
                                 set: { newNotificationSetting in
                                     profileViewModel.updateNotificationsSettings(isOn: newNotificationSetting)
+                                    print(newNotificationSetting)
                                 }
                             ))
                                 .labelsHidden()
