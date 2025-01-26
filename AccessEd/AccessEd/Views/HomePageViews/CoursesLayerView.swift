@@ -168,6 +168,17 @@ struct EachRecommendedCourseCardView: View {
                 } // Dismiss on tap outside
 
             LazyVStack {
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        viewModel.isCardVisible = false
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                }
+                .padding(.horizontal, 3)
+                
                 Text(viewModel.selectedCourse?.name ?? "")
                     .font(.title3)
                     .bold()

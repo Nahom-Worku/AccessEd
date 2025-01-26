@@ -44,6 +44,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         }
     }
 
+    // MARK: - might not need this function
     func scheduleDailyUncompletedTasksNotification(for tasks: [TaskModel]) {
         let uncompletedTasks = tasks.filter { !$0.isCompleted }
         guard !uncompletedTasks.isEmpty else { return }
@@ -66,6 +67,30 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             }
         }
     }
+    
+    func scheduleNotification(at hour: Int, minute: Int, title: String, body: String, identifier: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+
+        var dateComponents = DateComponents()
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            } else {
+                print("Notification scheduled for \(hour):\(minute)")
+            }
+        }
+    }
+
 }
 
 class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
