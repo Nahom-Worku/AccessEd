@@ -183,6 +183,7 @@ class ProfileViewModel : ObservableObject {
         
         do {
             try modelContext?.save()
+            fetchProfile()
         } catch {
             print("Error saving notification settings: \(error.localizedDescription)")
         }

@@ -9,13 +9,14 @@ import SwiftUI
 import UserNotifications
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
+
     static let shared = NotificationManager()
 
     func configure() {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
     }
-    
+
     func requestAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
@@ -26,6 +27,12 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                 print("Notification authorization denied.")
             }
         }
+    }
+
+    // Handle notifications when the app is in the foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Display as a banner and play a sound
+        completionHandler([.banner, .sound])
     }
 
     func notifyProfileSetup(userName: String) {
@@ -43,30 +50,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             }
         }
     }
-
-    // MARK: - might not need this function
-    func scheduleDailyUncompletedTasksNotification(for tasks: [TaskModel]) {
-        let uncompletedTasks = tasks.filter { !$0.isCompleted }
-        guard !uncompletedTasks.isEmpty else { return }
-
-        let content = UNMutableNotificationContent()
-        content.title = "You have uncompleted tasks"
-        content.body = "You still have \(uncompletedTasks.count) tasks to complete today. Don't forget to finish them!"
-        content.sound = .default
-
-        var dateComponents = DateComponents()
-        dateComponents.hour = 20 // 8 PM
-        dateComponents.minute = 0
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        let request = UNNotificationRequest(identifier: "dailyUncompletedTasks", content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Error scheduling daily tasks notification: \(error)")
-            }
-        }
-    }
     
     func scheduleNotification(at hour: Int, minute: Int, title: String, body: String, identifier: String) {
         let content = UNMutableNotificationContent()
@@ -79,18 +62,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         dateComponents.minute = minute
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Error scheduling notification: \(error)")
-            } else {
-                print("Notification scheduled for \(hour):\(minute)")
             }
         }
     }
-
 }
 
 class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {

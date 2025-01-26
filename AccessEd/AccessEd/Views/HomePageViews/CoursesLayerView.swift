@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct CoursesLayerView: View {
     @Environment(\.modelContext) var modelContext
     @ObservedObject var viewModel: CourseViewModel
     @ObservedObject var profileViewModel: ProfileViewModel
+    @ObservedObject var calendarViewModel: CalendarViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -56,6 +58,33 @@ struct CoursesLayerView: View {
             viewModel.setInterestedCourses(profileViewModel.profile?.interestedCourses ?? [])
             viewModel.loadUserPreferences()
             viewModel.fetchCourses()
+            
+            print("Courses Layer view: -> \(profileViewModel.profile?.isNotificationsOn ?? false)")
+            scheduleDailyTasksNotification()
+            print("\n")
+            
+        }
+    }
+    
+    private func scheduleDailyTasksNotification() {
+        guard profileViewModel.profile?.isNotificationsOn == true else {
+            print("Notifications are turned off.")
+            return
+        }
+        
+        if calendarViewModel.tasksForCurrentDate.contains(where: { !$0.isCompleted }) {
+            let identifier = "dailyTasksReminderForCurrentDay"
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+            
+            NotificationManager.shared.scheduleNotification (
+                at: 20, // 8:00 PM
+                minute: 0,
+                title: "Daily Tasks Reminder",
+                body: "You still have tasks to complete for today! Check them out before the day ends.",
+                identifier: identifier
+            )
+        } else {
+            print("All tasks for today are completed.")
         }
     }
 }
@@ -252,14 +281,17 @@ struct EachRecommendedCourseCardView: View {
 #Preview("Light Mode") {
     let profileViewModel = ProfileViewModel()
     let viewModel = CourseViewModel(profileViewModel: profileViewModel)
+    let calendarViewModel = CalendarViewModel()
 
-    CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel)
+    CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
     let profileViewModel = ProfileViewModel()
     let viewModel = CourseViewModel(profileViewModel: profileViewModel)
-    CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel)
+    let calendarViewModel = CalendarViewModel()
+    
+    CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
         .preferredColorScheme(.dark)
 }
