@@ -35,3 +35,8 @@ class TaskModel: Identifiable {
         self.isCompleted = isCompleted
     }
 }
+
+enum TaskAlerts {
+    case deleteTask
+    case removeAllTasks
+}

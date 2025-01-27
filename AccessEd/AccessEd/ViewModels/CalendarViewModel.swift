@@ -20,7 +20,8 @@ class CalendarViewModel : ObservableObject {
     @Published var TaskTitle: String = ""
     @Published var newTaskDescription: String = ""
     @Published var selectedTaskIndex: Int?
-
+    @Published var alertType: TaskAlerts? = nil
+    
     // CalendarModel for dynamic colors (Optional)
     @Published var calendarDates: [CalendarModel] = []
     
@@ -198,6 +199,22 @@ class CalendarViewModel : ObservableObject {
         fetchTasks()
     }
 
+    func getAlert(task: TaskModel, date: Date? = nil) -> Alert {
+        var alert: Alert? = nil
+        
+        switch alertType {
+        case .deleteTask:
+            return Alert(title: Text("Delete Task"), message: Text("Are you sure you want to delete this task?"), primaryButton: .cancel(Text("No")), secondaryButton: .destructive(Text("Yes"), action: { self.deleteTask(task) }))
+        case .removeAllTasks:
+            if let date = date {
+                alert = Alert(title: Text("Remove All Tasks"), message: Text("Are you sure you want to remove all tasks?"), primaryButton: .cancel(Text("No")), secondaryButton: .destructive(Text("Yes"), action: { self.deleteAllTasks(for: date) }))
+            }
+            return alert ?? Alert(title: Text("No Alert"))
+        case .none:
+            return Alert(title: Text("No Alert"))
+        }
+    }
+    
     func getColorForDate(_ date: Date) -> String? {
         if let calendarDate = calendarDates.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
             return calendarDate.color
