@@ -25,7 +25,7 @@ struct TasksView: View {
             LazyVStack(alignment: .center, spacing: 10) {
                 TasksSubView(viewModel: viewModel, isCurrentDateSelected: $isCurrentDateSelected)
                 
-                // Remove all tasks for a day button
+                // Complete / Remove all tasks for a day button
                 VStack(spacing: 0) {
                     Button(action: {
                         viewModel.completeAllTasks(for: viewModel.selectedDate)

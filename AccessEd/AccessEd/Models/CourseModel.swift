@@ -183,7 +183,7 @@ enum ResoursesCategory: String, Codable, CaseIterable {
     case exam = "text.document"
 }
 
-enum MyAlerts {
+enum CourseAlerts {
     case courseAdded
     case courseDismissed
 }

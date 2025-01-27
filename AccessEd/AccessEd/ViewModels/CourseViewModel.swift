@@ -14,7 +14,7 @@ class CourseViewModel : ObservableObject {
     @Published var courses: [CourseModel] = []
     @Published var selectedCourse: CourseModel? = nil
     @Published var isCardVisible: Bool = false
-    @Published var alertType: MyAlerts? = nil
+    @Published var alertType: CourseAlerts? = nil
     @Published var showAlert: Bool = false
     
     @Published var interestedCourses: [String] = []

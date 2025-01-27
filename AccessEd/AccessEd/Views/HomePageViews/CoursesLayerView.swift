@@ -80,9 +80,25 @@ struct CoursesLayerView: View {
                 at: 20, // 8:00 PM
                 minute: 0,
                 title: "Daily Tasks Reminder",
-                body: "You still have tasks to complete for today! Check them out before the day ends.",
+                body: "You still have \(calendarViewModel.uncompletedTasksForCurrentDate.count) tasks to complete for today! Check them out before the day ends.",
                 identifier: identifier
             )
+            
+            // MARK: Test notification
+//            let now = Date()
+//            let calendar = Calendar.current
+//
+//            let hour = calendar.component(.hour, from: now)
+//            let minute = calendar.component(.minute, from: now) + 1 // Add 1 minute for debugging
+//
+//            NotificationManager.shared.scheduleNotification(
+//                at: hour,
+//                minute: minute % 60, // Ensure the minute doesn't exceed 59
+//                title: "Test Notification",
+//                body: "This is a test notification while the app is open.",
+//                identifier: "testNotification"
+//            )
+            
         } else {
             print("All tasks for today are completed.")
         }
