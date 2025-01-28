@@ -77,6 +77,14 @@ struct HomePageView: View {
         .alert(isPresented: $courseViewModel.showAlert, content: {
             courseViewModel.getAlert()
         })
+        .alert(item: $calendarViewModel.taskAlerts) { alertType in
+            switch alertType {
+            case .removeAllTasks:
+                return calendarViewModel.getAlert(alertType: .removeAllTasks)
+            case .deleteTask:
+                return calendarViewModel.getAlert(alertType: .deleteTask)
+            }
+        }
     }
 }
  
