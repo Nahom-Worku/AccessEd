@@ -36,7 +36,16 @@ class TaskModel: Identifiable {
     }
 }
 
-enum TaskAlerts {
-    case deleteTask
+enum TaskAlerts: Identifiable {
     case removeAllTasks
+    case deleteTask
+
+    var id: String {
+        switch self {
+        case .removeAllTasks:
+            return "removeAllTasks"
+        case .deleteTask:
+            return "deleteTask"
+        }
+    }
 }

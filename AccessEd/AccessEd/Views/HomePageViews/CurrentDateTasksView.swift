@@ -20,7 +20,7 @@ struct CurrentDateTasksView: View {
                     .padding(.top, 50)
                     .frame(width: UIScreen.main.bounds.width, alignment: .center)
             } else {
-                LazyVStack(alignment: .center, spacing: 10) {
+                LazyVStack(alignment: .center, spacing: 5) {
                     TasksSubView(viewModel: viewModel, isCurrentDateSelected: $isCurrentDateSelected)
                 }
                 .padding(.top, 10)

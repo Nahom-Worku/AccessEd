@@ -17,7 +17,7 @@ struct CalendarLayerView: View {
             Text("ToDo List")
                 .font(.title)
                 .bold()
-                .padding(.leading, 20) // 20
+                .padding(.leading, 15) // 20
             
             HStack {
                 Text("Uncompleted tasks for today")

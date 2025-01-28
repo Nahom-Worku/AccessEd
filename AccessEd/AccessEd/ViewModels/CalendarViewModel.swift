@@ -20,8 +20,8 @@ class CalendarViewModel : ObservableObject {
     @Published var TaskTitle: String = ""
     @Published var newTaskDescription: String = ""
     @Published var selectedTaskIndex: Int?
-    @Published var alertType: TaskAlerts? = nil
-    
+    @Published var taskAlerts: TaskAlerts? = nil
+    @Published var taskToDelete: TaskModel?
     // CalendarModel for dynamic colors (Optional)
     @Published var calendarDates: [CalendarModel] = []
     
@@ -154,7 +154,7 @@ class CalendarViewModel : ObservableObject {
             if tasks[index].isCompleted {
                 soundPlayer.playSound(named: "Task_completed.mp3", volume: 0.2)
             } else {
-                soundPlayer.playSound(named: "Task_uncompleted.mp3", volume: 0.025)
+                soundPlayer.playSound(named: "Task_uncompleted.mp3", volume: 0.02)
             }
             updateAllTasksCompleted() // Update other state
         }
@@ -199,19 +199,15 @@ class CalendarViewModel : ObservableObject {
         fetchTasks()
     }
 
-    func getAlert(task: TaskModel, date: Date? = nil) -> Alert {
-        var alert: Alert? = nil
-        
+    func getAlert(alertType: TaskAlerts) -> Alert {
         switch alertType {
         case .deleteTask:
-            return Alert(title: Text("Delete Task"), message: Text("Are you sure you want to delete this task?"), primaryButton: .cancel(Text("No")), secondaryButton: .destructive(Text("Yes"), action: { self.deleteTask(task) }))
-        case .removeAllTasks:
-            if let date = date {
-                alert = Alert(title: Text("Remove All Tasks"), message: Text("Are you sure you want to remove all tasks?"), primaryButton: .cancel(Text("No")), secondaryButton: .destructive(Text("Yes"), action: { self.deleteAllTasks(for: date) }))
+            if let taskToDelete = self.taskToDelete {
+                return Alert(title: Text("Delete Task"), message: Text("Are you sure you want to delete this task?"), primaryButton: .cancel(Text("No")), secondaryButton: .destructive(Text("Yes"), action: { self.deleteTask(taskToDelete) }))
             }
-            return alert ?? Alert(title: Text("No Alert"))
-        case .none:
-            return Alert(title: Text("No Alert"))
+            return Alert(title: Text("Error"), message: Text("No task selected"))
+        case .removeAllTasks:
+            return Alert(title: Text("Remove All Tasks"), message: Text("Are you sure you want to remove all tasks for \(formattedDate(self.selectedDate))?"), primaryButton: .cancel(Text("No")), secondaryButton: .destructive(Text("Yes"), action: { self.deleteAllTasks(for: self.selectedDate) }))
         }
     }
     
