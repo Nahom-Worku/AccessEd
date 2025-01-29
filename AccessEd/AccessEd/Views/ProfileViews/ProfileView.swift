@@ -219,85 +219,82 @@ struct EditProfileView: View {
 
 // MARK: - design 2 :- current desgin
 
-struct ProfileView2: View {
+struct ProfileView: View {
     @State private var showingImagePicker = false
     @State private var profileImage: Image? = Image("Profile pic")
     
     @Environment(\.modelContext) var modelContext
-//    @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
-//    @StateObject var courseViewModel: CourseViewModel = CourseViewModel()
     
     @ObservedObject var courseViewModel: CourseViewModel
     @ObservedObject var profileViewModel: ProfileViewModel
     
     var courses: CourseModel?
+    
+    @State private var isInterestedCoursesExpanded: Bool = false
+    @State private var isFieldsOfInterestExpanded: Bool = false
+    @State private var showDeleteConfirmation: Bool = false
 
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
                 
-                // Profile Image & Edit Button
-                VStack {
-                    
-                    ZStack {
-                        if let image = profileImage {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 100, height: 100)
-                                .clipShape(Circle())
-                                .shadow(radius: 2)
-                        }
-                        Button(action: {
-                            showingImagePicker.toggle()
-                        }) {
-                            Circle()
-                                .fill(Color.black.opacity(0.5))
-                                .frame(width: 30, height: 30)
-                                .overlay(Image(systemName: "pencil")
-                                    .foregroundColor(.white))
-                                .offset(x: 40, y: 40)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                    .padding(.vertical)
-                    
-//                    Spacer()
-                    
-                    VStack(spacing: 0) {
-//                        if let name = profileViewModel.profile?.name {
-                            Text(profileViewModel.profile?.name ?? "your name")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-//                        }
-                        
-//                        if let grade = profileViewModel.profile?.grade {
-                            Text("Grade \(profileViewModel.profile?.grade ?? "your grade")")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-//                        }
-                    }
-//                    .padding(.vertical)
-                }
-                .padding(.horizontal, 60)
-                .background(
-                    RoundedRectangle(cornerRadius: 25)
-                        .fill(
-                            LinearGradient(
-//                                gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
-                                gradient: Gradient(colors: [Color(#colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)), Color(#colorLiteral(red: 0.2279692888, green: 0.9256613255, blue: 0.9985740781, alpha: 1))]),
-                                startPoint: .bottom,
-                                endPoint: .top)
-                        )
-                        .padding(.horizontal, 30)
-                        .frame(width: UIScreen.main.bounds.width, height: 225)
-                )
-                .padding(.top, 30)
-
                 
-
                 // Settings / Options List
                 Form {
+                    
+                    // Profile Image & Edit Button
+                    HStack(spacing: 40) {
+                        
+                        ZStack {
+                            if let image = profileImage {
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 100, height: 100)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 2)
+                            }
+                            Button(action: {
+                                showingImagePicker.toggle()
+                            }) {
+                                Circle()
+                                    .fill(Color.black.opacity(0.5))
+                                    .frame(width: 30, height: 30)
+                                    .overlay(Image(systemName: "pencil")
+                                        .foregroundColor(.white))
+                                    .offset(x: 40, y: 40)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                        .padding(.vertical)
+                        
+                        
+                        VStack(spacing: 10) {
+                            Text(profileViewModel.profile?.name ?? "")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            
+                            Text("Grade: \(profileViewModel.profile?.grade ?? "")")
+                                .font(.subheadline)
+                                .foregroundColor(.black)
+                        }
+                    }
+                    .padding(.horizontal, 50)
+                    .frame(width: UIScreen.main.bounds.width - 50, alignment: .leading)
+                    .background(
+                        RoundedRectangle(cornerRadius: 25)
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5140987169)), Color(#colorLiteral(red: 0.2279692888, green: 0.9256613255, blue: 0.9985740781, alpha: 1))]),
+                                    startPoint: .bottom,
+                                    endPoint: .top)
+                            )
+                            .padding(.horizontal, 30)
+                            .frame(width: UIScreen.main.bounds.width, height: 150)
+                    )
+                    .listRowBackground(Color("List-Colors"))
+                    .listRowSeparatorTint(Color("List-Colors"))
+                    
                     Section(header: Text("Account")) {
                         NavigationLink(destination: AccountSettingsView()) {
                             Label("Account Settings", systemImage: "gearshape")
@@ -315,50 +312,103 @@ struct ProfileView2: View {
                                     print(newNotificationSetting)
                                 }
                             ))
-                                .labelsHidden()
-                                .scaleEffect(0.75)
+                            .labelsHidden()
+                            .scaleEffect(0.75)
                         }
                         
                     }
                     
-                    VStack(spacing: 10) {
-                        Text("\(String(describing: profileViewModel.profile?.interestedCourses ?? []))")
+                    Section(header: Text("Your Preferences")) {
+                        DisclosureGroup(
+                            isExpanded: $isInterestedCoursesExpanded,
+                            content: {
+                                if let interestedCourses = profileViewModel.profile?.interestedCourses {
+                                    ForEach(interestedCourses, id: \.self) { course in
+                                        Text(course)
+                                            .padding(.leading, 50)
+                                    }
+                                } else {
+                                    Text("No courses added yet.")
+                                        .foregroundColor(.gray)
+                                }
+                            },
+                            label: {
+                                HStack(spacing: 18) {
+                                    Image(systemName: "books.vertical")
+                                        .foregroundColor(.blue)
+                                    Text("Interested Courses")
+                                }
+                                .padding(.leading, 3)
+                            }
+                        )
                         
-                        Text("\(String(describing: profileViewModel.profile?.fieldsOfInterest ?? []))")
+                        
+                        DisclosureGroup(
+                            isExpanded: $isFieldsOfInterestExpanded,
+                            content: {
+                                if let fieldsOfInterest = profileViewModel.profile?.fieldsOfInterest {
+                                    ForEach(fieldsOfInterest, id: \.self) { field in
+                                        Text(field)
+                                            .padding(.leading, 50)
+                                    }
+                                } else {
+                                    Text("No fields of interest added yet.")
+                                        .foregroundColor(.gray)
+                                }
+                            },
+                            label: {
+                                HStack(spacing: 22) {
+                                    Image(systemName: "lightbulb")
+                                        .foregroundColor(.blue)
+                                    Text("Fields of Interest")
+                                }
+                                .padding(.leading, 8)
+                            }
+                        )
                     }
-
-                    Section {
+                    
+                    Section(header: Text("About")) {
+                        NavigationLink(destination: AccountSettingsView()) {
+                            Label("About the App", systemImage: "info.circle")
+                        }
+                    }
+                    
+                    
+                    HStack {
+                        Spacer()
+                        
                         Button(action: {
-                            // Handle log out logic
-                            
-                            profileViewModel.deleteProfile()
-                            profileViewModel.profile?.interestedCourses.removeAll()
-                            courseViewModel.deleteAllCourses()
-                            courseViewModel.clearAllRecommendedCourses()
-                            courseViewModel.clearUserPreferences()
-                            courseViewModel.resetUserPreferences()
-                            courseViewModel.fetchCourses()
-                            profileViewModel.fetchProfile()
-                            
-                            print("*** Delete profile button pressed ***")
+                            showDeleteConfirmation = true
                         }) {
                             Text("Delete Profile")
                                 .foregroundColor(.red)
                         }
+                        
+                        Spacer()
                     }
-                    .padding(.horizontal, 100)
+                    .frame(width: UIScreen.main.bounds.width)
                     
-                    .listRowBackground(Color("List-Colors"))
-                    .listRowSeparatorTint(Color("List-Colors"))
+                    
                 }
-//                .scrollDisabled(true)
                 .scrollContentBackground(.hidden)
-                .padding(.top, 15)
                 .frame(width: UIScreen.main.bounds.width)
-
+                
             }
             .padding()
             .navigationTitle("Profile")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        withAnimation(.spring()) {
+                            // TODO: open edit profile page (sheet)
+                            
+                        }
+                    }, label: {
+                        Text("Edit")
+                    })
+                    
+                }
+            }
             .sheet(isPresented: $showingImagePicker) {
                 // Image picker implementation here
                 Text("Image Picker Placeholder")
@@ -369,6 +419,21 @@ struct ProfileView2: View {
             courseViewModel.modelContext = modelContext
             profileViewModel.fetchProfile()
             courseViewModel.fetchCourses()
+        }
+        .confirmationDialog("Delete Profile", isPresented: $showDeleteConfirmation) {
+            Button("Delete", role: .destructive) {
+                profileViewModel.deleteProfile()
+                profileViewModel.profile?.interestedCourses.removeAll()
+                courseViewModel.deleteAllCourses()
+                courseViewModel.clearAllRecommendedCourses()
+                courseViewModel.clearUserPreferences()
+                courseViewModel.resetUserPreferences()
+                courseViewModel.fetchCourses()
+                profileViewModel.fetchProfile()
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to delete your profile? This action cannot be undone.")
         }
     }
 }
@@ -381,194 +446,14 @@ struct AccountSettingsView: View {
     }
 }
 
-struct PrivacyView: View {
-    var body: some View {
-        Text("Privacy")
-            .navigationTitle("Privacy")
-    }
-}
-
 
 #Preview("set up page") {
     SetUpProfileView()
 }
 
-#Preview("profile view 2") {
+#Preview("profile view") {
     let profileViewModel = ProfileViewModel()
     let courseViewModel = CourseViewModel(profileViewModel: profileViewModel)
-    ProfileView2(courseViewModel: courseViewModel, profileViewModel: profileViewModel)
+    ProfileView(courseViewModel: courseViewModel, profileViewModel: profileViewModel)
 }
 
-
-// MARK: - 4th design
-
-struct ProfileView: View {
-    @Environment(\.modelContext) var modelContext
-    @StateObject var profileViewModel: ProfileViewModel = ProfileViewModel()
-    @StateObject var courseViewModel: CourseViewModel
-//    @State var profile: ProfileModel?
-    
-    init() {
-            let profileViewModel = ProfileViewModel()
-            _profileViewModel = StateObject(wrappedValue: profileViewModel)
-            _courseViewModel = StateObject(wrappedValue: CourseViewModel(profileViewModel: profileViewModel))
-        }
-    
-    var body: some View {
-        NavigationView {
-            ZStack(alignment: .top) {
-                
-                // 1) The “wave” / angled background
-                WaveShape()
-                    .fill(
-                        LinearGradient(
-                            gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
-                            startPoint: .top,
-                            endPoint: .bottom)
-                    )
-                    .frame(height: 220)
-                
-                // 2) Main content
-                VStack(alignment: .leading, spacing: 16) {
-                    
-                    // 2a) Profile image & name
-                    HStack {
-                        Spacer()
-                        
-                        // Circle Avatar
-                        ZStack {
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: 100, height: 100)
-                            Image("Profile pic") // replace w/ real image
-                                .resizable()
-                                .scaledToFill()
-                                .clipShape(Circle())
-                                .frame(width: 90, height: 90)
-                        }
-                        .offset(y: 50) // 40 // bumps it down so it “overlaps” the wave shape
-                    }
-                    .padding(.trailing, 16)
-                    .frame(width: UIScreen.main.bounds.width - 50)
-                    
-                    // 2b) Name text (placed under wave)
-                    Text("Nahom Worku")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-//                        .padding(.top, 25)
-                        .padding()
-                    
-                    // 2c) Profile details below
-                    VStack(alignment: .leading, spacing: 24) {
-                        ProfileRowView(icon: "graduationcap.fill", text: "My School")
-                        ProfileRowView(icon: "book.closed.fill",   text: "CS")
-                        ProfileRowView(icon: "person.fill",         text: "My Mentor")
-                        ProfileRowView(icon: "phone.fill",          text: "### - #### - ####")
-                        
-                        if let name  = profileViewModel.profile?.name {
-                            Text("Name: \(name)")
-                        }
-                        
-                        if let grade = profileViewModel.profile?.grade {
-                            Text("Grade: \(grade)")
-                        }
-                        
-                        if let preferredLanguage = profileViewModel.profile?.preferredLanguage {
-                            Text("Preferred Language: \(preferredLanguage)")
-                        }
-                        
-                        HStack(spacing: 10) {
-                            
-                            Text("Fields of Interest: ")
-                            
-                            VStack(alignment: .leading, spacing: 8) {
-                                if let fieldsOfInterest = profileViewModel.profile?.fieldsOfInterest,
-                                   !fieldsOfInterest.isEmpty {
-                                    
-                                    ForEach(fieldsOfInterest, id: \.self) { field in
-                                        Text(field)
-                                    }
-                                }
-                            }
-                        }
-                        
-                        
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
-                    .background(Color("Light-Dark Mode Colors"))
-                    
-                    
-                    Button("Delete profile") {
-                        profileViewModel.deleteProfile()
-                        courseViewModel.clearUserPreferences()
-                    }
-                    
-                    Spacer()
-                }
-                .padding(.top, 80) // ensures content starts below wave
-                .padding(.horizontal)
-            }
-            .ignoresSafeArea(edges: .top)
-            .navigationTitle("Profile")
-        }
-        .onAppear{
-            profileViewModel.modelContext = modelContext
-            courseViewModel.fetchCourses()
-            profileViewModel.fetchProfile()
-        }
-    }
-}
-
-// MARK: - Wave Shape
-struct WaveShape: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        
-        // Start at top-left
-        path.move(to: .zero)
-        // Down some portion
-        path.addLine(to: CGPoint(x: 0, y: rect.height * 0.75)) // - , 0.65
-        
-        // Curve across to top-right
-        path.addQuadCurve(
-            to: CGPoint(x: rect.width * 0.7, y: rect.height * 0.9), // 0.4, 0.9
-            control: CGPoint(x: rect.width * 0.4, y: rect.height * 0.75) // 0.2, 0.8
-        )
-        path.addQuadCurve(
-            to: CGPoint(x: rect.width, y: rect.height * 0.6), // 0.6
-            control: CGPoint(x: rect.width * 0.9, y: rect.height * 0.95) // 0.8, 1.0
-        )
-        
-        // Finally, straight up to top-right
-        path.addLine(to: CGPoint(x: rect.width, y: 0))
-        
-        // Close
-        path.closeSubpath()
-        return path
-    }
-}
-
-// MARK: - Row View (icon + text)
-struct ProfileRowView: View {
-    let icon: String
-    let text: String
-    
-    var body: some View {
-        HStack(spacing: 16) {
-            Image(systemName: icon)
-                .foregroundColor(.blue)
-            Text(text)
-                .foregroundStyle(Color("Text-Colors"))
-            Spacer()
-        }
-    }
-}
-
-
-// MARK: - Preview
-struct ProfilePageView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView()
-    }
-}
