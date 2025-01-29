@@ -59,7 +59,7 @@ struct AccessEdApp: App {
 //
 //                CoursesView(viewModel: courseViewModel)  // TODO: might need to get rid of these
 //                CalendarView(viewModel: calendarViewModel)
-                ProfileView()
+                ProfileView(courseViewModel: courseViewModel, profileViewModel: profileViewModel)
                     .environment(\.modelContext, modelContext)
                     .environmentObject(calendarViewModel)
                     .environmentObject(profileViewModel)

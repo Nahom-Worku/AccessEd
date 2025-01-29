@@ -68,9 +68,7 @@ struct AccessEdTabView: View {
             
             // Profile page
             VStack {
-//                ProfileView()
-                // MARK: - TODO: rename this
-                ProfileView2(courseViewModel: coursesViewModel, profileViewModel: profileViewModel)
+                ProfileView(courseViewModel: coursesViewModel, profileViewModel: profileViewModel)
                 
                 Spacer().frame(height: 10)
             }
