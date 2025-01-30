@@ -7,25 +7,25 @@
 
 import SwiftUI
 
-struct AddTaskButtonView: View {
+struct TaskActionsView: View {
     @ObservedObject var viewModel: CalendarViewModel
     
     var body: some View {
         VStack {
             Button(action: {
-                viewModel.isAddingTask = true
+                viewModel.showTaskActions = true
             }, label: {
-                Text("Add Task")
-                    .font(.subheadline)
+                Image(systemName: "ellipsis")
+                    .font(.headline)
                     .foregroundColor(.blue)
-                    .padding(10)
+                    .padding(.horizontal, 10)
             })
         }
-        .frame(width: 100, height: 40)
+        .frame(width: 80, alignment: .trailing)
     }
 }
 
 #Preview {
     let viewModel = CalendarViewModel()
-    AddTaskButtonView(viewModel: viewModel)
+    TaskActionsView(viewModel: viewModel)
 }

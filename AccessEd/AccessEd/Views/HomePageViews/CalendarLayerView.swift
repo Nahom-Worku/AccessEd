@@ -38,6 +38,8 @@ struct CalendarLayerView: View {
                             )
                     )
                     .font(.caption)
+                
+                TaskActionsView(viewModel: viewModel)
             }
             .padding(.leading, 20) // .horizontal, 25
 //            .padding(.top, 3)
@@ -52,6 +54,19 @@ struct CalendarLayerView: View {
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchTasks()
+        }
+        .confirmationDialog (
+            "Task Actions",
+            isPresented: $viewModel.showTaskActions,
+            titleVisibility: .visible
+        ) {
+            Button("Complete All Tasks", role: .none) {
+                viewModel.completeAllTasks(for: viewModel.selectedDate)
+            }
+            Button("Remove All Tasks", role: .destructive) {
+                viewModel.deleteAllTasks(for: viewModel.selectedDate)
+            }
+            Button("Cancel", role: .cancel) {}
         }
     }
 }

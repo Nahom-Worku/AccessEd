@@ -19,7 +19,7 @@ struct CoursesLayerView: View {
             
             HStack {
                 VStack(alignment: .leading) {
-                    Text("Courses")
+                    Text(" ")
                         .font(.title)
                         .bold()
                     

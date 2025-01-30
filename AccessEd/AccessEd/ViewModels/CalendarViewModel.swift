@@ -24,7 +24,8 @@ class CalendarViewModel : ObservableObject {
     @Published var taskToDelete: TaskModel?
     // CalendarModel for dynamic colors (Optional)
     @Published var calendarDates: [CalendarModel] = []
-    
+ 
+    @Published var showTaskActions: Bool = false
     var modelContext: ModelContext? = nil
     var calendar = Calendar.current
 
