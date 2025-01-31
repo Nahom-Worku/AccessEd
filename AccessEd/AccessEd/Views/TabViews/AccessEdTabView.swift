@@ -33,7 +33,7 @@ struct AccessEdTabView: View {
             VStack {
                 HomePageView(courseViewModel: coursesViewModel, calendarViewModel: calendarViewModel, profileViewModel: profileViewModel)
                 
-                Spacer().frame(height: 10)
+//                Spacer().frame(height: 10)
             }
             .tabItem {
                 Label("Home", systemImage: "house")
@@ -45,7 +45,7 @@ struct AccessEdTabView: View {
             VStack {
                 CoursesView(viewModel: coursesViewModel)
                 
-                Spacer().frame(height: 10)
+//                Spacer().frame(height: 10)
             }
             .tabItem {
                 Label("Courses", systemImage: "books.vertical.fill")
@@ -57,7 +57,7 @@ struct AccessEdTabView: View {
             VStack {
                 CalendarView(viewModel: calendarViewModel)
                 
-                Spacer().frame(height: 10)
+//                Spacer().frame(height: 10)
             }
             .tabItem {
                 Label("Calendar", systemImage: "calendar")
@@ -70,7 +70,7 @@ struct AccessEdTabView: View {
             VStack {
                 ProfileView(courseViewModel: coursesViewModel, profileViewModel: profileViewModel)
                 
-                Spacer().frame(height: 10)
+//                Spacer().frame(height: 10)
             }
             .tabItem {
                 Label("Profile", systemImage: "person.fill")

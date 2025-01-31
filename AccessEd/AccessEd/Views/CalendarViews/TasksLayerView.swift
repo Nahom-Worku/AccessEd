@@ -11,11 +11,11 @@ struct TasksLayerView: View {
     @ObservedObject var viewModel: CalendarViewModel
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .center) {
             TasksHeaderView(viewModel: viewModel)
             TasksView(viewModel: viewModel)
         }
-        .padding()
+        .padding(.vertical)
     }
 }
 

@@ -26,7 +26,6 @@ struct TasksView: View {
                     TasksSubView(viewModel: viewModel, isCurrentDateSelected: $isCurrentDateSelected)
                 }
                 .padding(.top, 10)
-                .padding(.leading, 30)
             }
         }
         
@@ -60,9 +59,9 @@ struct TasksSubView: View {
             .padding(.horizontal, 13)
             .background(Color("Courses-Colors"))
             .cornerRadius(8)
-            .padding(.trailing, 20)
+//            .padding(.trailing, 10)
             .frame(width: UIScreen.main.bounds.width - 60)
-            .padding(.leading, 20)
+            .padding(.leading, 15)
             .shadow(radius: 1, x: 1, y: 1)
             .onTapGesture(count: 2) {
                 viewModel.handleTaskCompletion(task)

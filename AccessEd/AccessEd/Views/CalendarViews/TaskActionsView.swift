@@ -11,17 +11,18 @@ struct TaskActionsView: View {
     @ObservedObject var viewModel: CalendarViewModel
     
     var body: some View {
-        VStack {
+        VStack(alignment: .trailing) {
             Button(action: {
                 viewModel.showTaskActions = true
             }, label: {
                 Image(systemName: "ellipsis")
-                    .font(.headline)
-                    .foregroundColor(.blue)
+                    .font(.title3)
+                    .foregroundColor(viewModel.tasksForSelectedDate.isEmpty ? .gray : .blue)
                     .padding(.horizontal, 10)
             })
+            .frame(width: 30, height: 30)
+            .disabled(viewModel.tasksForSelectedDate.isEmpty)
         }
-        .frame(width: 80, alignment: .trailing)
     }
 }
 

@@ -16,7 +16,6 @@ class CourseViewModel : ObservableObject {
     @Published var isCardVisible: Bool = false
     @Published var alertType: CourseAlerts? = nil
     @Published var showAlert: Bool = false
-    
     @Published var interestedCourses: [String] = []
     
     var defaultWeight: Double = 1.0
@@ -140,7 +139,11 @@ class CourseViewModel : ObservableObject {
         case .courseAdded:
             return Alert(title: Text("Course Added"), message: Text("Your course has been added"))
         case .courseDismissed:
-            return Alert(title: Text("Course Dismissed"), message: Text("Your course has been dismissed"))
+            return Alert(title: Text("Dismiss Course"),
+                         message: Text("Are you sure you want to dismiss this course?"),
+                         primaryButton: .cancel(Text("No")),
+                         secondaryButton: .destructive(Text("Yes"), action: { if let courseName = self.selectedCourse?.name { self.addToExcludeList(courseName: courseName) }
+            }))
         default:
             return Alert(title: Text("Error"), message: Text("Something went wrong"))
         }

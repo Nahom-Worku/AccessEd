@@ -16,7 +16,6 @@ struct CurrentDateTasksView: View {
             if viewModel.tasksForCurrentDate.isEmpty {
                 Text("No tasks for today.")
                     .foregroundColor(.gray)
-                    .padding(.trailing, 40)
                     .padding(.top, 50)
                     .frame(width: UIScreen.main.bounds.width, alignment: .center)
             } else {
@@ -24,8 +23,7 @@ struct CurrentDateTasksView: View {
                     TasksSubView(viewModel: viewModel, isCurrentDateSelected: $isCurrentDateSelected)
                 }
                 .padding(.top, 10)
-                .padding(.trailing, 30)
-                .frame(width: UIScreen.main.bounds.width)
+                .padding(.trailing, 20)
             }
         }
         .onAppear {
