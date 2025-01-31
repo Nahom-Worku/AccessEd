@@ -40,20 +40,17 @@ struct HomePageView: View {
   
                     
                     // Courses and Calendar Layer
-                    VStack(spacing: 0) {
-                        CoursesLayerView(viewModel: courseViewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
-//                            .frame(height: 290) //300)
+                    VStack(spacing: 10) {
+                        CoursesLayerView(courseViewModel: courseViewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
                         
                         CalendarLayerView()
-//                            .padding()
                     }
-//                    .padding(.leading, 10)
-                    .frame(width: UIScreen.main.bounds.width /*- 100*/, alignment: .leading)
+                    .padding(.leading, 10)
+                    .frame(width: UIScreen.main.bounds.width, alignment: .leading)
                     .background(
                         UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
                             .fill(Color("Light-Dark Mode Colors"))
                     )
-
                 }
                 .background(
                     LinearGradient(
@@ -74,16 +71,37 @@ struct HomePageView: View {
         .onAppear {
             isCurrentDateSelected = true
         }
-        .alert(isPresented: $courseViewModel.showAlert, content: {
-            courseViewModel.getAlert()
-        })
-        .alert(item: $calendarViewModel.taskAlerts) { alertType in
-            switch alertType {
-            case .removeAllTasks:
-                return calendarViewModel.getAlert(alertType: .removeAllTasks)
-            case .deleteTask:
-                return calendarViewModel.getAlert(alertType: .deleteTask)
+        .alert(isPresented: Binding<Bool>(
+            get: {
+                courseViewModel.showAlert || calendarViewModel.taskAlerts != nil
+            },
+            set: { newValue in
+                if !newValue {
+                    courseViewModel.showAlert = false
+                    calendarViewModel.taskAlerts = nil
+                }
             }
+        ), content: {
+            if courseViewModel.showAlert {
+                return courseViewModel.getAlert()
+            } else if let alertType = calendarViewModel.taskAlerts {
+                return calendarViewModel.getAlert(alertType: alertType)
+            } else {
+                return Alert(title: Text("Unknown"))
+            }
+        })
+        .confirmationDialog (
+            "Task Actions",
+            isPresented: $calendarViewModel.showTaskActions,
+            titleVisibility: .visible
+        ) {
+            Button("Complete All Tasks", role: .none) {
+                calendarViewModel.completeAllTasks(for: calendarViewModel.selectedDate)
+            }
+            Button("Remove All Tasks", role: .destructive) {
+                calendarViewModel.deleteAllTasks(for: calendarViewModel.selectedDate)
+            }
+            Button("Cancel", role: .cancel) {}
         }
     }
 }

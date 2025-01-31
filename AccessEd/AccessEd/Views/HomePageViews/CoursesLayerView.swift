@@ -10,7 +10,7 @@ import Foundation
 
 struct CoursesLayerView: View {
     @Environment(\.modelContext) var modelContext
-    @ObservedObject var viewModel: CourseViewModel
+    @ObservedObject var courseViewModel: CourseViewModel
     @ObservedObject var profileViewModel: ProfileViewModel
     @ObservedObject var calendarViewModel: CalendarViewModel
     
@@ -19,7 +19,7 @@ struct CoursesLayerView: View {
             
             HStack {
                 VStack(alignment: .leading) {
-                    Text(" ")
+                    Text("Courses")
                         .font(.title)
                         .bold()
                     
@@ -30,34 +30,33 @@ struct CoursesLayerView: View {
                 
                 Spacer()
                 
-                NavigationLink { AllCoursesView(viewModel: viewModel) } label: {
+                NavigationLink { AllCoursesView(viewModel: courseViewModel) } label: {
                     Text("View All")
                         .font(.subheadline)
                 }
-                .disabled(viewModel.allRecommendedCourses.isEmpty)
+                .disabled(courseViewModel.allRecommendedCourses.isEmpty)
             }
             .padding(.top, 15)
-            .padding(.trailing, 25)
+            .padding(.horizontal, 15)
+            .padding(.trailing, 15)
             
-            ScrollView(.horizontal, showsIndicators: true) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .center, spacing: 20) {
-                    RecommendedCoursesView(viewModel: viewModel, recommendedCourses: viewModel.topSixRecommendedCourses)
+                    RecommendedCoursesView(viewModel: courseViewModel, recommendedCourses: courseViewModel.topSixRecommendedCourses)
                 }
-                .padding(.horizontal, 5)
-                .padding(.trailing, 20)
-                .frame(maxHeight: 200)
+                .padding(.horizontal, 25)
+                .frame(maxHeight: 170)
             }
         }
-        .padding()
-        .frame(height: viewModel.allRecommendedCourses.isEmpty ? 250 : 290)
+        .frame(height: courseViewModel.allRecommendedCourses.isEmpty ? 250 : 280)
         .onAppear {
             profileViewModel.modelContext = modelContext
-            viewModel.modelContext = modelContext
+            courseViewModel.modelContext = modelContext
             profileViewModel.fetchProfile()
-            viewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
-            viewModel.setInterestedCourses(profileViewModel.profile?.interestedCourses ?? [])
-            viewModel.loadUserPreferences()
-            viewModel.fetchCourses()
+            courseViewModel.addPredefinedCoursesToInput(predefinedCourses: profileViewModel.profile?.interestedCourses ?? [])
+            courseViewModel.setInterestedCourses(profileViewModel.profile?.interestedCourses ?? [])
+            courseViewModel.loadUserPreferences()
+            courseViewModel.fetchCourses()
             
             print("Courses Layer view: -> \(profileViewModel.profile?.isNotificationsOn ?? false)")
             scheduleDailyTasksNotification()
@@ -193,9 +192,9 @@ struct AllCoursesView: View {
             
             EachRecommendedCourseCardView(viewModel: viewModel)
         }
-        .alert(isPresented: $viewModel.showAlert, content: {
-            viewModel.getAlert()
-        })
+//        .alert(isPresented: $viewModel.showAlert, content: {
+//            viewModel.getAlert()
+//        })
     }
 }
 
@@ -241,10 +240,6 @@ struct EachRecommendedCourseCardView: View {
                 
                 HStack {
                     Button {
-                        if let courseName = viewModel.selectedCourse?.name {
-                            viewModel.addToExcludeList(courseName: courseName)
-                        }
-                        
                         viewModel.alertType = .courseDismissed
                         viewModel.isCardVisible = false
                         viewModel.showAlert = true
@@ -299,7 +294,7 @@ struct EachRecommendedCourseCardView: View {
     let viewModel = CourseViewModel(profileViewModel: profileViewModel)
     let calendarViewModel = CalendarViewModel()
 
-    CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
+    CoursesLayerView(courseViewModel: viewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
         .preferredColorScheme(.light)
 }
 
@@ -308,6 +303,6 @@ struct EachRecommendedCourseCardView: View {
     let viewModel = CourseViewModel(profileViewModel: profileViewModel)
     let calendarViewModel = CalendarViewModel()
     
-    CoursesLayerView(viewModel: viewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
+    CoursesLayerView(courseViewModel: viewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
         .preferredColorScheme(.dark)
 }
