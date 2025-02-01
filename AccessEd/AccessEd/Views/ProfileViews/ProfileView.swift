@@ -220,40 +220,33 @@ struct EditProfileView: View {
 // MARK: - design 2 :- current desgin
 
 struct ProfileView: View {
-    @State private var showingImagePicker = false
-    @State private var profileImage: Image? = Image("Profile pic")
-    
     @Environment(\.modelContext) var modelContext
-    
     @ObservedObject var courseViewModel: CourseViewModel
     @ObservedObject var profileViewModel: ProfileViewModel
-    
-    var courses: CourseModel?
-    
     @State private var isInterestedCoursesExpanded: Bool = false
     @State private var isFieldsOfInterestExpanded: Bool = false
     @State private var showDeleteConfirmation: Bool = false
-
+    @State private var showingImagePicker: Bool = false
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
                 
-                
                 // Settings / Options List
                 Form {
-                    
-                    // Profile Image & Edit Button
-                    HStack(spacing: 40) {
+                    // MARK: - update profile pic frame
+                    HStack(spacing: 30) {
+                        Spacer()
                         
                         ZStack {
-                            if let image = profileImage {
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 100, height: 100)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 2)
-                            }
+                            profileViewModel.profilePicture
+                                .resizable()
+                                .fontWeight(.thin)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 100, height: 100)
+                                .clipShape(Circle())
+                                .shadow(radius: 2)
+                            
                             Button(action: {
                                 showingImagePicker.toggle()
                             }) {
@@ -269,25 +262,28 @@ struct ProfileView: View {
                         .padding(.vertical)
                         
                         
-                        VStack(spacing: 10) {
+                        VStack(alignment: .center, spacing: 10) {
                             Text(profileViewModel.profile?.name ?? "")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                             
                             Text("Grade: \(profileViewModel.profile?.grade ?? "")")
                                 .font(.subheadline)
-                                .foregroundColor(.black)
+                                .foregroundColor(.white.opacity(0.8))
                         }
+                        
+                        Spacer()
+                            .frame(width: UIScreen.main.bounds.width * 0.15)
                     }
-                    .padding(.horizontal, 50)
+//                    .padding(.horizontal, 50)
                     .frame(width: UIScreen.main.bounds.width - 50, alignment: .leading)
                     .background(
                         RoundedRectangle(cornerRadius: 25)
                             .fill(
                                 LinearGradient(
                                     gradient: Gradient(colors: [Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5140987169)), Color(#colorLiteral(red: 0.2279692888, green: 0.9256613255, blue: 0.9985740781, alpha: 1))]),
-                                    startPoint: .bottom,
-                                    endPoint: .top)
+                                    startPoint: .bottomTrailing,
+                                    endPoint: .topLeading)
                             )
                             .padding(.horizontal, 30)
                             .frame(width: UIScreen.main.bounds.width, height: 150)
@@ -295,9 +291,10 @@ struct ProfileView: View {
                     .listRowBackground(Color("List-Colors"))
                     .listRowSeparatorTint(Color("List-Colors"))
                     
+                    
                     Section(header: Text("Account")) {
-                        NavigationLink(destination: AccountSettingsView()) {
-                            Label("Account Settings", systemImage: "gearshape")
+                        NavigationLink(destination: AchievementsView()) {
+                            Label("Achievements", systemImage:  "medal") //"trophy")
                         }
                         
                         HStack {
@@ -336,7 +333,7 @@ struct ProfileView: View {
                                 HStack(spacing: 18) {
                                     Image(systemName: "books.vertical")
                                         .foregroundColor(.blue)
-                                    Text("Interested Courses")
+                                    Text("Courses")
                                 }
                                 .padding(.leading, 3)
                             }
@@ -368,7 +365,8 @@ struct ProfileView: View {
                     }
                     
                     Section(header: Text("About")) {
-                        NavigationLink(destination: AccountSettingsView()) {
+                        // MARK: - TODO: about app page
+                        NavigationLink(destination: AppInfoView()) {
                             Label("About the App", systemImage: "info.circle")
                         }
                     }
@@ -387,8 +385,6 @@ struct ProfileView: View {
                         Spacer()
                     }
                     .frame(width: UIScreen.main.bounds.width)
-                    
-                    
                 }
                 .scrollContentBackground(.hidden)
                 .frame(width: UIScreen.main.bounds.width)
@@ -400,18 +396,16 @@ struct ProfileView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         withAnimation(.spring()) {
-                            // TODO: open edit profile page (sheet)
+                            //MARK: - TODO: edit profile page
                             
                         }
                     }, label: {
                         Text("Edit")
                     })
-                    
                 }
             }
             .sheet(isPresented: $showingImagePicker) {
-                // Image picker implementation here
-                Text("Image Picker Placeholder")
+                ProfilePicturePickerView(showPickerSheet: $showingImagePicker, profileViewModel: profileViewModel)
             }
         }
         .onAppear{
@@ -438,11 +432,20 @@ struct ProfileView: View {
     }
 }
 
+
+
 // Placeholder Views
-struct AccountSettingsView: View {
+struct AchievementsView: View {
     var body: some View {
-        Text("Account Settings")
-            .navigationTitle("Account Settings")
+        Text("Achievements view - placehoder")
+            .navigationTitle("Achievements")
+    }
+}
+
+struct AppInfoView: View {
+    var body: some View {
+        Text("About the App - Placeholder")
+            .navigationTitle("About the App")
     }
 }
 
