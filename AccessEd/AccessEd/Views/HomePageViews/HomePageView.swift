@@ -8,7 +8,6 @@
 import SwiftUI
 import SwiftData
 
-
 struct HomePageView: View {
     @ObservedObject var courseViewModel: CourseViewModel
     @ObservedObject var calendarViewModel: CalendarViewModel
@@ -17,10 +16,9 @@ struct HomePageView: View {
     @State var isCurrentDateSelected: Bool = false
     
     var body: some View {
-        
         ZStack {
             ScrollView(.vertical, showsIndicators: false) {
-                VStack {
+                VStack(spacing: 10) {
                     HStack {
                         Text("AccessEd")
                             .font(.title)
@@ -28,25 +26,20 @@ struct HomePageView: View {
                         Spacer()
                         
                         Image("App Logo")
-                            .renderingMode(.original)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 70)
-                            .clipped()
                     }
                     .padding()
                     .padding(.top, 50)
-                    .frame(maxWidth: 240, maxHeight: 150)
-  
+                    .frame(maxWidth: 240)
                     
                     // Courses and Calendar Layer
                     VStack(spacing: 10) {
                         CoursesLayerView(courseViewModel: courseViewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
-                        
                         CalendarLayerView()
                     }
-                    .padding(.leading, 10)
-                    .frame(width: UIScreen.main.bounds.width, alignment: .leading)
+                    .padding(.horizontal, 10)
                     .background(
                         UnevenRoundedRectangle(cornerRadii: .init(topLeading: 50, topTrailing: 0), style: .continuous)
                             .fill(Color("Light-Dark Mode Colors"))
@@ -54,23 +47,30 @@ struct HomePageView: View {
                 }
                 .background(
                     LinearGradient(
-                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)).opacity(0.85), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
+                        gradient: Gradient(colors: [Color.blue.opacity(0.85), Color.cyan]),
                         startPoint: .trailing,
-                        endPoint: .topLeading)
+                        endPoint: .topLeading
+                        
+                        //                                gradient: Gradient(colors: [Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)).opacity(0.85), Color(#colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1))]),
+                        //                                    startPoint: .trailing,
+                        //                                    endPoint: .topLeading)
+                    )
                 )
+                .padding(.bottom) 
             }
             
+            // Overlays
             EachRecommendedCourseCardView(viewModel: courseViewModel)
-            
             if let taskIndex = calendarViewModel.selectedTaskIndex {
                 EditTaskView(viewModel: calendarViewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
             }
         }
-        .edgesIgnoringSafeArea(.top)
-        .background(Color("Light-Dark Mode Colors")).ignoresSafeArea(.all)
-        .onAppear {
-            isCurrentDateSelected = true
-        }
+        .padding(.leading)
+                .edgesIgnoringSafeArea(.top) // Limit to top only
+                .background(Color("Light-Dark Mode Colors"))
+                .onAppear {
+                    isCurrentDateSelected = true
+                }
         .alert(isPresented: Binding<Bool>(
             get: {
                 courseViewModel.showAlert || calendarViewModel.taskAlerts != nil
