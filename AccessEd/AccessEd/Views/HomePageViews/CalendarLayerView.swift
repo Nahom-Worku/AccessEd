@@ -46,15 +46,15 @@ struct CalendarLayerView: View {
                 
                 TaskActionsView(viewModel: viewModel)
             }
-            .padding(.trailing, 20)
-            .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
+            .padding(.trailing, 5)
+            .frame(width: UIScreen.main.bounds.width - 50, alignment: .leading)
             .padding(.leading, 20)
             
             LazyVStack {
                 CurrentDateTasksView(viewModel: viewModel)
             }
-            .padding(.horizontal, 25)
-            .padding(.leading, 5)
+            .padding(.horizontal, 20)
+//            .padding(.leading, 5)
             .frame(width: UIScreen.main.bounds.width, alignment: .center)
             .padding(.top, 10)
             

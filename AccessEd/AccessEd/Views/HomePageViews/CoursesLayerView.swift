@@ -48,6 +48,7 @@ struct CoursesLayerView: View {
                 .frame(maxHeight: 170)
             }
         }
+        .padding(.leading, 5)
         .frame(height: courseViewModel.allRecommendedCourses.isEmpty ? 250 : 280)
         .onAppear {
             profileViewModel.modelContext = modelContext
