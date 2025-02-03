@@ -16,7 +16,6 @@ class ProfileViewModel : ObservableObject {
     @Published var name: String = ""
     @Published var grade: String = "9"
     @Published var preferredLanguage: String = "English"
-//    @Published var fieldsOfInterest: [String] = []
     @Published var isUserSignedIn: Bool = false
     @Published var onboardingState: Int = 0
     @Published var alertTitle: String = ""
