@@ -45,33 +45,9 @@ struct SetUpProfileView: View {
                     }
                     
                     
-//                    // Learning Style
-//                    Picker("Learning Style", selection: $profile.learningStyle) {
-//                        Text("Visual").tag("Visual")
-//                        Text("Auditory").tag("Auditory")
-//                        Text("Hands-On").tag("Hands-On")
-//                    }
-//
-//                    // Study Hours
-//                    Picker("Study Hours", selection: $profile.studyHours) {
-//                        Text("Morning").tag("Morning")
-//                        Text("Afternoon").tag("Afternoon")
-//                        Text("Evening").tag("Evening")
-//                    }
-//
-//                    // Time Zone
-//                    Picker("Time Zone", selection: $profile.timeZone) {
-//                        ForEach(TimeZone.knownTimeZoneIdentifiers, id: \.self) { timeZone in
-//                            Text(timeZone).tag(timeZone)
-//                        }
-//                    }
                     
                     
                     Button {
-//                        let profile = ProfileModel(name: name, grade: grade, preferredLanguage: preferredLanguage, fieldsOfInterest: fieldsOfInterest)
-                        
-//                        context.insert(profile)
-//                        try? context.save()
                         
                         dismiss()
                         
