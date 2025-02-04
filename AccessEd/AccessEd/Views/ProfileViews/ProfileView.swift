@@ -8,192 +8,16 @@
 import SwiftUI
 import SwiftData
 
-//MARK: - Set up profile View
-struct SetUpProfileView: View {
-    @Environment(\.modelContext) var context
-    @Environment(\.dismiss) var dismiss
-    
-    @State private var name: String = ""
-    @State private var grade: String = ""
-    @State private var preferredLanguage: String = "English"
-    @State private var fieldsOfInterest: [String] = []
-    
-    
-    var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading) {
-                    QuestionView(question: "What is your name?") {
-                        TextField("Enter your name", text: $name)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                    }
-                    QuestionView(question: "What is your current grade?") {
-                        TextField("Enter your grade", text: $grade)
-                    }
-                    
-                    QuestionView(question: "Which language do you prefer for learning materials?") {
-                        Picker("Select Language", selection: $preferredLanguage) {
-                            ForEach(Languages.allLanguages, id: \.self) { language in
-                                Text(language).tag(language)
-                            }
-                        }
-                        .pickerStyle(MenuPickerStyle())
-                    }
-                    
-                    QuestionView(question: "What are your fields of interest in education?") {
-                        MultiSelectList(title: "Fields of Interest", items: FieldsOfStudy.allFields, selectedItems: $fieldsOfInterest)
-                    }
-                    
-                    
-                    
-                    
-                    Button {
-                        
-                        dismiss()
-                        
-                    } label: {
-                        Text("Save")
-                            .foregroundStyle(.white)
-                            .padding()
-                            .padding(.horizontal)
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
-
-                }
-                .padding()
-                .padding(.horizontal)
-                .frame(width: UIScreen.main.bounds.width, alignment: .leading)
-            }
-            .navigationTitle("Set Up Profile")
-        }
-    }
-}
-
-// MARK: - question view
-struct QuestionView<Content: View>: View {
-    let question: String
-    @ViewBuilder let content: Content
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(question)
-                .font(.subheadline)
-            content
-        }
-        .padding(.vertical, 10)
-    }
-}
-
-// MARK:- multi selct List
-struct MultiSelectList: View {
-    let title: String
-    let items: [String]
-    @Binding var selectedItems: [String]
-
-    var body: some View {
-        NavigationLink(destination: MultiSelectDetailView(items: items, selectedItems: $selectedItems)) {
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.headline)
-                if selectedItems.isEmpty {
-                    Text("None selected").foregroundColor(.gray)
-                } else {
-                    Text(selectedItems.joined(separator: ", "))
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-            }
-            .padding(.vertical, 10)
-        }
-    }
-}
-
-struct MultiSelectDetailView: View {
-    let items: [String]
-    @Binding var selectedItems: [String]
-
-    var body: some View {
-        List(items, id: \.self) { item in
-            Button(action: {
-                if selectedItems.contains(item) {
-                    selectedItems.removeAll { $0 == item }
-                } else {
-                    selectedItems.append(item)
-                }
-            }) {
-                HStack {
-                    Text(item)
-                    Spacer()
-                    if selectedItems.contains(item) {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(.black)
-                    }
-                }
-            }
-            .buttonStyle(.plain)
-        }
-        .navigationTitle("Select Options")
-    }
-}
-
 struct EditProfileView: View {
-    @Environment(\.modelContext) private var context
-    @Environment(\.dismiss) private var dismiss
-    @Bindable var profile: ProfileModel
-    
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading) {
-                    QuestionView(question: "What is your name?") {
-                        TextField("Enter your name", text: $profile.name)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                    }
-                    QuestionView(question: "What is your current grade?") {
-                        TextField("Enter your grade", text: $profile.grade)
-                    }
-                    
-                    QuestionView(question: "Which language do you prefer for learning materials?") {
-                        Picker("Select Language", selection: $profile.preferredLanguage) {
-                            ForEach(Languages.allLanguages, id: \.self) { language in
-                                Text(language).tag(language)
-                            }
-                        }
-                        .pickerStyle(MenuPickerStyle())
-                    }
-                    
-//                    QuestionView(question: "What are your fields of interest in education?") {
-//                        MultiSelectList(title: "Fields of Interest", items: FieldsOfStudy.allFields, selectedItems: $profile.fieldsOfInterest)
-//                    }
-                    
-                    
-                    Button {
-                        try? context.save()
-                        
-                        dismiss()
-                        
-                    } label: {
-                        Text("Save Changes")
-                            .foregroundStyle(.white)
-                            .padding()
-                            .padding(.horizontal)
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
-
-                }
-                .padding()
-                .padding(.horizontal)
-                .frame(width: UIScreen.main.bounds.width, alignment: .leading)
-            }
-            .navigationTitle("Set Up Profile")
+        VStack {
+            Text("Edit Profile view")
         }
     }
 }
 
 
-// MARK: - design 2 :- current desgin
+// MARK: - ProfileView
 
 struct ProfileView: View {
     @Environment(\.modelContext) var modelContext
@@ -203,6 +27,7 @@ struct ProfileView: View {
     @State private var isFieldsOfInterestExpanded: Bool = false
     @State private var showDeleteConfirmation: Bool = false
     @State private var showingImagePicker: Bool = false
+    @State private var showEditProfileView: Bool = false
     
     var body: some View {
         NavigationView {
@@ -211,8 +36,7 @@ struct ProfileView: View {
                 // Settings / Options List
                 Form {
                     // MARK: - update profile pic frame
-                    HStack(spacing: 30) {
-                        Spacer()
+                    HStack(spacing: 40) {
                         
                         ZStack {
                             profileViewModel.profilePicture
@@ -242,17 +66,17 @@ struct ProfileView: View {
                             Text(profileViewModel.profile?.name ?? "")
                                 .font(.title2)
                                 .fontWeight(.semibold)
+                                .foregroundStyle(Color("Text-Colors"))
                             
                             Text("Grade: \(profileViewModel.profile?.grade ?? "")")
                                 .font(.subheadline)
-                                .foregroundColor(.white.opacity(0.8))
+                                .foregroundStyle(Color("Text-Colors"))
                         }
                         
-                        Spacer()
-                            .frame(width: UIScreen.main.bounds.width * 0.15)
                     }
-//                    .padding(.horizontal, 50)
-                    .frame(width: UIScreen.main.bounds.width - 50, alignment: .leading)
+                    .padding(.leading, 30)
+                    .padding(.horizontal, 50)
+                    .frame(width: UIScreen.main.bounds.width, alignment: .leading)
                     .background(
                         RoundedRectangle(cornerRadius: 25)
                             .fill(
@@ -373,7 +197,7 @@ struct ProfileView: View {
                     Button(action: {
                         withAnimation(.spring()) {
                             //MARK: - TODO: edit profile page
-                            
+                            showEditProfileView = true
                         }
                     }, label: {
                         Text("Edit")
@@ -382,6 +206,9 @@ struct ProfileView: View {
             }
             .sheet(isPresented: $showingImagePicker) {
                 ProfilePicturePickerView(showPickerSheet: $showingImagePicker, profileViewModel: profileViewModel)
+            }
+            .sheet(isPresented: $showEditProfileView) {
+                EditProfileView()
             }
         }
         .onAppear{
@@ -426,8 +253,8 @@ struct AppInfoView: View {
 }
 
 
-#Preview("set up page") {
-    SetUpProfileView()
+#Preview("Edit Profile view") {
+    EditProfileView()
 }
 
 #Preview("profile view") {
