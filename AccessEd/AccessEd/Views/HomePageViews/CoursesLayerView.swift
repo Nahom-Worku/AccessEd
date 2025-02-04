@@ -44,6 +44,8 @@ struct CoursesLayerView: View {
                 HStack(alignment: .center, spacing: 20) {
                     RecommendedCoursesView(viewModel: courseViewModel, recommendedCourses: courseViewModel.topSixRecommendedCourses)
                 }
+                .padding(.top, 20)
+                .padding(.vertical, 15)
                 .padding(.horizontal, 25)
                 .frame(maxHeight: 170)
             }
@@ -132,28 +134,51 @@ struct RecommendedCoursesView: View {
                     }
                     
                 } label: {
+//                    VStack {
+//                        course.courseImage
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fill)
+//                            .frame(height: UIScreen.main.bounds.width * 0.25) //100) // 120
+//                            .clipped()
+//                            .cornerRadius(10)
+//                        
+//                        Spacer().frame(height: 8)
+//                        
+//                        VStack(alignment: .center, spacing: 4) {
+//                            Text(course.name)
+//                                .font(.footnote)
+//                                .foregroundColor(.primary)
+//                                .multilineTextAlignment(.center)
+//                                .lineLimit(nil) // 1
+//                                .minimumScaleFactor(0.93)
+//                                .padding(5)
+//                        }
+//                        .padding([.leading, .trailing, .bottom], 8)
+//                    }
+//                    .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.33) //150) // 180
+//                    .background(Color("Courses-Colors"))
+//                    .cornerRadius(15)
+//                    .shadow(radius: 3)
+                    
                     VStack {
                         course.courseImage
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(height: UIScreen.main.bounds.width * 0.25) //100) // 120
+                            .frame(height: 100) // 120
                             .clipped()
                             .cornerRadius(10)
-                        
-                        Spacer().frame(height: 8)
                         
                         VStack(alignment: .center, spacing: 4) {
                             Text(course.name)
                                 .font(.footnote)
                                 .foregroundColor(.primary)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(nil) // 1
-                                .minimumScaleFactor(0.93)
                                 .padding(5)
+                                .lineLimit(1) // Limits text to one line
+                                .truncationMode(.tail) // Adds ellipsis at the end if text overflows
                         }
                         .padding([.leading, .trailing, .bottom], 8)
                     }
-                    .frame(maxWidth: UIScreen.main.bounds.width * 0.35, maxHeight: UIScreen.main.bounds.width * 0.33) //150) // 180
+                    .frame(width: 150) // 180
                     .background(Color("Courses-Colors"))
                     .cornerRadius(15)
                     .shadow(radius: 3)
