@@ -1,0 +1,103 @@
+[
+  {
+    "text": "Chloroplasts are found in plant cells and are responsible for photosynthesis.",
+    "tokens": ["Chloroplasts", "are", "found", "in", "plant", "cells", "and", "are", "responsible", "for", "photosynthesis", "."],
+    "labels": ["NOUN", "AUX", "VERB", "ADP", "ADJ", "NOUN", "CCONJ", "AUX", "ADJ", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Water boils at 100 degrees Celsius.",
+    "tokens": ["Water", "boils", "at", "100", "degrees", "Celsius", "."],
+    "labels": ["NOUN", "VERB", "ADP", "NUM", "NOUN", "PROPN", "PUNCT"]
+  },
+  {
+    "text": "Newton discovered gravity in the 17th century.",
+    "tokens": ["Newton", "discovered", "gravity", "in", "the", "17th", "century", "."],
+    "labels": ["PROPN", "VERB", "NOUN", "ADP", "DET", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Photosynthesis converts sunlight into energy.",
+    "tokens": ["Photosynthesis", "converts", "sunlight", "into", "energy", "."],
+    "labels": ["NOUN", "VERB", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Force is equal to mass times acceleration.",
+    "tokens": ["Force", "is", "equal", "to", "mass", "times", "acceleration", "."],
+    "labels": ["NOUN", "AUX", "ADJ", "ADP", "NOUN", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The mitochondria is known as the powerhouse of the cell.",
+    "tokens": ["The", "mitochondria", "is", "known", "as", "the", "powerhouse", "of", "the", "cell", "."],
+    "labels": ["DET", "NOUN", "AUX", "VERB", "ADP", "DET", "NOUN", "ADP", "DET", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Sorting algorithms like quicksort and mergesort are widely used.",
+    "tokens": ["Sorting", "algorithms", "like", "quicksort", "and", "mergesort", "are", "widely", "used", "."],
+    "labels": ["NOUN", "NOUN", "ADP", "NOUN", "CCONJ", "NOUN", "AUX", "ADV", "VERB", "PUNCT"]
+  },
+  {
+    "text": "Atoms consist of protons, neutrons, and electrons.",
+    "tokens": ["Atoms", "consist", "of", "protons", ",", "neutrons", ",", "and", "electrons", "."],
+    "labels": ["NOUN", "VERB", "ADP", "NOUN", "PUNCT", "NOUN", "PUNCT", "CCONJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Pythagorean theorem states that the square of the hypotenuse is equal to the sum of the squares of the other two sides.",
+    "tokens": ["The", "Pythagorean", "theorem", "states", "that", "the", "square", "of", "the", "hypotenuse", "is", "equal", "to", "the", "sum", "of", "the", "squares", "of", "the", "other", "two", "sides", "."],
+    "labels": ["DET", "ADJ", "NOUN", "VERB", "SCONJ", "DET", "NOUN", "ADP", "DET", "NOUN", "AUX", "ADJ", "ADP", "DET", "NOUN", "ADP", "DET", "NOUN", "ADP", "DET", "ADJ", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Binary search is an efficient algorithm for finding an element in a sorted array.",
+    "tokens": ["Binary", "search", "is", "an", "efficient", "algorithm", "for", "finding", "an", "element", "in", "a", "sorted", "array", "."],
+    "labels": ["ADJ", "NOUN", "AUX", "DET", "ADJ", "NOUN", "ADP", "VERB", "DET", "NOUN", "ADP", "DET", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Great Wall of China is a famous historical landmark.",
+    "tokens": ["The", "Great", "Wall", "of", "China", "is", "a", "famous", "historical", "landmark", "."],
+    "labels": ["DET", "ADJ", "NOUN", "ADP", "PROPN", "AUX", "DET", "ADJ", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Mount Everest is the tallest mountain in the world.",
+    "tokens": ["Mount", "Everest", "is", "the", "tallest", "mountain", "in", "the", "world", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "DET", "ADJ", "NOUN", "ADP", "DET", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Machine learning is a branch of artificial intelligence.",
+    "tokens": ["Machine", "learning", "is", "a", "branch", "of", "artificial", "intelligence", "."],
+    "labels": ["NOUN", "NOUN", "AUX", "DET", "NOUN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The speed of light is approximately 299,792 kilometers per second.",
+    "tokens": ["The", "speed", "of", "light", "is", "approximately", "299,792", "kilometers", "per", "second", "."],
+    "labels": ["DET", "NOUN", "ADP", "NOUN", "AUX", "ADV", "NUM", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Earth rotates on its axis every 24 hours.",
+    "tokens": ["The", "Earth", "rotates", "on", "its", "axis", "every", "24", "hours", "."],
+    "labels": ["DET", "PROPN", "VERB", "ADP", "DET", "NOUN", "ADV", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Photosynthesis takes place in the chloroplasts of plant cells.",
+    "tokens": ["Photosynthesis", "takes", "place", "in", "the", "chloroplasts", "of", "plant", "cells", "."],
+    "labels": ["NOUN", "VERB", "NOUN", "ADP", "DET", "NOUN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Einstein developed the theory of relativity.",
+    "tokens": ["Einstein", "developed", "the", "theory", "of", "relativity", "."],
+    "labels": ["PROPN", "VERB", "DET", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "A programming loop runs until a condition is met.",
+    "tokens": ["A", "programming", "loop", "runs", "until", "a", "condition", "is", "met", "."],
+    "labels": ["DET", "NOUN", "NOUN", "VERB", "SCONJ", "DET", "NOUN", "AUX", "VERB", "PUNCT"]
+  },
+  {
+    "text": "Bridges are designed to withstand tension and compression forces.",
+    "tokens": ["Bridges", "are", "designed", "to", "withstand", "tension", "and", "compression", "forces", "."],
+    "labels": ["NOUN", "AUX", "VERB", "PART", "VERB", "NOUN", "CCONJ", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Supply and demand determine market prices.",
+    "tokens": ["Supply", "and", "demand", "determine", "market", "prices", "."],
+    "labels": ["NOUN", "CCONJ", "NOUN", "VERB", "NOUN", "NOUN", "PUNCT"]
+  }
+]
+

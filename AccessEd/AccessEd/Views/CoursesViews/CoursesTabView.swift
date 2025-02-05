@@ -14,7 +14,7 @@ struct CoursesTabView: View {
     var body: some View {
         List {
             Section(header: Text("Study Cards")) {
-                NavigationLink(destination: StudyCardsView(course: $course/*, cardNumber: 5*/)) {
+                NavigationLink(destination: StudyCardsView() ){ // course: $course/*, cardNumber: 5*/)
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color("StudyCard-Colors")) //course.courseColor)
                         .padding(.horizontal, 30)
