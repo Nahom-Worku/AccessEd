@@ -26,6 +26,7 @@ struct AccessEdApp: App {
             TaskModel.self,
             ProfileModel.self,
             UserPreferences.self,
+            StudyCardModel.self
         ])
         
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

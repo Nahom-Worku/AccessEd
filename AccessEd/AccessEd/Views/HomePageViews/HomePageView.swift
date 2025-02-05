@@ -61,11 +61,11 @@ struct HomePageView: View {
             }
         }
         .padding(.leading)
-                .edgesIgnoringSafeArea(.top) // Limit to top only
-                .background(Color("Light-Dark Mode Colors"))
-                .onAppear {
-                    isCurrentDateSelected = true
-                }
+        .edgesIgnoringSafeArea(.top) // Limit to top only
+        .background(Color("Light-Dark Mode Colors"))
+        .onAppear {
+            isCurrentDateSelected = true
+        }
         .alert(isPresented: Binding<Bool>(
             get: {
                 courseViewModel.showAlert || calendarViewModel.taskAlerts != nil

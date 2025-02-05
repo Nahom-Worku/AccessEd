@@ -1,0 +1,592 @@
+[
+  {
+    "text": "Brazil exports 2.5 million tons of coffee annually.",
+    "tokens": ["Brazil", "exports", "2.5", "million", "tons", "of", "coffee", "annually", "."],
+    "labels": ["PROPN", "VERB", "NUM", "NUM", "NOUN", "ADP", "NOUN", "ADV", "PUNCT"]
+  },
+  {
+    "text": "There are 195 recognized countries worldwide as of 2023.",
+    "tokens": ["There", "are", "195", "recognized", "countries", "worldwide", "as", "of", "2023", "."],
+    "labels": ["PRON", "AUX", "NUM", "ADJ", "NOUN", "ADV", "ADP", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "Tesla manufactured 1.3 million electric vehicles in 2022.",
+    "tokens": ["Tesla", "manufactured", "1.3", "million", "electric", "vehicles", "in", "2022", "."],
+    "labels": ["PROPN", "VERB", "NUM", "NUM", "ADJ", "NOUN", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The Great Pyramid of Giza weighs approximately 6 million tons.",
+    "tokens": ["The", "Great", "Pyramid", "of", "Giza", "weighs", "approximately", "6", "million", "tons", "."],
+    "labels": ["DET", "ADJ", "NOUN", "ADP", "PROPN", "VERB", "ADV", "NUM", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Australia's Great Barrier Reef spans 2,300 kilometers.",
+    "tokens": ["Australia's", "Great", "Barrier", "Reef", "spans", "2,300", "kilometers", "."],
+    "labels": ["PROPN", "ADJ", "NOUN", "NOUN", "VERB", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "NASA's Perseverance rover landed on Mars in 2021.",
+    "tokens": ["NASA's", "Perseverance", "rover", "landed", "on", "Mars", "in", "2021", "."],
+    "labels": ["PROPN", "PROPN", "NOUN", "VERB", "ADP", "PROPN", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The global population surpassed 8 billion in November 2022.",
+    "tokens": ["The", "global", "population", "surpassed", "8", "billion", "in", "November", "2022", "."],
+    "labels": ["DET", "ADJ", "NOUN", "VERB", "NUM", "NUM", "ADP", "PROPN", "NUM", "PUNCT"]
+  },
+  {
+    "text": "Switzerland has maintained neutrality for over 200 years.",
+    "tokens": ["Switzerland", "has", "maintained", "neutrality", "for", "over", "200", "years", "."],
+    "labels": ["PROPN", "AUX", "VERB", "NOUN", "ADP", "ADV", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The iPhone 14 sold 15 million units within its first week.",
+    "tokens": ["The", "iPhone", "14", "sold", "15", "million", "units", "within", "its", "first", "week", "."],
+    "labels": ["DET", "PROPN", "NUM", "VERB", "NUM", "NUM", "NOUN", "ADP", "PRON", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Mount Everest's summit temperature averages -19°C in July.",
+    "tokens": ["Mount", "Everest's", "summit", "temperature", "averages", "-19°C", "in", "July", "."],
+    "labels": ["PROPN", "PROPN", "NOUN", "NOUN", "VERB", "NUM", "ADP", "PROPN", "PUNCT"]
+  },
+  {
+    "text": "The Eurotunnel connects England and France in 35 minutes.",
+    "tokens": ["The", "Eurotunnel", "connects", "England", "and", "France", "in", "35", "minutes", "."],
+    "labels": ["DET", "PROPN", "VERB", "PROPN", "CCONJ", "PROPN", "ADP", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Venus completes one orbit every 225 Earth days.",
+    "tokens": ["Venus", "completes", "one", "orbit", "every", "225", "Earth", "days", "."],
+    "labels": ["PROPN", "VERB", "NUM", "NOUN", "DET", "NUM", "PROPN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Panama Canal handles 13,000 ships annually.",
+    "tokens": ["The", "Panama", "Canal", "handles", "13,000", "ships", "annually", "."],
+    "labels": ["DET", "PROPN", "PROPN", "VERB", "NUM", "NOUN", "ADV", "PUNCT"]
+  },
+  {
+    "text": "Antarctica contains 90% of Earth's freshwater ice.",
+    "tokens": ["Antarctica", "contains", "90%", "of", "Earth's", "freshwater", "ice", "."],
+    "labels": ["PROPN", "VERB", "NUM", "ADP", "PROPN", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The James Webb Telescope launched on December 25, 2021.",
+    "tokens": ["The", "James", "Webb", "Telescope", "launched", "on", "December", "25", ",", "2021", "."],
+    "labels": ["DET", "PROPN", "PROPN", "NOUN", "VERB", "ADP", "PROPN", "NUM", "PUNCT", "NUM", "PUNCT"]
+  },
+  {
+    "text": "Norway's sovereign wealth fund exceeds $1.4 trillion.",
+    "tokens": ["Norway's", "sovereign", "wealth", "fund", "exceeds", "$1.4", "trillion", "."],
+    "labels": ["PROPN", "ADJ", "NOUN", "NOUN", "VERB", "NUM", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The Sahara Desert expands by 48 kilometers per year.",
+    "tokens": ["The", "Sahara", "Desert", "expands", "by", "48", "kilometers", "per", "year", "."],
+    "labels": ["DET", "PROPN", "PROPN", "VERB", "ADP", "NUM", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "CRISPR technology was pioneered in 2012.",
+    "tokens": ["CRISPR", "technology", "was", "pioneered", "in", "2012", "."],
+    "labels": ["PROPN", "NOUN", "AUX", "VERB", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The global average life expectancy reached 73.4 years.",
+    "tokens": ["The", "global", "average", "life", "expectancy", "reached", "73.4", "years", "."],
+    "labels": ["DET", "ADJ", "ADJ", "NOUN", "NOUN", "VERB", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Dubai's Burj Khalifa stands at 828 meters tall.",
+    "tokens": ["Dubai's", "Burj", "Khalifa", "stands", "at", "828", "meters", "tall", "."],
+    "labels": ["PROPN", "PROPN", "PROPN", "VERB", "ADP", "NUM", "NOUN", "ADJ", "PUNCT"]
+  },
+  {
+    "text": "The International Space Station orbits Earth every 90 minutes.",
+    "tokens": ["The", "International", "Space", "Station", "orbits", "Earth", "every", "90", "minutes", "."],
+    "labels": ["DET", "ADJ", "NOUN", "NOUN", "VERB", "PROPN", "DET", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Vincent van Gogh created over 2,100 artworks.",
+    "tokens": ["Vincent", "van", "Gogh", "created", "over", "2,100", "artworks", "."],
+    "labels": ["PROPN", "PROPN", "PROPN", "VERB", "ADP", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The human genome contains approximately 20,000 genes.",
+    "tokens": ["The", "human", "genome", "contains", "approximately", "20,000", "genes", "."],
+    "labels": ["DET", "ADJ", "NOUN", "VERB", "ADV", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The first moon landing occurred on July 20, 1969.",
+    "tokens": ["The", "first", "moon", "landing", "occurred", "on", "July", "20", ",", "1969", "."],
+    "labels": ["DET", "ADJ", "NOUN", "NOUN", "VERB", "ADP", "PROPN", "NUM", "PUNCT", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The Colosseum in Rome could seat 50,000 spectators.",
+    "tokens": ["The", "Colosseum", "in", "Rome", "could", "seat", "50,000", "spectators", "."],
+    "labels": ["DET", "PROPN", "ADP", "PROPN", "AUX", "VERB", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Quantum computers can solve certain problems 100 million times faster than classical computers.",
+    "tokens": ["Quantum", "computers", "can", "solve", "certain", "problems", "100", "million", "times", "faster", "than", "classical", "computers", "."],
+    "labels": ["ADJ", "NOUN", "AUX", "VERB", "ADJ", "NOUN", "NUM", "NUM", "NOUN", "ADV", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "If global temperatures increase by 3°C, 30% of species could face extinction.",
+    "tokens": ["If", "global", "temperatures", "increase", "by", "3°C", ",", "30%", "of", "species", "could", "face", "extinction", "."],
+    "labels": ["SCONJ", "ADJ", "NOUN", "VERB", "ADP", "NUM", "PUNCT", "NUM", "ADP", "NOUN", "AUX", "VERB", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Mars Perseverance rover collected 15 rock samples in 2023 alone.",
+    "tokens": ["The", "Mars", "Perseverance", "rover", "collected", "15", "rock", "samples", "in", "2023", "alone", "."],
+    "labels": ["DET", "PROPN", "PROPN", "NOUN", "VERB", "NUM", "NOUN", "NOUN", "ADP", "NUM", "ADV", "PUNCT"]
+  },
+  {
+    "text": "Neural networks reduced image recognition errors by 40% between 2010 and 2020.",
+    "tokens": ["Neural", "networks", "reduced", "image", "recognition", "errors", "by", "40%", "between", "2010", "and", "2020", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NOUN", "NOUN", "NOUN", "ADP", "NUM", "ADP", "NUM", "CCONJ", "NUM", "PUNCT"]
+  },
+  {
+    "text": "Carbon fiber is 5 times stronger than steel yet 70% lighter.",
+    "tokens": ["Carbon", "fiber", "is", "5", "times", "stronger", "than", "steel", "yet", "70%", "lighter", "."],
+    "labels": ["NOUN", "NOUN", "AUX", "NUM", "NOUN", "ADJ", "ADP", "NOUN", "CCONJ", "NUM", "ADJ", "PUNCT"]
+  },
+  {
+    "text": "Over 90% of plastic waste in oceans originates from 10 major rivers.",
+    "tokens": ["Over", "90%", "of", "plastic", "waste", "in", "oceans", "originates", "from", "10", "major", "rivers", "."],
+    "labels": ["ADP", "NUM", "ADP", "ADJ", "NOUN", "ADP", "NOUN", "VERB", "ADP", "NUM", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "CRISPR-Cas9 editing accuracy improved from 60% to 99.9% in 5 years.",
+    "tokens": ["CRISPR-Cas9", "editing", "accuracy", "improved", "from", "60%", "to", "99.9%", "in", "5", "years", "."],
+    "labels": ["PROPN", "NOUN", "NOUN", "VERB", "ADP", "NUM", "ADP", "NUM", "ADP", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The James Webb Telescope detected galaxies 13.4 billion light-years away.",
+    "tokens": ["The", "James", "Webb", "Telescope", "detected", "galaxies", "13.4", "billion", "light-years", "away", "."],
+    "labels": ["DET", "PROPN", "PROPN", "NOUN", "VERB", "NOUN", "NUM", "NUM", "NOUN", "ADV", "PUNCT"]
+  },
+  {
+    "text": "Self-driving cars reduced accident rates by 22% in California trials.",
+    "tokens": ["Self-driving", "cars", "reduced", "accident", "rates", "by", "22%", "in", "California", "trials", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NOUN", "NOUN", "ADP", "NUM", "ADP", "PROPN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Human Genome Project mapped 3.2 billion DNA base pairs.",
+    "tokens": ["The", "Human", "Genome", "Project", "mapped", "3.2", "billion", "DNA", "base", "pairs", "."],
+    "labels": ["DET", "PROPN", "PROPN", "PROPN", "VERB", "NUM", "NUM", "PROPN", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Vertical farming uses 95% less water than traditional agriculture.",
+    "tokens": ["Vertical", "farming", "uses", "95%", "less", "water", "than", "traditional", "agriculture", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NUM", "ADJ", "NOUN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Antibiotic resistance causes 700,000 global deaths annually.",
+    "tokens": ["Antibiotic", "resistance", "causes", "700,000", "global", "deaths", "annually", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NUM", "ADJ", "NOUN", "ADV", "PUNCT"]
+  },
+  {
+    "text": "The Large Hadron Collider operates at 99.999999% vacuum purity.",
+    "tokens": ["The", "Large", "Hadron", "Collider", "operates", "at", "99.999999%", "vacuum", "purity", "."],
+    "labels": ["DET", "ADJ", "PROPN", "PROPN", "VERB", "ADP", "NUM", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Wind energy accounted for 9.2% of U.S. electricity in 2021.",
+    "tokens": ["Wind", "energy", "accounted", "for", "9.2%", "of", "U.S.", "electricity", "in", "2021", "."],
+    "labels": ["NOUN", "NOUN", "VERB", "ADP", "NUM", "ADP", "PROPN", "NOUN", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "CRISPR-edited crops increased yields by 50% in drought conditions.",
+    "tokens": ["CRISPR-edited", "crops", "increased", "yields", "by", "50%", "in", "drought", "conditions", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NOUN", "ADP", "NUM", "ADP", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Tonga volcanic eruption released energy equivalent to 61 Hiroshima bombs.",
+    "tokens": ["The", "Tonga", "volcanic", "eruption", "released", "energy", "equivalent", "to", "61", "Hiroshima", "bombs", "."],
+    "labels": ["DET", "PROPN", "ADJ", "NOUN", "VERB", "NOUN", "ADJ", "ADP", "NUM", "PROPN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "3D-printed organs reduced transplant waiting times by 65% in trials.",
+    "tokens": ["3D-printed", "organs", "reduced", "transplant", "waiting", "times", "by", "65%", "in", "trials", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NOUN", "NOUN", "NOUN", "ADP", "NUM", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Doomsday Glacier melts 50% faster than previously estimated.",
+    "tokens": ["The", "Doomsday", "Glacier", "melts", "50%", "faster", "than", "previously", "estimated", "."],
+    "labels": ["DET", "PROPN", "PROPN", "VERB", "NUM", "ADV", "ADP", "ADV", "VERB", "PUNCT"]
+  },
+  {
+    "text": "AI diagnostic tools improved cancer detection accuracy by 31%.",
+    "tokens": ["AI", "diagnostic", "tools", "improved", "cancer", "detection", "accuracy", "by", "31%", "."],
+    "labels": ["PROPN", "ADJ", "NOUN", "VERB", "NOUN", "NOUN", "NOUN", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The global recycling rate for lithium-ion batteries reached 5% in 2022.",
+    "tokens": ["The", "global", "recycling", "rate", "for", "lithium-ion", "batteries", "reached", "5%", "in", "2022", "."],
+    "labels": ["DET", "ADJ", "NOUN", "NOUN", "ADP", "ADJ", "NOUN", "VERB", "NUM", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The global smartphone market grew by 7% in Q3 2023.",
+    "tokens": ["The", "global", "smartphone", "market", "grew", "by", "7%", "in", "Q3", "2023", "."],
+    "labels": ["DET", "ADJ", "NOUN", "NOUN", "VERB", "ADP", "NUM", "ADP", "PROPN", "NUM", "PUNCT"]
+  },
+  {
+    "text": "Norway's electric vehicle adoption rate reached 85% in 2023.",
+    "tokens": ["Norway's", "electric", "vehicle", "adoption", "rate", "reached", "85%", "in", "2023", "."],
+    "labels": ["PROPN", "ADJ", "NOUN", "NOUN", "NOUN", "VERB", "NUM", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The James Webb Telescope discovered 100 new exoplanets in 2022.",
+    "tokens": ["The", "James", "Webb", "Telescope", "discovered", "100", "new", "exoplanets", "in", "2022", "."],
+    "labels": ["DET", "PROPN", "PROPN", "NOUN", "VERB", "NUM", "ADJ", "NOUN", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "Global carbon emissions peaked at 36.8 gigatons in 2022.",
+    "tokens": ["Global", "carbon", "emissions", "peaked", "at", "36.8", "gigatons", "in", "2022", "."],
+    "labels": ["ADJ", "NOUN", "NOUN", "VERB", "ADP", "NUM", "NOUN", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "Neuralink's brain-chip trials achieved a 90% success rate in primates.",
+    "tokens": ["Neuralink's", "brain-chip", "trials", "achieved", "a", "90%", "success", "rate", "in", "primates", "."],
+    "labels": ["PROPN", "ADJ", "NOUN", "VERB", "DET", "NUM", "NOUN", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Amazon rainforest lost 13,235 km² to deforestation in 2021.",
+    "tokens": ["The", "Amazon", "rainforest", "lost", "13,235", "km²", "to", "deforestation", "in", "2021", "."],
+    "labels": ["DET", "PROPN", "NOUN", "VERB", "NUM", "NOUN", "ADP", "NOUN", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "mRNA vaccine production scaled to 3 billion doses annually.",
+    "tokens": ["mRNA", "vaccine", "production", "scaled", "to", "3", "billion", "doses", "annually", "."],
+    "labels": ["PROPN", "NOUN", "NOUN", "VERB", "ADP", "NUM", "NUM", "NOUN", "ADV", "PUNCT"]
+  },
+  {
+    "text": "Hydroponic systems boost lettuce growth rates by 40% in urban farms.",
+    "tokens": ["Hydroponic", "systems", "boost", "lettuce", "growth", "rates", "by", "40%", "in", "urban", "farms", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NOUN", "NOUN", "NOUN", "ADP", "NUM", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Hubble Telescope observed 10,000 galaxies in its first decade.",
+    "tokens": ["The", "Hubble", "Telescope", "observed", "10,000", "galaxies", "in", "its", "first", "decade", "."],
+    "labels": ["DET", "PROPN", "PROPN", "VERB", "NUM", "NOUN", "ADP", "PRON", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Solar panel efficiency surpassed 45% in laboratory settings.",
+    "tokens": ["Solar", "panel", "efficiency", "surpassed", "45%", "in", "laboratory", "settings", "."],
+    "labels": ["ADJ", "NOUN", "NOUN", "VERB", "NUM", "ADP", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The global average temperature rose by 1.1°C since pre-industrial times.",
+    "tokens": ["The", "global", "average", "temperature", "rose", "by", "1.1°C", "since", "pre-industrial", "times", "."],
+    "labels": ["DET", "ADJ", "ADJ", "NOUN", "VERB", "ADP", "NUM", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "CRISPR therapies cured 12 genetic disorders in clinical trials.",
+    "tokens": ["CRISPR", "therapies", "cured", "12", "genetic", "disorders", "in", "clinical", "trials", "."],
+    "labels": ["PROPN", "NOUN", "VERB", "NUM", "ADJ", "NOUN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Panama Canal expanded to accommodate 14,000-container ships.",
+    "tokens": ["The", "Panama", "Canal", "expanded", "to", "accommodate", "14,000-container", "ships", "."],
+    "labels": ["DET", "PROPN", "PROPN", "VERB", "PART", "VERB", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Lab-grown meat reduced greenhouse gas emissions by 87%.",
+    "tokens": ["Lab-grown", "meat", "reduced", "greenhouse", "gas", "emissions", "by", "87%", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "ADJ", "NOUN", "NOUN", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "The global recycling rate for e-waste reached 17.4% in 2023.",
+    "tokens": ["The", "global", "recycling", "rate", "for", "e-waste", "reached", "17.4%", "in", "2023", "."],
+    "labels": ["DET", "ADJ", "NOUN", "NOUN", "ADP", "NOUN", "VERB", "NUM", "ADP", "NUM", "PUNCT"]
+  },
+  {
+    "text": "They discovered a new species of deep-sea fish last year.",
+    "tokens": ["They", "discovered", "a", "new", "species", "of", "deep-sea", "fish", "last", "year", "."],
+    "labels": ["PRON", "VERB", "DET", "ADJ", "NOUN", "ADP", "ADJ", "NOUN", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "She has written over 50 scientific research papers.",
+    "tokens": ["She", "has", "written", "over", "50", "scientific", "research", "papers", "."],
+    "labels": ["PRON", "AUX", "VERB", "ADP", "NUM", "ADJ", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "He climbed Mount Everest without supplemental oxygen.",
+    "tokens": ["He", "climbed", "Mount", "Everest", "without", "supplemental", "oxygen", "."],
+    "labels": ["PRON", "VERB", "PROPN", "PROPN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "It takes approximately 8 minutes for sunlight to reach Earth.",
+    "tokens": ["It", "takes", "approximately", "8", "minutes", "for", "sunlight", "to", "reach", "Earth", "."],
+    "labels": ["PRON", "VERB", "ADV", "NUM", "NOUN", "ADP", "NOUN", "PART", "VERB", "PROPN", "PUNCT"]
+  },
+  {
+    "text": "We analyzed the data and found a surprising correlation.",
+    "tokens": ["We", "analyzed", "the", "data", "and", "found", "a", "surprising", "correlation", "."],
+    "labels": ["PRON", "VERB", "DET", "NOUN", "CCONJ", "VERB", "DET", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "You should always check the weather before a hiking trip.",
+    "tokens": ["You", "should", "always", "check", "the", "weather", "before", "a", "hiking", "trip", "."],
+    "labels": ["PRON", "AUX", "ADV", "VERB", "DET", "NOUN", "ADP", "DET", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "I learned about quantum mechanics in my physics class.",
+    "tokens": ["I", "learned", "about", "quantum", "mechanics", "in", "my", "physics", "class", "."],
+    "labels": ["PRON", "VERB", "ADP", "ADJ", "NOUN", "ADP", "PRON", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "They developed a vaccine in record time using mRNA technology.",
+    "tokens": ["They", "developed", "a", "vaccine", "in", "record", "time", "using", "mRNA", "technology", "."],
+    "labels": ["PRON", "VERB", "DET", "NOUN", "ADP", "ADJ", "NOUN", "VERB", "PROPN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "She studied the effects of microgravity on plant growth.",
+    "tokens": ["She", "studied", "the", "effects", "of", "microgravity", "on", "plant", "growth", "."],
+    "labels": ["PRON", "VERB", "DET", "NOUN", "ADP", "NOUN", "ADP", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "He invented a device that converts seawater into drinking water.",
+    "tokens": ["He", "invented", "a", "device", "that", "converts", "seawater", "into", "drinking", "water", "."],
+    "labels": ["PRON", "VERB", "DET", "NOUN", "PRON", "VERB", "NOUN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Electric cars are becoming more affordable and efficient.",
+    "tokens": ["Electric", "cars", "are", "becoming", "more", "affordable", "and", "efficient", "."],
+    "labels": ["ADJ", "NOUN", "AUX", "VERB", "ADV", "ADJ", "CCONJ", "ADJ", "PUNCT"]
+  },
+  {
+    "text": "The human brain contains approximately 86 billion neurons.",
+    "tokens": ["The", "human", "brain", "contains", "approximately", "86", "billion", "neurons", "."],
+    "labels": ["DET", "ADJ", "NOUN", "VERB", "ADV", "NUM", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Artificial intelligence is revolutionizing multiple industries.",
+    "tokens": ["Artificial", "intelligence", "is", "revolutionizing", "multiple", "industries", "."],
+    "labels": ["ADJ", "NOUN", "AUX", "VERB", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Ocean currents regulate global climate patterns.",
+    "tokens": ["Ocean", "currents", "regulate", "global", "climate", "patterns", "."],
+    "labels": ["NOUN", "NOUN", "VERB", "ADJ", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Satellites provide real-time data for weather forecasting.",
+    "tokens": ["Satellites", "provide", "real-time", "data", "for", "weather", "forecasting", "."],
+    "labels": ["NOUN", "VERB", "ADJ", "NOUN", "ADP", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Eiffel Tower receives nearly 7 million visitors annually.",
+    "tokens": ["The", "Eiffel", "Tower", "receives", "nearly", "7", "million", "visitors", "annually", "."],
+    "labels": ["DET", "PROPN", "PROPN", "VERB", "ADV", "NUM", "NUM", "NOUN", "ADV", "PUNCT"]
+  },
+  {
+    "text": "Mars has the tallest volcano in the solar system.",
+    "tokens": ["Mars", "has", "the", "tallest", "volcano", "in", "the", "solar", "system", "."],
+    "labels": ["PROPN", "AUX", "DET", "ADJ", "NOUN", "ADP", "DET", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Bioluminescent organisms produce light through chemical reactions.",
+    "tokens": ["Bioluminescent", "organisms", "produce", "light", "through", "chemical", "reactions", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NOUN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Solar panels convert sunlight into electricity with high efficiency.",
+    "tokens": ["Solar", "panels", "convert", "sunlight", "into", "electricity", "with", "high", "efficiency", "."],
+    "labels": ["ADJ", "NOUN", "VERB", "NOUN", "ADP", "NOUN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The Hubble Telescope has captured stunning images of distant galaxies.",
+    "tokens": ["The", "Hubble", "Telescope", "has", "captured", "stunning", "images", "of", "distant", "galaxies", "."],
+    "labels": ["DET", "PROPN", "PROPN", "AUX", "VERB", "ADJ", "NOUN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Water boils at 100 degrees Celsius under standard pressure.",
+    "tokens": ["Water", "boils", "at", "100", "degrees", "Celsius", "under", "standard", "pressure", "."],
+    "labels": ["NOUN", "VERB", "ADP", "NUM", "NOUN", "PROPN", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "The atomic number of oxygen is 8.",
+    "tokens": ["The", "atomic", "number", "of", "oxygen", "is", "8", "."],
+    "labels": ["DET", "ADJ", "NOUN", "ADP", "NOUN", "AUX", "NUM", "PUNCT"]
+  },
+  {
+    "text": "Carbon dioxide consists of one carbon and two oxygen atoms.",
+    "tokens": ["Carbon", "dioxide", "consists", "of", "one", "carbon", "and", "two", "oxygen", "atoms", "."],
+    "labels": ["PROPN", "PROPN", "VERB", "ADP", "NUM", "NOUN", "CCONJ", "NUM", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Hydrogen is the lightest element in the periodic table.",
+    "tokens": ["Hydrogen", "is", "the", "lightest", "element", "in", "the", "periodic", "table", "."],
+    "labels": ["PROPN", "AUX", "DET", "ADJ", "NOUN", "ADP", "DET", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Gold has an atomic mass of 196.97 amu.",
+    "tokens": ["Gold", "has", "an", "atomic", "mass", "of", "196.97", "amu", "."],
+    "labels": ["PROPN", "VERB", "DET", "ADJ", "NOUN", "ADP", "NUM", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Sodium chloride is commonly known as table salt.",
+    "tokens": ["Sodium", "chloride", "is", "commonly", "known", "as", "table", "salt", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Calcium carbonate is a key component of limestone.",
+    "tokens": ["Calcium", "carbonate", "is", "a", "key", "component", "of", "limestone", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "DET", "ADJ", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Iron oxide forms when iron reacts with oxygen.",
+    "tokens": ["Iron", "oxide", "forms", "when", "iron", "reacts", "with", "oxygen", "."],
+    "labels": ["PROPN", "PROPN", "VERB", "SCONJ", "NOUN", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Sulfur dioxide is released during volcanic eruptions.",
+    "tokens": ["Sulfur", "dioxide", "is", "released", "during", "volcanic", "eruptions", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Magnesium sulfate is commonly used in medicine.",
+    "tokens": ["Magnesium", "sulfate", "is", "commonly", "used", "in", "medicine", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Copper sulfate is often used in agriculture.",
+    "tokens": ["Copper", "sulfate", "is", "often", "used", "in", "agriculture", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Nitric acid is a strong oxidizing agent.",
+    "tokens": ["Nitric", "acid", "is", "a", "strong", "oxidizing", "agent", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "DET", "ADJ", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Phosphoric acid is commonly found in soft drinks.",
+    "tokens": ["Phosphoric", "acid", "is", "commonly", "found", "in", "soft", "drinks", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Acetic acid is the main component of vinegar.",
+    "tokens": ["Acetic", "acid", "is", "the", "main", "component", "of", "vinegar", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "DET", "ADJ", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Boric acid is used in many industrial applications.",
+    "tokens": ["Boric", "acid", "is", "used", "in", "many", "industrial", "applications", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "DET", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Hydrochloric acid is found in the human stomach.",
+    "tokens": ["Hydrochloric", "acid", "is", "found", "in", "the", "human", "stomach", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "DET", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Sodium bicarbonate is commonly known as baking soda.",
+    "tokens": ["Sodium", "bicarbonate", "is", "commonly", "known", "as", "baking", "soda", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Aluminum oxide is widely used in ceramics.",
+    "tokens": ["Aluminum", "oxide", "is", "widely", "used", "in", "ceramics", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Titanium dioxide is often used in sunscreens.",
+    "tokens": ["Titanium", "dioxide", "is", "often", "used", "in", "sunscreens", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Carbon monoxide is a colorless, odorless gas.",
+    "tokens": ["Carbon", "monoxide", "is", "a", "colorless", "odorless", "gas", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "DET", "ADJ", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Potassium chloride is used in medical treatments.",
+    "tokens": ["Potassium", "chloride", "is", "used", "in", "medical", "treatments", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Lithium carbonate is prescribed for bipolar disorder.",
+    "tokens": ["Lithium", "carbonate", "is", "prescribed", "for", "bipolar", "disorder", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Ammonium nitrate is used in fertilizers and explosives.",
+    "tokens": ["Ammonium", "nitrate", "is", "used", "in", "fertilizers", "and", "explosives", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "NOUN", "CCONJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Calcium sulfate is used to make plaster of Paris.",
+    "tokens": ["Calcium", "sulfate", "is", "used", "to", "make", "plaster", "of", "Paris", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "PART", "VERB", "NOUN", "ADP", "PROPN", "PUNCT"]
+  },
+  {
+    "text": "Aluminum chloride is used in antiperspirants.",
+    "tokens": ["Aluminum", "chloride", "is", "used", "in", "antiperspirants", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Magnesium chloride absorbs moisture from air.",
+    "tokens": ["Magnesium", "chloride", "absorbs", "moisture", "from", "air", "."],
+    "labels": ["PROPN", "PROPN", "VERB", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Phosphorus pentachloride is used in organic synthesis.",
+    "tokens": ["Phosphorus", "pentachloride", "is", "used", "in", "organic", "synthesis", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Sodium sulfate is found in detergents.",
+    "tokens": ["Sodium", "sulfate", "is", "found", "in", "detergents", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Zinc chloride is used in soldering flux.",
+    "tokens": ["Zinc", "chloride", "is", "used", "in", "soldering", "flux", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Cobalt chloride changes color with humidity.",
+    "tokens": ["Cobalt", "chloride", "changes", "color", "with", "humidity", "."],
+    "labels": ["PROPN", "PROPN", "VERB", "NOUN", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Barium sulfate is used in medical imaging.",
+    "tokens": ["Barium", "sulfate", "is", "used", "in", "medical", "imaging", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Silver nitrate is used in chemical synthesis.",
+    "tokens": ["Silver", "nitrate", "is", "used", "in", "chemical", "synthesis", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Ferric chloride is commonly used in etching.",
+    "tokens": ["Ferric", "chloride", "is", "commonly", "used", "in", "etching", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Chromium oxide is a green pigment.",
+    "tokens": ["Chromium", "oxide", "is", "a", "green", "pigment", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "DET", "ADJ", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Copper oxide is formed when copper reacts with air.",
+    "tokens": ["Copper", "oxide", "is", "formed", "when", "copper", "reacts", "with", "air", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "SCONJ", "NOUN", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Manganese dioxide is used in dry cell batteries.",
+    "tokens": ["Manganese", "dioxide", "is", "used", "in", "dry", "cell", "batteries", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "ADJ", "NOUN", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Nickel chloride is used in electroplating.",
+    "tokens": ["Nickel", "chloride", "is", "used", "in", "electroplating", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "VERB", "ADP", "NOUN", "PUNCT"]
+  },
+  {
+    "text": "Lead acetate was once used as a sweetener.",
+    "tokens": ["Lead", "acetate", "was", "once", "used", "as", "a", "sweetener", "."],
+    "labels": ["PROPN", "PROPN", "AUX", "ADV", "VERB", "ADP", "DET", "NOUN", "PUNCT"]
+  }
+]
