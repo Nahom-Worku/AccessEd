@@ -154,7 +154,7 @@ class StudyCardsGenerator {
             if let firstWord = sentence.split(separator: " ").first, ["This", "It", "These"].contains(String(firstWord)) {
                 if let previousContext = previousContext {
                     let modifiedSentence = sentence.replacingOccurrences(of: String(firstWord), with: "______")
-                    let generatedQA = (modifiedSentence + "?", previousContext)
+                    let generatedQA = (modifiedSentence + ".", previousContext)
 
                     // ✅ Validation: Ensure that if first word is blank, answer starts with uppercase
                     if isValidQuestion(generatedQA.0, answer: generatedQA.1) {

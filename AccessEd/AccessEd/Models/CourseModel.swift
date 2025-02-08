@@ -21,24 +21,15 @@ class CourseModel: Identifiable {
     var categoryRawValue: String
     var courseImageName: String
     var courseColorName: String
-    
+    @Relationship(deleteRule: .cascade) var studyCards: [StudyCardModel] = []
     
     var category: CourseCategory {
-        get {
-            CourseCategory(rawValue: categoryRawValue) ?? .other
-        }
-        set {
-            categoryRawValue = newValue.rawValue
-        }
+        get { CourseCategory(rawValue: categoryRawValue) ?? .other }
+        set { categoryRawValue = newValue.rawValue }
     }
     
-    var courseImage: Image {
-        Image(courseImageName)
-    }
-    
-    var courseColor: Color {
-        Color(courseColorName)
-    }
+    var courseImage: Image { Image(courseImageName) }
+    var courseColor: Color { Color(courseColorName)}
     
     init(name: String, category: CourseCategory) {
         self.id = UUID()
@@ -48,6 +39,16 @@ class CourseModel: Identifiable {
         self.courseColorName = category.colorName
     }
     
+    func getStudyCards(with name: String) -> [StudyCardModel] {
+        return studyCards.filter { $0.studyCardName == name }
+    }
+    
+    var distinctStudyCardNames: [String] {
+        let uniqueNames = Set(studyCards.compactMap { $0.studyCardName }) // Remove nils & duplicates
+        return Array(uniqueNames).sorted()
+    }
+    
+    // MARK: - TODO: dont need this ???
     func updateCompletion(newName: String, newCategory: CourseCategory) -> CourseModel {
         return CourseModel(
             name: newName,
@@ -55,6 +56,7 @@ class CourseModel: Identifiable {
         )
     }
 }
+
 
 // MARK: - UserPreferences Model
 
