@@ -8,6 +8,8 @@
 import Foundation
 import SwiftData
 import SwiftUI
+import _PhotosUI_SwiftUI
+import Vision
 
 class CourseViewModel : ObservableObject {
     var modelContext: ModelContext? = nil

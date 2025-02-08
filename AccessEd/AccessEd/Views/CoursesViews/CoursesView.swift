@@ -29,7 +29,7 @@ struct CoursesView: View {
                 List {
                     ForEach(viewModel.courses) { course in
                             NavigationLink {
-                                EachCoursePageView(course: course)
+                                EachCoursePageView(modelContext: modelContext, course: course)
                             } label: {
                                 VStack(spacing: 15) {
                                     EachCourseView(course: course)
@@ -128,6 +128,7 @@ struct CoursesView: View {
                         .padding()
                 }
                 .buttonStyle(PlainButtonStyle())
+                .padding(.vertical)
                 
             }
             .padding(.trailing)
@@ -168,8 +169,8 @@ struct CoursesView: View {
             .foregroundStyle(Color("Text-Colors"))
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        isTaskFieldFocused = true
-                    }
+                    isTaskFieldFocused = true
+                }
             }
 
             

@@ -7,11 +7,12 @@
 
 import SwiftUI
 import Foundation
+import SwiftData
 
 struct EachCoursePageView: View {
     
+    var modelContext: ModelContext
     @State var course: CourseModel
-    
     @State private var selectedTab: tabs = .Course
     
     var body: some View {
@@ -28,7 +29,7 @@ struct EachCoursePageView: View {
             
             Group {
                 if selectedTab == .Course {
-                    CoursesTabView(course: course)
+                    CoursesTabView(modelContext: modelContext, course: course)
                 } else if selectedTab == .Resourses {
                     ResoursesTabView(course: $course)
                 }
@@ -42,12 +43,12 @@ struct EachCoursePageView: View {
     }
 }
 
-#Preview("light mode") {
-    EachCoursePageView(course: CourseModel(name: "", category: .allCases.randomElement()!))
-        .preferredColorScheme(.light)
-}
-
-#Preview("dark mode") {
-    EachCoursePageView(course: CourseModel(name: "", category: .allCases.randomElement()!))
-        .preferredColorScheme(.dark)
-}
+//#Preview("light mode") {
+//    EachCoursePageView(course: CourseModel(name: "", category: .allCases.randomElement()!))
+//        .preferredColorScheme(.light)
+//}
+//
+//#Preview("dark mode") {
+//    EachCoursePageView(course: CourseModel(name: "", category: .allCases.randomElement()!))
+//        .preferredColorScheme(.dark)
+//}
