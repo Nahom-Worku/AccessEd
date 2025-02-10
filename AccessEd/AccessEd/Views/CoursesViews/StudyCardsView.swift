@@ -274,52 +274,225 @@ struct CreateStudyCardsView: View {
     }
 }
 
+
+// MARK: - Study card row
+
 import SwiftUI
 
 struct StudyCardRow: View {
+    @ObservedObject var speechSynthesizer = SpeechSynthesizer()
     @State var card: StudyCardModel
+    @State var readQuestion = false
+    @State var readAnswer = false
 
     var body: some View {
         ZStack {
             if !card.isFlipped {
                 // Front Side (Question)
-                VStack {
-                    Text("Question")
-                        .font(.title3)
-                        .padding(.vertical)
-
-                    Text(card.question)
-                        .multilineTextAlignment(.center)
-                        .padding()
+                VStack(spacing: 0) {
+                    
+                    HStack(alignment: .top) {
+                        Spacer()
+                        
+                        Button {
+                            toggleQuestionSpeech()
+                        } label: {
+                            Image(systemName: "microphone")
+                                .font(.headline)
+//                                .foregroundColor(readQuestion ? .red : .primary) // 🔹 Change color when speaking
+//                                .scaleEffect(readQuestion ? 1.3 : 1.0) // 🔹 Pulse effect
+//                                .animation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: readQuestion)
+                        }
+                    }
+                    .padding()
+                    
+                    Spacer()
+                    
+                    VStack {
+                        Text("Question")
+                            .font(.title3)
+                        
+                        Text(card.question)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(nil)  // ✅ Allow unlimited lines
+                            .fixedSize(horizontal: false, vertical: true) // ✅ Ensures vertical expansion
+                            .padding()
+                    }
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Button {
+                            stopSpeech()
+                            card.isFlipped = true
+                        } label: {
+                            Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
+                                .font(.headline)
+                        }
+                    }
+                    .padding()
                 }
-                .frame(width: 350, height: 200)
+                .frame(width: UIScreen.main.bounds.width * 0.85)//, height: UIScreen.main.bounds.height * 0.25)
                 .background(Color("StudyCard-Colors"))
                 .cornerRadius(10)
-                .shadow(radius: 3, x: 0, y: 0)
+                .shadow(radius: 2, x: 0, y: 0)
+                
             } else {
                 // Back Side (Answer)
-                VStack {
-                    Text("Answer")
-                        .font(.title3)
-                        .padding(.vertical)
-
-                    Text(card.answer)
-                        .multilineTextAlignment(.center)
-                        .padding()
+                VStack(spacing: 0) {
+                    
+                    HStack(alignment: .top) {
+                        Spacer()
+                        
+                        Button {
+                            toggleAnswerSpeech()
+                        } label: {
+                            Image(systemName: "microphone")
+                                .font(.headline)
+                        }
+                    }
+                    .padding()
+                    
+                    Spacer()
+                    
+                    VStack {
+                        Text("Answer")
+                            .font(.title3)
+                            .padding(.bottom)
+                        
+                        Text(card.answer)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    }
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Button {
+                            stopSpeech()
+                            card.isFlipped = false
+                        } label: {
+                            Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
+                                .font(.headline)
+                        }
+                    }
+                    .padding()
                 }
-                .frame(width: 350, height: 200)
+                .frame(width: UIScreen.main.bounds.width * 0.85) //, height: UIScreen.main.bounds.height * 0.25)
                 .rotation3DEffect(.degrees(-180), axis: (x: 0, y: 1, z: 0))
                 .background(Color("StudyCard-Colors"))
                 .cornerRadius(10)
-                .shadow(radius: 3, x: 0, y: 0)
+                .shadow(radius: 2, x: 0, y: 0)
             }
         }
         .rotation3DEffect(.degrees(card.isFlipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
         .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0), value: card.isFlipped)
         .onTapGesture(count: 2) {
+            stopSpeech()
             card.isFlipped.toggle()
         }
     }
+    
+    /// Toggles the speech for the question
+    private func toggleQuestionSpeech() {
+        if readQuestion {
+            stopSpeech()
+        } else {
+            stopSpeech()  // Ensure answer is not being read
+            speechSynthesizer.speak(text: card.question, studyCardItem: .question)
+            readQuestion = false
+        }
+        readQuestion.toggle()
+        readAnswer = false  // Ensure answer speech is not toggled
+    }
+
+       /// Toggles the speech for the answer
+    private func toggleAnswerSpeech() {
+        if readAnswer {
+            stopSpeech()
+        } else {
+            stopSpeech()  // Ensure question is not being read
+            speechSynthesizer.speak(text: card.answer, studyCardItem: .answer)
+        }
+        readAnswer.toggle()
+        readQuestion = false  // Ensure question speech is not toggled
+    }
+
+       /// Stops any ongoing speech
+    private func stopSpeech() {
+        speechSynthesizer.stopSpeaking()
+        readQuestion = false
+        readAnswer = false
+    }
 }
+
+
+#Preview {
+    let card = StudyCardModel(question: "What is the capital city of Canada", answer: "Ottawa")
+    StudyCardRow(card: card)
+}
+
+
+// MARK: - Text - to - speach
+
+enum StudyCardItem {
+    case question
+    case answer
+}
+
+import AVFoundation
+
+class SpeechSynthesizer: ObservableObject {
+    private var synthesizer = AVSpeechSynthesizer()
+    @Published var isSpeaking = false
+    
+    /// Dictionary for special word pronunciations
+    private let customPronunciations: [String: String] = [
+        "______": ": blank :"
+    ]
+
+    // MARK: - TODO: - read the word "Question" and "Answer"
+    
+    func speak(text: String, studyCardItem: StudyCardItem) {
+        guard !text.isEmpty else { return }
+
+        let prefix = (studyCardItem == .question) ? "Question: " : "Answer: "
+        
+        let modifiedText = modifyTextForPronunciation(prefix + text)
+        
+        let utterance = AVSpeechUtterance(string: modifiedText)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US") // Change as needed
+        utterance.rate = 0.5  // Adjust speed
+        utterance.pitchMultiplier = 0.75 // Adjust pitch
+
+        isSpeaking = true
+        synthesizer.speak(utterance)
+    }
+    
+    func stopSpeaking() {
+        if synthesizer.isSpeaking {
+            isSpeaking = false
+            synthesizer.stopSpeaking(at: .immediate)
+        }
+    }
+
+    /// Function to modify text before speaking
+    private func modifyTextForPronunciation(_ text: String) -> String {
+        var modifiedText = text
+
+        for (word, replacement) in customPronunciations {
+            if text.contains(word) {
+                modifiedText = modifiedText.replacingOccurrences(of: word, with: replacement)
+            }
+        }
+
+        return modifiedText
+    }
+}
+
 
 

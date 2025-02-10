@@ -203,7 +203,7 @@ class StudyCardsGenerator {
         // ✅ Validation Logic:
         if isFirstWordBlank {
             return isAnswerUppercased // If first word is blank, answer **must** be capitalized.
-        } else if question.contains("______") && words.count > 2 {
+        } else if question.contains("______") && words.count > 2 && answer.count > 0 {
             return true // If blank is anywhere else, accept it.
         }
         
