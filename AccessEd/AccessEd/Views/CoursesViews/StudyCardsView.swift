@@ -284,110 +284,12 @@ struct StudyCardRow: View {
     @State var card: StudyCardModel
     @State var readQuestion = false
     @State var readAnswer = false
+    @State private var isAnimating = false
 
     var body: some View {
         ZStack {
-            if !card.isFlipped {
-                // Front Side (Question)
-                VStack(spacing: 0) {
-                    
-                    HStack(alignment: .top) {
-                        Spacer()
-                        
-                        Button {
-                            toggleQuestionSpeech()
-                        } label: {
-                            Image(systemName: "microphone")
-                                .font(.headline)
-//                                .foregroundColor(readQuestion ? .red : .primary) // 🔹 Change color when speaking
-//                                .scaleEffect(readQuestion ? 1.3 : 1.0) // 🔹 Pulse effect
-//                                .animation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: readQuestion)
-                        }
-                    }
-                    .padding()
-                    
-                    Spacer()
-                    
-                    VStack {
-                        Text("Question")
-                            .font(.title3)
-                        
-                        Text(card.question)
-                            .multilineTextAlignment(.center)
-                            .lineLimit(nil)  // ✅ Allow unlimited lines
-                            .fixedSize(horizontal: false, vertical: true) // ✅ Ensures vertical expansion
-                            .padding()
-                    }
-                    
-                    Spacer()
-                    
-                    HStack {
-                        Spacer()
-                        
-                        Button {
-                            stopSpeech()
-                            card.isFlipped = true
-                        } label: {
-                            Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
-                                .font(.headline)
-                        }
-                    }
-                    .padding()
-                }
-                .frame(width: UIScreen.main.bounds.width * 0.85)//, height: UIScreen.main.bounds.height * 0.25)
-                .background(Color("StudyCard-Colors"))
-                .cornerRadius(10)
-                .shadow(radius: 2, x: 0, y: 0)
-                
-            } else {
-                // Back Side (Answer)
-                VStack(spacing: 0) {
-                    
-                    HStack(alignment: .top) {
-                        Spacer()
-                        
-                        Button {
-                            toggleAnswerSpeech()
-                        } label: {
-                            Image(systemName: "microphone")
-                                .font(.headline)
-                        }
-                    }
-                    .padding()
-                    
-                    Spacer()
-                    
-                    VStack {
-                        Text("Answer")
-                            .font(.title3)
-                            .padding(.bottom)
-                        
-                        Text(card.answer)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                    }
-                    
-                    Spacer()
-                    
-                    HStack {
-                        Spacer()
-                        
-                        Button {
-                            stopSpeech()
-                            card.isFlipped = false
-                        } label: {
-                            Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
-                                .font(.headline)
-                        }
-                    }
-                    .padding()
-                }
-                .frame(width: UIScreen.main.bounds.width * 0.85) //, height: UIScreen.main.bounds.height * 0.25)
-                .rotation3DEffect(.degrees(-180), axis: (x: 0, y: 1, z: 0))
-                .background(Color("StudyCard-Colors"))
-                .cornerRadius(10)
-                .shadow(radius: 2, x: 0, y: 0)
-            }
+            if !card.isFlipped { studyCardQuestionView }
+            else { studyCardAnswerView }
         }
         .rotation3DEffect(.degrees(card.isFlipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
         .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0), value: card.isFlipped)
@@ -395,30 +297,137 @@ struct StudyCardRow: View {
             stopSpeech()
             card.isFlipped.toggle()
         }
+        .onChange(of: speechSynthesizer.isSpeaking) {
+            if isAnimating && speechSynthesizer.isSpeaking {
+                startAnimationLoop()  // Start animation when speech starts
+            }
+            
+//            isAnimating = false
+        }
+    }
+    
+    
+    var studyCardQuestionView: some View {
+        VStack(spacing: 0) {
+            
+            HStack(alignment: .top) {
+                Spacer()
+                
+                Button {
+                    toggleQuestionSpeech()
+                } label: {
+                    Image(systemName: "microphone")
+                        .font(.headline)
+                        .foregroundColor(speechSynthesizer.isSpeaking && readQuestion ? .red : .blue) // 🔴 Change color dynamically
+                        .scaleEffect(speechSynthesizer.isSpeaking && readQuestion ? 1.3 : 1.0) // 🔄 Pulsate effect
+                        .animation(.easeInOut(duration: 0.5).repeatForever(autoreverses: true), value: true)
+                        
+
+                }
+            }
+            .padding()
+            
+            Spacer()
+            
+            VStack {
+                Text("Question")
+                    .font(.title3)
+                
+                Text(card.question)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(nil)  // ✅ Allow unlimited lines
+                    .fixedSize(horizontal: false, vertical: true) // ✅ Ensures vertical expansion
+                    .padding()
+            }
+            
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                Button {
+                    stopSpeech()
+                    card.isFlipped = true
+                } label: {
+                    Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
+                        .font(.headline)
+                }
+            }
+            .padding()
+        }
+        .frame(width: UIScreen.main.bounds.width * 0.85)//, height: UIScreen.main.bounds.height * 0.25)
+        .background(Color("StudyCard-Colors"))
+        .cornerRadius(10)
+        .shadow(radius: 2, x: 0, y: 0)
+    }
+    
+    
+    var studyCardAnswerView: some View {
+        VStack(spacing: 0) {
+            HStack(alignment: .top) {
+                Spacer()
+                
+                Button {
+                    toggleAnswerSpeech()
+                } label: {
+                    Image(systemName: "microphone")
+                        .font(.headline)
+                }
+            }
+            .padding()
+            
+            Spacer()
+            
+            VStack {
+                Text("Answer")
+                    .font(.title3)
+                    .padding(.bottom)
+                
+                Text(card.answer)
+                    .multilineTextAlignment(.center)
+                    .padding()
+            }
+            
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                Button {
+                    stopSpeech()
+                    card.isFlipped = false
+                } label: {
+                    Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
+                        .font(.headline)
+                }
+            }
+            .padding()
+        }
+        .frame(width: UIScreen.main.bounds.width * 0.85) //, height: UIScreen.main.bounds.height * 0.25)
+        .rotation3DEffect(.degrees(-180), axis: (x: 0, y: 1, z: 0))
+        .background(Color("StudyCard-Colors"))
+        .cornerRadius(10)
+        .shadow(radius: 2, x: 0, y: 0)
     }
     
     /// Toggles the speech for the question
     private func toggleQuestionSpeech() {
-        if readQuestion {
-            stopSpeech()
-        } else {
-            stopSpeech()  // Ensure answer is not being read
-            speechSynthesizer.speak(text: card.question, studyCardItem: .question)
-            readQuestion = false
-        }
         readQuestion.toggle()
+        
+        if readQuestion { speechSynthesizer.speak(text: card.question, studyCardItem: .question) }
+        else { stopSpeech() }
+
         readAnswer = false  // Ensure answer speech is not toggled
+        
     }
 
        /// Toggles the speech for the answer
     private func toggleAnswerSpeech() {
-        if readAnswer {
-            stopSpeech()
-        } else {
-            stopSpeech()  // Ensure question is not being read
-            speechSynthesizer.speak(text: card.answer, studyCardItem: .answer)
-        }
         readAnswer.toggle()
+        
+        if readAnswer { speechSynthesizer.speak(text: card.answer, studyCardItem: .answer) }
+        else { stopSpeech() }
+        
         readQuestion = false  // Ensure question speech is not toggled
     }
 
@@ -427,6 +436,16 @@ struct StudyCardRow: View {
         speechSynthesizer.stopSpeaking()
         readQuestion = false
         readAnswer = false
+        isAnimating = false
+    }
+    
+    private func startAnimationLoop() {
+        guard speechSynthesizer.isSpeaking else {
+            isAnimating = false
+            return
+        }
+        
+        isAnimating = true
     }
 }
 
@@ -435,6 +454,7 @@ struct StudyCardRow: View {
     let card = StudyCardModel(question: "What is the capital city of Canada", answer: "Ottawa")
     StudyCardRow(card: card)
 }
+
 
 
 // MARK: - Text - to - speach
@@ -471,6 +491,7 @@ class SpeechSynthesizer: ObservableObject {
 
         isSpeaking = true
         synthesizer.speak(utterance)
+        stopSpeaking()
     }
     
     func stopSpeaking() {

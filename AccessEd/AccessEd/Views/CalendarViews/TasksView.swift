@@ -15,10 +15,46 @@ struct TasksView: View {
     var body: some View {
         VStack {
             if viewModel.tasksForSelectedDate.isEmpty {
-                Text("No tasks for this date.")
-                    .foregroundColor(.gray)
-                    .frame(width: UIScreen.main.bounds.width)
-                    .padding(.top, 50)
+//                Text("No tasks for this date.")
+//                    .foregroundColor(.gray)
+//                    .frame(width: UIScreen.main.bounds.width)
+//                    .padding(.top, 50)
+                VStack(alignment: .center, spacing: 0) {
+                    Image(systemName: "list.bullet.rectangle")
+                        .font(Font.system(size: 40))
+                        .padding(5)
+                        .foregroundStyle(.gray.opacity(0.8))
+                        .fontWeight(.light)
+                    
+                    Text("No tasks for today.")
+                        .font(.headline)
+                        .bold()
+                        .opacity(0.8)
+                        .padding(.bottom, 3)
+                    
+                    Text("Start adding tasks to get started!")
+                        .font(.subheadline)
+                        .foregroundStyle(.gray)
+                        .padding(.bottom)
+                        .padding(.horizontal, 50)
+                        .multilineTextAlignment(.center)
+                    
+                    
+                    Button(action: {
+                        viewModel.selectedDate = Date()
+                        withAnimation {
+                            viewModel.isAddingTask = true
+                            
+                        }
+                    }, label: {
+                        Text("Add a Task")
+                            .font(.subheadline)
+                    })
+                }
+                .frame(width: UIScreen.main.bounds.width)
+                .padding()
+                .padding(.vertical)
+                .padding(.bottom, 30)
             } else {
                 
                 // Display the tasks for the selected date
