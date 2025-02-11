@@ -5,17 +5,14 @@
 //  Created by Nahom Worku on 2024-12-21.
 //
 
-
+// MARK: - study cards view
 import SwiftUI
 import _PhotosUI_SwiftUI
 
 struct StudyCardsView: View {
-    /*@Environment(\.modelContext)*/
     var modelContext: ModelContext
-//    @StateObject var studyCardViewModel: StudyCardViewModel = StudyCardViewModel()
     var course: CourseModel
     var studyCardName: String
-    
     @State var showCreateStudyCardsView: Bool = false
     
     var body: some View {
@@ -30,170 +27,156 @@ struct StudyCardsView: View {
         .padding()
         .navigationTitle("\(studyCardName)")
         .sheet(isPresented: $showCreateStudyCardsView) {
-            CreateStudyCardsView(modelContext: modelContext, course: course, studyCardName: studyCardName)
+            CreateStudyCardsView(studyCardName: studyCardName, modelContext: modelContext, course: course)
         }
     }
 }
 
 
-
+// MARK: - create study cards sheet
 import SwiftUI
 import _PhotosUI_SwiftUI
 import Vision
 import SwiftData
 
 struct CreateStudyCardsView: View {
-//    @ObservedObject var viewModel: StudyCardViewModel
-    /*@Environment(\.modelContext)*/
-    var modelContext: ModelContext
     @Environment(\.dismiss) var dismiss
-    
     @State var extractedText: String = ""
     @State var selectedPhotoItem: PhotosPickerItem? = nil
     @State var selectedImage: UIImage? = nil
-    
-    var course: CourseModel
-//    var studyCardName: String
-
-    private let studyCardsGenerator = StudyCardsGenerator()
-    
     @State var studyCardName: String = ""
     @FocusState private var isTaskFieldFocused: Bool
+    var modelContext: ModelContext
+    var course: CourseModel
+    private let studyCardsGenerator = StudyCardsGenerator()
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                Text("Add a Study Card")
-                    .font(.title3)
-                    .bold()
-                    .foregroundStyle(Color("Text-Colors"))
-                
-                VStack (alignment: .leading) {
-                    Text("Add The Study Card Name")
-                        .font(.subheadline)
-                        .padding(.leading)
-                    
-                    TextField("Enter Study Card Name", text: $studyCardName)
-                        .focused($isTaskFieldFocused)
-                        .padding(10)
-                        .background(Color.gray.opacity(0.05).cornerRadius(5.0))
-                        .padding([.horizontal, .bottom], 20)
-                        .font(.subheadline)
-                }
-                .foregroundStyle(Color("Text-Colors"))
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        isTaskFieldFocused = true
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    VStack (alignment: .leading) {
+                        Text("Add Study Card Name")
+                            .font(.subheadline)
+                            .padding(.leading)
+                        
+                        TextField("Enter Study Card Name", text: $studyCardName)
+                            .focused($isTaskFieldFocused)
+                            .padding(10)
+                            .background(Color.gray.opacity(0.05).cornerRadius(5.0))
+                            .padding([.horizontal, .bottom], 20)
+                            .font(.subheadline)
                     }
+                    .foregroundStyle(Color("Text-Colors"))
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            isTaskFieldFocused = true
+                        }
+                    }
+                }
+                
+                VStack {
+                    Text("Extract Text and Generate Study Cards")
+                        .font(.subheadline)
+                        .bold()
+                        .padding(.top)
+                    
+                    // Display selected image
+                    if let selectedImage = selectedImage {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .cornerRadius(8)
+                            .padding()
+                    } else {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(height: 200)
+                            .cornerRadius(8)
+                            .overlay(
+                                Text("Select an Image")
+                                    .foregroundColor(.gray)
+                            )
+                            .padding()
+                    }
+                    
+                    // Image selection
+                    PhotosPicker(selection: $selectedPhotoItem, matching: .images, photoLibrary: .shared()) {
+                        Text("Choose Image")
+                            .padding()
+                            .frame(maxWidth: UIScreen.main.bounds.width)
+                            .background(studyCardName.isEmpty ? .gray.opacity(0.25) : .blue)
+                            .foregroundColor(studyCardName.isEmpty ? .gray.opacity(0.3) : .white)
+                            .cornerRadius(8)
+                    }
+                    .padding(.top)
+                    .padding(.horizontal)
+                    .disabled(studyCardName.isEmpty)
+                    .onChange(of: selectedPhotoItem) {
+                        if let newItem = selectedPhotoItem { loadImage(from: newItem) }
+                    }
+                    
+                    // TextEditor for editing extracted text
+                    if !extractedText.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Edit Extracted Text:")
+                                .font(.headline)
+                                .padding(.vertical)
+                            
+                            TextEditor(text: $extractedText)
+                                .frame(height: 150)
+                                .padding(4)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray, lineWidth: 1)
+                                )
+                                .padding(.horizontal)
+                        }
+                    }
+                    
+                    
+                    VStack(spacing: 15) {
+                        // Buttons
+                        Button(action: processImage) {
+                            Text("Extract Text")
+                                .padding()
+                                .frame(maxWidth: UIScreen.main.bounds.width)
+                                .background(selectedImage == nil ? .gray.opacity(0.25) : .blue)
+                                .foregroundColor(selectedImage == nil ? .gray.opacity(0.3) : .white)
+                                .cornerRadius(8)
+                        }
+                        .disabled(selectedImage == nil)
+                        
+                        
+                        Button(action: {
+                            generateStudyCards(studyCardName: studyCardName)
+                            
+                            dismiss()
+                        }, label: {
+                            Text("Generate Study Cards")
+                                .padding()
+                                .frame(maxWidth: UIScreen.main.bounds.width)
+                                .background(extractedText.isEmpty || studyCardName.isEmpty ? .gray.opacity(0.25) : .green)
+                                .foregroundColor(extractedText.isEmpty || studyCardName.isEmpty ? .gray.opacity(0.3) : .white)
+                                .cornerRadius(8)
+                        })
+                        .disabled(extractedText.isEmpty || studyCardName.isEmpty)
+                    }
+                    .padding(.top, 8)
+                    .padding(.horizontal)
                 }
             }
-            
-            VStack {
-                Text("Extract Text and Generate Study Cards")
-                    .font(.headline)
-//                    .bold()
-                    .padding(.top)
-
-                // Display selected image
-                if let selectedImage = selectedImage {
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 200)
-                        .cornerRadius(8)
-                        .padding()
-                } else {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(height: 200)
-                        .cornerRadius(8)
-                        .overlay(
-                            Text("Select an Image")
-                                .foregroundColor(.gray)
-                        )
-                        .padding()
-                }
-
-                // Image selection
-                PhotosPicker(selection: $selectedPhotoItem, matching: .images, photoLibrary: .shared()) {
-                    Text("Choose Image")
-                        .padding()
-                        .frame(maxWidth: UIScreen.main.bounds.width)
-                        .background(studyCardName.isEmpty ? .gray.opacity(0.25) : .blue)
-                        .foregroundColor(studyCardName.isEmpty ? .gray.opacity(0.3) : .white)
-                        .cornerRadius(8)
-                }
-                .padding()
-                .disabled(studyCardName.isEmpty)
-                .onChange(of: selectedPhotoItem) {
-                    if let newItem = selectedPhotoItem {
-                        loadImage(from: newItem)
-                    }
-                }
-
-                // TextEditor for editing extracted text
-                if !extractedText.isEmpty {
-                    VStack(alignment: .leading) {
-                        Text("Edit Extracted Text:")
-                            .font(.headline)
-                            .padding(.vertical)
-
-                        TextEditor(text: $extractedText)
-                            .frame(height: 150)
-                            .padding(4)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray, lineWidth: 1)
-                            )
-                            .padding(.horizontal)
-                    }
-                }
-
-                
-                VStack(spacing: 0) {
-                    // Buttons
-                    Button(action: processImage) {
-                        Text("Extract Text")
-                            .padding()
-                            .frame(maxWidth: UIScreen.main.bounds.width)
-                            .background(selectedImage == nil ? .gray.opacity(0.25) : .green)
-                            .foregroundColor(selectedImage == nil ? .gray.opacity(0.3) : .white)
-                            .cornerRadius(8)
-                    }
-                    .padding()
-                    .disabled(selectedImage == nil)
-                    
-                    
-                    Button(action: {
-                        generateStudyCards(studyCardName: studyCardName)
-                        
+            .padding()
+            .navigationTitle(Text("Create Study Cards"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
                         dismiss()
-                    }, label: {
-                        Text("Generate Study Cards")
-                            .padding()
-                            .frame(maxWidth: UIScreen.main.bounds.width)
-                            .background(extractedText.isEmpty || studyCardName.isEmpty ? .gray.opacity(0.25) : .blue)
-                            .foregroundColor(extractedText.isEmpty || studyCardName.isEmpty ? .gray.opacity(0.3) : .white)
-                            .cornerRadius(8)
-                    })
-                    .padding()
-                    .disabled(extractedText.isEmpty || studyCardName.isEmpty)
-                    
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Cancel")
-                            .padding()
-                            .frame(maxWidth: UIScreen.main.bounds.width)
-                            .background(.red.opacity(0.3))
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
                     }
-                    .padding()
                 }
             }
         }
-        .padding()
     }
     
     func loadImage(from item: PhotosPickerItem) {
@@ -223,9 +206,7 @@ struct CreateStudyCardsView: View {
     
     func generateStudyCards(studyCardName: String) {
         let generatedQAs = studyCardsGenerator.generateQuestionsAndAnswers(from: extractedText)
-        
         modelContext.insert(course)
-        
         
         var studyCards: [StudyCardModel] = []
         for qa in generatedQAs {

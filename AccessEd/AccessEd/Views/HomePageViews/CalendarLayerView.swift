@@ -13,7 +13,6 @@ struct CalendarLayerView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            
             HStack {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("ToDo List")
@@ -50,15 +49,16 @@ struct CalendarLayerView: View {
             .frame(width: UIScreen.main.bounds.width - 50, alignment: .leading)
             .padding(.leading, 20)
             
+            
             LazyVStack {
                 CurrentDateTasksView(viewModel: viewModel)
             }
             .padding(.horizontal, 20)
-//            .padding(.leading, 5)
             .frame(width: UIScreen.main.bounds.width, alignment: .center)
             .padding(.top, 10)
             
         }
+        .padding(.bottom, 50)
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchTasks()
