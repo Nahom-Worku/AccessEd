@@ -125,8 +125,8 @@ struct CreateStudyCardsView: View {
                 }
                 .padding()
                 .disabled(studyCardName.isEmpty)
-                .onChange(of: selectedPhotoItem) { newItem in
-                    if let newItem = newItem {
+                .onChange(of: selectedPhotoItem) {
+                    if let newItem = selectedPhotoItem {
                         loadImage(from: newItem)
                     }
                 }
@@ -194,10 +194,6 @@ struct CreateStudyCardsView: View {
             }
         }
         .padding()
-        .onAppear {
-//            viewModel.modelContext = modelContext
-//            viewModel.fetchStudyCards()
-        }
     }
     
     func loadImage(from item: PhotosPickerItem) {
@@ -284,12 +280,34 @@ struct StudyCardRow: View {
     @State var card: StudyCardModel
     @State var readQuestion = false
     @State var readAnswer = false
-    @State private var isAnimating = false
 
     var body: some View {
         ZStack {
-            if !card.isFlipped { studyCardQuestionView }
-            else { studyCardAnswerView }
+            if !card.isFlipped {
+                StudyCardContentView(
+                    title: "Question",
+                    text: card.question,
+                    isFlipped: false,
+                    isSpeaking: speechSynthesizer.isSpeaking,
+                    onToggleSpeech: toggleQuestionSpeech,
+                    onFlipCard: {
+                        stopSpeech()
+                        card.isFlipped.toggle()
+                    }
+                )
+            } else {
+                StudyCardContentView(
+                    title: "Answer",
+                    text: card.answer,
+                    isFlipped: true,
+                    isSpeaking: speechSynthesizer.isSpeaking,
+                    onToggleSpeech: toggleAnswerSpeech,
+                    onFlipCard: {
+                        stopSpeech()
+                        card.isFlipped.toggle()
+                    }
+                )
+            }
         }
         .rotation3DEffect(.degrees(card.isFlipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
         .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0), value: card.isFlipped)
@@ -297,155 +315,33 @@ struct StudyCardRow: View {
             stopSpeech()
             card.isFlipped.toggle()
         }
-        .onChange(of: speechSynthesizer.isSpeaking) {
-            if isAnimating && speechSynthesizer.isSpeaking {
-                startAnimationLoop()  // Start animation when speech starts
-            }
-            
-//            isAnimating = false
-        }
     }
-    
-    
-    var studyCardQuestionView: some View {
-        VStack(spacing: 0) {
-            
-            HStack(alignment: .top) {
-                Spacer()
-                
-                Button {
-                    toggleQuestionSpeech()
-                } label: {
-                    Image(systemName: "microphone")
-                        .font(.headline)
-                        .foregroundColor(speechSynthesizer.isSpeaking && readQuestion ? .red : .blue) // 🔴 Change color dynamically
-                        .scaleEffect(speechSynthesizer.isSpeaking && readQuestion ? 1.3 : 1.0) // 🔄 Pulsate effect
-                        .animation(.easeInOut(duration: 0.5).repeatForever(autoreverses: true), value: true)
-                        
 
-                }
-            }
-            .padding()
-            
-            Spacer()
-            
-            VStack {
-                Text("Question")
-                    .font(.title3)
-                
-                Text(card.question)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(nil)  // ✅ Allow unlimited lines
-                    .fixedSize(horizontal: false, vertical: true) // ✅ Ensures vertical expansion
-                    .padding()
-            }
-            
-            Spacer()
-            
-            HStack {
-                Spacer()
-                
-                Button {
-                    stopSpeech()
-                    card.isFlipped = true
-                } label: {
-                    Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
-                        .font(.headline)
-                }
-            }
-            .padding()
-        }
-        .frame(width: UIScreen.main.bounds.width * 0.85)//, height: UIScreen.main.bounds.height * 0.25)
-        .background(Color("StudyCard-Colors"))
-        .cornerRadius(10)
-        .shadow(radius: 2, x: 0, y: 0)
-    }
-    
-    
-    var studyCardAnswerView: some View {
-        VStack(spacing: 0) {
-            HStack(alignment: .top) {
-                Spacer()
-                
-                Button {
-                    toggleAnswerSpeech()
-                } label: {
-                    Image(systemName: "microphone")
-                        .font(.headline)
-                }
-            }
-            .padding()
-            
-            Spacer()
-            
-            VStack {
-                Text("Answer")
-                    .font(.title3)
-                    .padding(.bottom)
-                
-                Text(card.answer)
-                    .multilineTextAlignment(.center)
-                    .padding()
-            }
-            
-            Spacer()
-            
-            HStack {
-                Spacer()
-                
-                Button {
-                    stopSpeech()
-                    card.isFlipped = false
-                } label: {
-                    Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
-                        .font(.headline)
-                }
-            }
-            .padding()
-        }
-        .frame(width: UIScreen.main.bounds.width * 0.85) //, height: UIScreen.main.bounds.height * 0.25)
-        .rotation3DEffect(.degrees(-180), axis: (x: 0, y: 1, z: 0))
-        .background(Color("StudyCard-Colors"))
-        .cornerRadius(10)
-        .shadow(radius: 2, x: 0, y: 0)
-    }
-    
     /// Toggles the speech for the question
     private func toggleQuestionSpeech() {
         readQuestion.toggle()
         
-        if readQuestion { speechSynthesizer.speak(text: card.question, studyCardItem: .question) }
+        if readQuestion { speechSynthesizer.speak(text: card.question) }
         else { stopSpeech() }
 
         readAnswer = false  // Ensure answer speech is not toggled
-        
     }
 
-       /// Toggles the speech for the answer
+    /// Toggles the speech for the answer
     private func toggleAnswerSpeech() {
         readAnswer.toggle()
         
-        if readAnswer { speechSynthesizer.speak(text: card.answer, studyCardItem: .answer) }
+        if readAnswer { speechSynthesizer.speak(text: card.answer) }
         else { stopSpeech() }
         
         readQuestion = false  // Ensure question speech is not toggled
     }
 
-       /// Stops any ongoing speech
+    /// Stops any ongoing speech
     private func stopSpeech() {
         speechSynthesizer.stopSpeaking()
         readQuestion = false
         readAnswer = false
-        isAnimating = false
-    }
-    
-    private func startAnimationLoop() {
-        guard speechSynthesizer.isSpeaking else {
-            isAnimating = false
-            return
-        }
-        
-        isAnimating = true
     }
 }
 
@@ -457,33 +353,96 @@ struct StudyCardRow: View {
 
 
 
-// MARK: - Text - to - speach
+// MARK: - StudyCardContentView
 
-enum StudyCardItem {
-    case question
-    case answer
+import SwiftUI
+
+struct StudyCardContentView: View {
+    let title: String
+    let text: String
+    let isFlipped: Bool
+    let isSpeaking: Bool
+    let onToggleSpeech: () -> Void
+    let onFlipCard: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            
+            HStack(alignment: .top) {
+                Text(title)
+                    .font(.headline)
+                
+                Spacer()
+                
+                Text(isSpeaking ? "reading..." : "")
+                    .font(.caption)
+                
+                Button(action: onToggleSpeech) {
+                    Image(systemName: isSpeaking ? "microphone.fill" : "microphone")
+                        .font(.headline)
+                        .foregroundColor(isSpeaking ? .red : .blue)
+                        .scaleEffect(isSpeaking ? 1.1 : 1.0)
+                }
+            }
+            .padding()
+            .padding(.trailing, 5)
+            
+            Spacer()
+            
+            VStack {
+                Text(text)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding()
+            }
+            .padding(.vertical)
+            
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                Button(action: onFlipCard) {
+                    Image(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")
+                        .font(.headline)
+                }
+            }
+            .padding()
+            .padding(.trailing, 5)
+        }
+        .frame(width: UIScreen.main.bounds.width * 0.85)
+        .background(Color("StudyCard-Colors"))
+        .cornerRadius(10)
+        .shadow(radius: 2, x: 0, y: 0)
+        .rotation3DEffect(.degrees(isFlipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
+    }
 }
+
+
+// MARK: - Text - to - speach
 
 import AVFoundation
 
-class SpeechSynthesizer: ObservableObject {
+class SpeechSynthesizer: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
     private var synthesizer = AVSpeechSynthesizer()
     @Published var isSpeaking = false
-    
+
     /// Dictionary for special word pronunciations
     private let customPronunciations: [String: String] = [
         "______": ": blank :"
     ]
 
-    // MARK: - TODO: - read the word "Question" and "Answer"
-    
-    func speak(text: String, studyCardItem: StudyCardItem) {
+    override init() {
+        super.init()
+        synthesizer.delegate = self // Set the delegate
+    }
+
+    func speak(text: String) {
         guard !text.isEmpty else { return }
 
-        let prefix = (studyCardItem == .question) ? "Question: " : "Answer: "
-        
-        let modifiedText = modifyTextForPronunciation(prefix + text)
-        
+        let modifiedText = modifyTextForPronunciation(text)
+
         let utterance = AVSpeechUtterance(string: modifiedText)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US") // Change as needed
         utterance.rate = 0.5  // Adjust speed
@@ -491,12 +450,10 @@ class SpeechSynthesizer: ObservableObject {
 
         isSpeaking = true
         synthesizer.speak(utterance)
-        stopSpeaking()
     }
-    
+
     func stopSpeaking() {
         if synthesizer.isSpeaking {
-            isSpeaking = false
             synthesizer.stopSpeaking(at: .immediate)
         }
     }
@@ -513,7 +470,33 @@ class SpeechSynthesizer: ObservableObject {
 
         return modifiedText
     }
+
+    // MARK: - AVSpeechSynthesizerDelegate Methods
+
+    /// Called when the synthesizer starts speaking an utterance
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
+        print("Started speaking: \(utterance.speechString)")
+    }
+
+    /// Called when the synthesizer finishes speaking an utterance
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        print("Finished speaking: \(utterance.speechString)")
+        isSpeaking = false // Update the published property
+    }
+
+    /// Called when the synthesizer is paused while speaking an utterance
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
+        print("Paused speaking: \(utterance.speechString)")
+    }
+
+    /// Called when the synthesizer resumes speaking an utterance
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didContinue utterance: AVSpeechUtterance) {
+        print("Resumed speaking: \(utterance.speechString)")
+    }
+
+    /// Called when the synthesizer cancels speaking an utterance
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        print("Cancelled speaking: \(utterance.speechString)")
+        isSpeaking = false // Update the published property
+    }
 }
-
-
-
