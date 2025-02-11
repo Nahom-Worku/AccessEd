@@ -10,14 +10,14 @@ import SwiftUI
 struct EachCourseResoursesView: View {
     @Binding var course: CourseModel
     @State var resourseCategory: ResoursesCategory
+    @StateObject var profileViewModel = ProfileViewModel()
     
     var body: some View {
-        
         RoundedRectangle(cornerRadius: 10)
-            .fill(Color("StudyCard-Colors")) //course.courseColor)
+            .fill(Color("StudyCard-Colors"))
             .padding(.horizontal, 30)
             .padding(.leading)
-            .frame(width: UIScreen.main.bounds.width, height: 70) // - 40
+            .frame(width: UIScreen.main.bounds.width, height: 70)
             .shadow(radius: 1, x: 0, y: 1)
             .overlay(
                 HStack {
@@ -30,19 +30,19 @@ struct EachCourseResoursesView: View {
                         .clipped()
                         .cornerRadius(10)
                         .padding(.horizontal, 10)
-//                        .padding(.leading, 10)
                     
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("\(course.name): \(resourseCategory.self)") // resourseCategory.rawValue.capitalized
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("\(course.name): \(resourseCategory.self)")
                             .font(.subheadline)
+                            .lineLimit(nil)
+                            .multilineTextAlignment(.leading)
                             .foregroundStyle(Color("Text-Colors"))
                         
-                        Text("Resourse Category: \(resourseCategory.self)")
+                        Text("Grade: \(profileViewModel.grade)")
                             .font(.footnote)
                             .foregroundStyle(Color("Text-Colors")).opacity(0.5)
                     }
                     .padding(5)
-//                    .padding(.leading, 5)
                     
                     Spacer()
                     
@@ -51,14 +51,7 @@ struct EachCourseResoursesView: View {
                         .foregroundStyle(Color("Text-Colors"))
                 }
                 .padding(.horizontal, 60)
-                .frame(width: UIScreen.main.bounds.width, alignment: .leading) // w: 300
-                
-//                .padding(.leading, 20)
-//                .padding(.trailing, 20)
+                .frame(width: UIScreen.main.bounds.width, alignment: .leading)
             )
     }
 }
-
-//#Preview {
-//    EachCourseResoursesView()
-//}
