@@ -40,7 +40,7 @@ struct CalendarView: View {
                     .frame(width: UIScreen.main.bounds.width)
                     .sheet(isPresented: $viewModel.isAddingTask, content: {
                         AddTaskSheetView(viewModel: viewModel)
-                            .presentationDetents([.medium, .fraction(0.5)])
+                            .presentationDetents([.medium, .fraction(1.1)])
                             .padding(.top)
                     })
                     

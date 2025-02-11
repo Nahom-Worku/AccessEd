@@ -33,6 +33,17 @@ struct AddTaskSheetView: View {
                 DatePicker("Due Date", selection: $viewModel.selectedDate, displayedComponents: .date)
                     .padding(10)
                     .background(Color.gray.opacity(0.05).cornerRadius(5.0))
+//                    .padding(.horizontal, 20)
+                    .padding([.horizontal, .bottom], 20)
+                    .font(.subheadline)
+                
+                Text("Select Time")
+                    .padding(.leading)
+                DatePicker("Due Time", selection: $viewModel.dueTime, displayedComponents: .hourAndMinute)
+//                    .datePickerStyle(.graphical) //WheelDatePickerStyle())
+//                    .labelsHidden()
+                    .padding(10)
+                    .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                     .padding(.horizontal, 20)
                     .font(.subheadline)
             }
@@ -60,7 +71,7 @@ struct AddTaskSheetView: View {
                 
                 // Add course button
                 Button {
-                    viewModel.addTask(for: viewModel.selectedDate, name: viewModel.TaskTitle)
+                    viewModel.addTask(for: viewModel.selectedDate, time: viewModel.dueTime, name: viewModel.TaskTitle)
                     viewModel.TaskTitle = ""
                     viewModel.isAddingTask = false
                 } label: {
@@ -81,7 +92,7 @@ struct AddTaskSheetView: View {
             .frame(width: 250)
         }
         .padding()
-        .frame(maxWidth: 350, maxHeight: 325)
+        .frame(maxWidth: 350, maxHeight: 650)
         .padding(.top, 5)
         .background(
             Color("Courses-Colors")

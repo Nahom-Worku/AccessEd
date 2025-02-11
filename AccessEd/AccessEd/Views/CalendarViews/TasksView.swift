@@ -74,52 +74,69 @@ struct TasksSubView: View {
     @Binding var isCurrentDateSelected: Bool
     
     var body: some View {
-        ForEach(Array(isCurrentDateSelected ? viewModel.tasksForCurrentDate.enumerated() : viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
-            HStack {
-                Text(task.name)
-                    .font(.subheadline)
-                    .foregroundColor(task.isCompleted ? .gray : .primary)
-                    .strikethrough(task.isCompleted, color: .gray)
-                
-                Spacer()
-                
-                Button(action: {
-                    viewModel.handleTaskCompletion(task)
-                }, label: {
-                    Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                        .foregroundColor(task.isCompleted ? .green : .red)
-                })
-            }
-            // MARK: TODO: clean this up
-            .padding(.vertical, 10)
-            .padding(.horizontal, 13)
-            .background(Color("Courses-Colors"))
-            .cornerRadius(8)
-//            .padding(.trailing, 10)
-            .frame(width: UIScreen.main.bounds.width - 60)
-            .padding(.leading, 15)
-            .shadow(radius: 1, x: 1, y: 1)
-            .onTapGesture(count: 2) {
-                viewModel.handleTaskCompletion(task)
-            }
-            .contextMenu {
-                Button(action: {
-                    withAnimation(.easeIn(duration: 0.2)) {
-                        viewModel.selectedTaskIndex = index
-                        viewModel.isEditingTask = true
+        VStack(spacing: 25) {
+            ForEach(Array(isCurrentDateSelected ? viewModel.tasksForCurrentDate.enumerated() : viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
+                VStack {
+                    HStack {
+                        Text("Due: ")
+                        Text("\(viewModel.dueTime) - \(viewModel.formattedDate(task.date))")
+                        
+                        Spacer()
                     }
-                }, label: {
-                    Label("Edit Task", systemImage: "pencil")
-                })
-                
-                Button(action: {
-                    viewModel.taskToDelete = task
-                    viewModel.taskAlerts = .deleteTask
-                }, label: {
-                    Label("Delete Task", systemImage: "trash")
-                })
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+                    
+                    Divider()
+                        .frame(height: 1)
+                    
+                    HStack {
+                        Text(task.name)
+                            .font(.subheadline)
+                            .foregroundColor(task.isCompleted ? .gray : .primary)
+                            .strikethrough(task.isCompleted, color: .gray)
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            viewModel.handleTaskCompletion(task)
+                        }, label: {
+                            Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
+                                .foregroundColor(task.isCompleted ? .green : .red)
+                        })
+                    }
+                }
+                // MARK: TODO: clean this up
+                .padding(.vertical, 10)
+                .padding(.horizontal, 13)
+                .background(Color("Courses-Colors"))
+                .cornerRadius(8)
+                //            .padding(.trailing, 10)
+                .frame(width: UIScreen.main.bounds.width - 60)
+                .padding(.leading, 15)
+                .shadow(radius: 1, x: 0, y: 0)
+                .onTapGesture(count: 2) {
+                    viewModel.handleTaskCompletion(task)
+                }
+                .contextMenu {
+                    Button(action: {
+                        withAnimation(.easeIn(duration: 0.2)) {
+                            viewModel.selectedTaskIndex = index
+                            viewModel.isEditingTask = true
+                        }
+                    }, label: {
+                        Label("Edit Task", systemImage: "pencil")
+                    })
+                    
+                    Button(action: {
+                        viewModel.taskToDelete = task
+                        viewModel.taskAlerts = .deleteTask
+                    }, label: {
+                        Label("Delete Task", systemImage: "trash")
+                    })
+                }
             }
         }
+        .padding(.bottom, 30)
     }
 }
 
