@@ -38,9 +38,12 @@ struct EachCourseResoursesView: View {
                             .multilineTextAlignment(.leading)
                             .foregroundStyle(Color("Text-Colors"))
                         
-                        Text("Grade: \(profileViewModel.grade)")
-                            .font(.footnote)
-                            .foregroundStyle(Color("Text-Colors")).opacity(0.5)
+                        // MARK: - Not working
+                        if let grade = profileViewModel.profile?.grade {
+                            Text("Grade: \(grade)")
+                                .font(.footnote)
+                                .foregroundStyle(Color("Text-Colors")).opacity(0.5)
+                        }
                     }
                     .padding(5)
                     

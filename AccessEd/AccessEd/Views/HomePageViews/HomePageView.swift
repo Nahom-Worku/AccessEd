@@ -57,7 +57,7 @@ struct HomePageView: View {
             // Overlays
             EachRecommendedCourseCardView(viewModel: courseViewModel)
             if let taskIndex = calendarViewModel.selectedTaskIndex {
-                EditTaskView(viewModel: calendarViewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
+                EditTaskView(calendarViewModel: calendarViewModel, profileViewModel: profileViewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
             }
         }
         .padding(.leading)

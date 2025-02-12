@@ -70,9 +70,9 @@ struct AddTaskSheetView: View {
                 // Add course button
                 Button(action: {
                     calendarViewModel.addTask(for: calendarViewModel.selectedDate, time: calendarViewModel.dueTime, name: calendarViewModel.TaskTitle)
-                    scheduleTasksNotification(taskTitle: calendarViewModel.TaskTitle, dueDate: calendarViewModel.selectedDate, dueTime: calendarViewModel.dueTime)
-                    calendarViewModel.dueTime = Date()
+                    profileViewModel.scheduleTasksNotification(taskTitle: calendarViewModel.TaskTitle, dueDate: calendarViewModel.selectedDate, dueTime: calendarViewModel.dueTime)
                     calendarViewModel.TaskTitle = ""
+                    calendarViewModel.dueTime = Date()
                     calendarViewModel.isAddingTask = false
                 }, label: {
                     Text("Add")
@@ -108,28 +108,6 @@ struct AddTaskSheetView: View {
                 isTaskFieldFocused = true
             }
         }
-    }
-    
-    func scheduleTasksNotification(taskTitle: String, dueDate: Date, dueTime: Date) {
-        guard profileViewModel.profile?.isNotificationsOn == true else {
-            print("Notifications are turned off.")
-            return
-        }
-        
-        let identifier = "TasksReminder_\(taskTitle)"
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
-
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: dueTime)
-        let minute = calendar.component(.minute, from: dueTime)
-        let taskDueAt = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: dueDate)!
-
-        NotificationManager.shared.scheduleNotification(
-            at: taskDueAt,
-            title: "Tasks Reminder ⏰",
-            body: "Hi \(profileViewModel.profile?.name ?? "there"), it's time to complete '\(taskTitle)' task. Don't forget to mark it as done!",
-            identifier: identifier
-        )
     }
 }
 

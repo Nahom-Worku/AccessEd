@@ -213,4 +213,26 @@ class ProfileViewModel : ObservableObject {
             print("Failed to delete profile: \(error.localizedDescription)")
         }
     }
+    
+    func scheduleTasksNotification(taskTitle: String, dueDate: Date, dueTime: Date) {
+        guard profile?.isNotificationsOn == true else {
+            print("Notifications are turned off.")
+            return
+        }
+        
+        let identifier = "TasksReminder_\(taskTitle)"
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: dueTime)
+        let minute = calendar.component(.minute, from: dueTime)
+        let taskDueAt = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: dueDate)!
+
+        NotificationManager.shared.scheduleNotification(
+            at: taskDueAt,
+            title: "Tasks Reminder ⏰",
+            body: "Hi \(profile?.name ?? "there"), it's time to complete '\(taskTitle)' task. Don't forget to mark it as done!",
+            identifier: identifier
+        )
+    }
 }

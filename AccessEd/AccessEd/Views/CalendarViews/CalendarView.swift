@@ -49,7 +49,7 @@ struct CalendarView: View {
                     
                 
                 if let taskIndex = calendarViewModel.selectedTaskIndex {
-                    EditTaskView(viewModel: calendarViewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
+                    EditTaskView(calendarViewModel: calendarViewModel, profileViewModel: profileViewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
                 }
             }
             .navigationTitle("My Calendar")

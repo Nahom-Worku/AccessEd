@@ -43,7 +43,7 @@ struct ProfileView: View {
                         ZStack {
                             profileViewModel.profilePicture
                                 .resizable()
-                                .fontWeight(.thin)
+                                .fontWeight(.ultraLight)
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 100, height: 100)
                                 .clipShape(Circle())
