@@ -12,12 +12,13 @@ struct EditTaskView: View {
     var taskIndex: Int
     @State private var taskName: String = ""
     @State private var taskDate: Date = Date()
+    @State private var taskDueTime: Date = Date()
     @Binding var isCurrentDateSelected: Bool
     @FocusState private var isTaskFieldFocused: Bool
 
     var body: some View {
         if viewModel.isEditingTask {
-            Color.black.opacity(0.5) // Dim background
+            Color.black.opacity(0.5)
                 .ignoresSafeArea()
                 .onTapGesture {
                     viewModel.isEditingTask = false
@@ -43,6 +44,14 @@ struct EditTaskView: View {
                         Text("Update Due Date")
                             .padding(.leading)
                         DatePicker("Due Date", selection: $taskDate, displayedComponents: .date)
+                            .padding(10)
+                            .background(Color.gray.opacity(0.05).cornerRadius(5.0))
+                            .padding(.horizontal, 20)
+                            .font(.subheadline)
+                        
+                        Text("Select Time")
+                            .padding(.leading)
+                        DatePicker("Due Time", selection: $taskDueTime, displayedComponents: .hourAndMinute)
                             .padding(10)
                             .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                             .padding(.horizontal, 20)
@@ -75,8 +84,7 @@ struct EditTaskView: View {
                     Button {
                         // Save the updated task
                         if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? viewModel.tasksForCurrentDate.count: viewModel.tasksForSelectedDate.count) {
-                            viewModel.updateTaskName(at: taskIndex, with: taskName)
-                            viewModel.updateTaskDate(at: taskIndex, with: taskDate)
+                            viewModel.updateTaskName(at: taskIndex, newName: taskName, newDate: taskDate, dueTime: taskDueTime)
                         }
                         viewModel.isEditingTask = false
                     } label: {
@@ -97,7 +105,7 @@ struct EditTaskView: View {
                 .frame(width: 250)
             }
             .padding()
-            .frame(maxWidth: 350, maxHeight: 325)
+            .frame(maxWidth: 350, maxHeight: 450)
             .padding(.top, 5)
             .background(
                 Color("Courses-Colors")
@@ -111,6 +119,7 @@ struct EditTaskView: View {
                     let task = isCurrentDateSelected ? viewModel.tasksForCurrentDate[taskIndex] : viewModel.tasksForSelectedDate[taskIndex]
                     taskName = task.name
                     taskDate = task.date
+                    taskDueTime = task.time
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     isTaskFieldFocused = true

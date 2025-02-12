@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct AddTaskSheetView: View {
-    @ObservedObject var viewModel: CalendarViewModel
+    @ObservedObject var calendarViewModel: CalendarViewModel
+    @ObservedObject var profileViewModel: ProfileViewModel
     @FocusState private var isTaskFieldFocused: Bool
     
     var body: some View {
@@ -21,7 +22,7 @@ struct AddTaskSheetView: View {
             VStack (alignment: .leading) {
                 Text("Add Task Name")
                     .padding(.leading)
-                TextField("Enter Task Name", text: $viewModel.TaskTitle)
+                TextField("Enter Task Name", text: $calendarViewModel.TaskTitle)
                     .focused($isTaskFieldFocused)
                     .padding(10)
                     .background(Color.gray.opacity(0.05).cornerRadius(5.0))
@@ -30,7 +31,15 @@ struct AddTaskSheetView: View {
             
                 Text("Select Date")
                     .padding(.leading)
-                DatePicker("Due Date", selection: $viewModel.selectedDate, displayedComponents: .date)
+                DatePicker("Due Date", selection: $calendarViewModel.selectedDate, displayedComponents: .date)
+                    .padding(10)
+                    .background(Color.gray.opacity(0.05).cornerRadius(5.0))
+                    .padding([.horizontal, .bottom], 20)
+                    .font(.subheadline)
+                
+                Text("Select Time")
+                    .padding(.leading)
+                DatePicker("Due Time", selection: $calendarViewModel.dueTime, displayedComponents: .hourAndMinute)
                     .padding(10)
                     .background(Color.gray.opacity(0.05).cornerRadius(5.0))
                     .padding(.horizontal, 20)
@@ -42,7 +51,7 @@ struct AddTaskSheetView: View {
             HStack(alignment: .center) {
                 
                 // canel bottom sheet button
-                Button(action: { viewModel.isAddingTask = false }) {
+                Button(action: { calendarViewModel.isAddingTask = false }) {
                     Text("Cancel")
                         .font(.subheadline)
                         .bold()
@@ -59,11 +68,13 @@ struct AddTaskSheetView: View {
                 Spacer()
                 
                 // Add course button
-                Button {
-                    viewModel.addTask(for: viewModel.selectedDate, name: viewModel.TaskTitle)
-                    viewModel.TaskTitle = ""
-                    viewModel.isAddingTask = false
-                } label: {
+                Button(action: {
+                    calendarViewModel.addTask(for: calendarViewModel.selectedDate, time: calendarViewModel.dueTime, name: calendarViewModel.TaskTitle)
+                    scheduleTasksNotification(taskTitle: calendarViewModel.TaskTitle, dueDate: calendarViewModel.selectedDate, dueTime: calendarViewModel.dueTime)
+                    calendarViewModel.dueTime = Date()
+                    calendarViewModel.TaskTitle = ""
+                    calendarViewModel.isAddingTask = false
+                }, label: {
                     Text("Add")
                         .font(.subheadline)
                         .bold()
@@ -75,13 +86,14 @@ struct AddTaskSheetView: View {
                                 .frame(width: 100, height: 40)
                                 .padding(.horizontal, 20)
                         )
-                }
+                })
+                .disabled(calendarViewModel.TaskTitle.isEmpty)
             }
             .padding(.trailing, 7)
             .frame(width: 250)
         }
         .padding()
-        .frame(maxWidth: 350, maxHeight: 325)
+        .frame(maxWidth: 350, maxHeight: 650)
         .padding(.top, 5)
         .background(
             Color("Courses-Colors")
@@ -91,15 +103,33 @@ struct AddTaskSheetView: View {
         .padding(.horizontal, 10)
         .padding(.top, 10)
         .onAppear {
+            profileViewModel.fetchProfile()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 isTaskFieldFocused = true
             }
         }
     }
+    
+    func scheduleTasksNotification(taskTitle: String, dueDate: Date, dueTime: Date) {
+        guard profileViewModel.profile?.isNotificationsOn == true else {
+            print("Notifications are turned off.")
+            return
+        }
+        
+        let identifier = "TasksReminder_\(taskTitle)"
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: dueTime)
+        let minute = calendar.component(.minute, from: dueTime)
+        let taskDueAt = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: dueDate)!
+
+        NotificationManager.shared.scheduleNotification(
+            at: taskDueAt,
+            title: "Tasks Reminder ⏰",
+            body: "Hi \(profileViewModel.profile?.name ?? "there"), it's time to complete '\(taskTitle)'. Don't forget to mark it as done!",
+            identifier: identifier
+        )
+    }
 }
 
-
-#Preview {
-    let viewModel = CalendarViewModel()
-    AddTaskSheetView(viewModel: viewModel)
-}

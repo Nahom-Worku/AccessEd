@@ -12,6 +12,7 @@ import SwiftUI
 class CalendarViewModel : ObservableObject {
     @Published var currentMonth: Date = Date()
     @Published var selectedDate: Date = Date()
+    @Published var dueTime: Date = Date()
     @Published var tasks: [TaskModel] = []
     @Published var fetchedTasks: [TaskModel] = []
     @Published var allTasksCompletedByDate: [Date: Bool] = [:]
@@ -64,7 +65,7 @@ class CalendarViewModel : ObservableObject {
     
     func fetchTasks() {
         guard let context = modelContext else { return }
-        let fetchDescriptor = FetchDescriptor<TaskModel>(sortBy: [SortDescriptor(\.persistentModelID)])
+        let fetchDescriptor = FetchDescriptor<TaskModel>(sortBy: [SortDescriptor(\.time)])
         tasks = (try? context.fetch(fetchDescriptor)) ?? []
     }
     
@@ -77,9 +78,9 @@ class CalendarViewModel : ObservableObject {
         fetchTasks()
     }
     
-    func addTask(for date: Date, name: String) {
+    func addTask(for date: Date, time: Date, name: String) {
         guard let context = modelContext, !name.isEmpty else { return }
-        let newTask = TaskModel(date: date, name: name, isCompleted: false)
+        let newTask = TaskModel(date: date, time: time, name: name, isCompleted: false)
         context.insert(newTask)
         try? context.save()
         fetchTasks()
@@ -137,14 +138,14 @@ class CalendarViewModel : ObservableObject {
         fetchTasks()
     }
     
-    func updateTaskName(at index: Int, with newName: String) {
-        tasksForSelectedDate[index].name = newName
-        try? modelContext?.save()
-        fetchTasks()
-    }
-
-    func updateTaskDate(at index: Int, with newDate: Date) {
-        tasksForSelectedDate[index].date = newDate
+    func updateTaskName(at index: Int, newName: String, newDate: Date, dueTime: Date) {
+        guard index >= 0, index < tasksForSelectedDate.count else { return }
+        
+        let task = tasksForSelectedDate[index]
+        task.name = newName
+        task.date = newDate
+        task.time = dueTime
+        
         try? modelContext?.save()
         fetchTasks()
     }
@@ -230,6 +231,12 @@ class CalendarViewModel : ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy"
         return dateFormatter.string(from: date)
+    }
+    
+    func formattedTime(_ time: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short // Show in user’s locale format
+        return formatter.string(from: time)
     }
 }
 extension Color {

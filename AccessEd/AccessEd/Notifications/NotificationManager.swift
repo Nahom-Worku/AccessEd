@@ -51,25 +51,29 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         }
     }
     
-    func scheduleNotification(at hour: Int, minute: Int, title: String, body: String, identifier: String) {
+    func scheduleNotification(at date: Date, title: String, body: String, identifier: String) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
 
-        var dateComponents = DateComponents()
-        dateComponents.hour = hour
-        dateComponents.minute = minute
+        // Extract date components
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
 
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false) // Change to false to trigger once
+
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Error scheduling notification: \(error)")
+            } else {
+                print("Notification scheduled successfully for \(date)")
             }
         }
     }
+
 }
 
 class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {

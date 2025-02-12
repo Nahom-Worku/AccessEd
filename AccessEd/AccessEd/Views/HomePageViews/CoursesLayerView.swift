@@ -60,49 +60,6 @@ struct CoursesLayerView: View {
             courseViewModel.setInterestedCourses(profileViewModel.profile?.interestedCourses ?? [])
             courseViewModel.loadUserPreferences()
             courseViewModel.fetchCourses()
-            
-            print("Courses Layer view: -> \(profileViewModel.profile?.isNotificationsOn ?? false)")
-            scheduleDailyTasksNotification()
-            print("\n")
-            
-        }
-    }
-    
-    private func scheduleDailyTasksNotification() {
-        guard profileViewModel.profile?.isNotificationsOn == true else {
-            print("Notifications are turned off.")
-            return
-        }
-        
-        if calendarViewModel.tasksForCurrentDate.contains(where: { !$0.isCompleted }) {
-            let identifier = "dailyTasksReminderForCurrentDay"
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
-            
-            NotificationManager.shared.scheduleNotification (
-                at: 20, // 8:00 PM
-                minute: 0,
-                title: "Daily Tasks Reminder",
-                body: "You still have \(calendarViewModel.uncompletedTasksForCurrentDate.count) tasks to complete for today! Check them out before the day ends.",
-                identifier: identifier
-            )
-            
-            // MARK: Test notification
-//            let now = Date()
-//            let calendar = Calendar.current
-//
-//            let hour = calendar.component(.hour, from: now)
-//            let minute = calendar.component(.minute, from: now) + 1 // Add 1 minute for debugging
-//
-//            NotificationManager.shared.scheduleNotification(
-//                at: hour,
-//                minute: minute % 60, // Ensure the minute doesn't exceed 59
-//                title: "Test Notification",
-//                body: "This is a test notification while the app is open.",
-//                identifier: "testNotification"
-//            )
-            
-        } else {
-            print("All tasks for today are completed.")
         }
     }
 }

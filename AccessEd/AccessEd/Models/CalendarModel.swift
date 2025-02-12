@@ -25,12 +25,14 @@ class CalendarModel: Identifiable {
 class TaskModel: Identifiable {
     @Attribute(.unique) var id: UUID
     var date: Date
+    var time: Date
     var name: String
     var isCompleted: Bool
     
-    init(id: UUID = .init(), date: Date, name: String, isCompleted: Bool = false) {
+    init(id: UUID = .init(), date: Date, time: Date, name: String, isCompleted: Bool = false) {
         self.id = id
         self.date = date
+        self.time = time
         self.name = name
         self.isCompleted = isCompleted
     }
