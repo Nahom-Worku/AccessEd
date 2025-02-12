@@ -63,11 +63,49 @@ class CalendarViewModel : ObservableObject {
     var updateDynamicColor: ((Date) -> Void)?
     
     
+//    func fetchTasks() {
+//        guard let context = modelContext else { return }
+//        let fetchDescriptor = FetchDescriptor<TaskModel>(sortBy: [SortDescriptor(\.time)])
+//        tasks = (try? context.fetch(fetchDescriptor)) ?? []
+//    }
+    
     func fetchTasks() {
         guard let context = modelContext else { return }
-        let fetchDescriptor = FetchDescriptor<TaskModel>(sortBy: [SortDescriptor(\.time)])
+
+        let now = Date()
+        let calendar = Calendar.current
+
+        let fetchDescriptor = FetchDescriptor<TaskModel>(
+            sortBy: [SortDescriptor(\.time, order: .forward)] // Fetch tasks sorted by time
+        )
+
         tasks = (try? context.fetch(fetchDescriptor)) ?? []
+
+        // Reorder tasks to ensure:
+        // - Closest upcoming tasks appear at the top
+        // - Tasks with due times that have already passed appear at the bottom
+        tasks.sort { task1, task2 in
+            let nowInMinutes = calendar.component(.hour, from: now) * 60 + calendar.component(.minute, from: now)
+
+            let time1 = calendar.dateComponents([.hour, .minute], from: task1.time)
+            let time2 = calendar.dateComponents([.hour, .minute], from: task2.time)
+
+            let time1InMinutes = time1.hour! * 60 + time1.minute!
+            let time2InMinutes = time2.hour! * 60 + time2.minute!
+
+            let task1Passed = time1InMinutes < nowInMinutes
+            let task2Passed = time2InMinutes < nowInMinutes
+
+            // If one task is past due and the other is not, move the past due one to the bottom
+            if task1Passed != task2Passed {
+                return !task1Passed
+            }
+
+            // Otherwise, sort by proximity to current time
+            return abs(time1InMinutes - nowInMinutes) < abs(time2InMinutes - nowInMinutes)
+        }
     }
+
     
     func fetchCalendarDates() {
         let fetchDescriptor = FetchDescriptor<CalendarModel>(
@@ -125,6 +163,16 @@ class CalendarViewModel : ObservableObject {
         soundPlayer.playSound(named: "All_Task_deleted.mp3", volume: 0.2)
     }
     
+    func DeleteAllTasks() {
+        guard let context = modelContext else { return }
+        for task in tasks {
+            context.delete(task)
+        }
+        
+        try? context.save()
+        fetchTasks()
+    }
+    
     func updateAllTasksCompleted() {
         var completionStatus: [Date: Bool] = [:]
 
@@ -138,7 +186,7 @@ class CalendarViewModel : ObservableObject {
         fetchTasks()
     }
     
-    func updateTaskName(at index: Int, newName: String, newDate: Date, dueTime: Date) {
+    func updateTask(at index: Int, newName: String, newDate: Date, dueTime: Date) {
         guard index >= 0, index < tasksForSelectedDate.count else { return }
         
         let task = tasksForSelectedDate[index]
@@ -205,7 +253,10 @@ class CalendarViewModel : ObservableObject {
         switch alertType {
         case .deleteTask:
             if let taskToDelete = self.taskToDelete {
-                return Alert(title: Text("Delete Task"), message: Text("Are you sure you want to delete this task?"), primaryButton: .cancel(Text("No")), secondaryButton: .destructive(Text("Yes"), action: { self.deleteTask(taskToDelete) }))
+                return Alert(title: Text("Delete Task"), message: Text("Are you sure you want to delete this task?"), primaryButton: .cancel(Text("No")), secondaryButton: .destructive(Text("Yes"), action: {
+                    self.deleteTask(taskToDelete)
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["TasksReminder_\(taskToDelete.name)"])
+                }))
             }
             return Alert(title: Text("Error"), message: Text("No task selected"))
         case .removeAllTasks:

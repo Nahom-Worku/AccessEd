@@ -15,7 +15,6 @@ class ProfileViewModel : ObservableObject {
     @Published var profile: ProfileModel?
     @Published var name: String = ""
     @Published var grade: String = "9"
-    @Published var preferredLanguage: String = "English"
     @Published var isUserSignedIn: Bool = false
     @Published var onboardingState: Int = 0
     @Published var alertTitle: String = ""
@@ -133,7 +132,6 @@ class ProfileViewModel : ObservableObject {
             // Update fields
             existingProfile.name = updatedProfile.name
             existingProfile.grade = updatedProfile.grade
-            existingProfile.preferredLanguage = updatedProfile.preferredLanguage
             existingProfile.fieldsOfInterest = updatedProfile.fieldsOfInterest
             existingProfile.timeZone = updatedProfile.timeZone
 
@@ -214,5 +212,27 @@ class ProfileViewModel : ObservableObject {
         } catch {
             print("Failed to delete profile: \(error.localizedDescription)")
         }
+    }
+    
+    func scheduleTasksNotification(taskTitle: String, dueDate: Date, dueTime: Date) {
+        guard profile?.isNotificationsOn == true else {
+            print("Notifications are turned off.")
+            return
+        }
+        
+        let identifier = "TasksReminder_\(taskTitle)"
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: dueTime)
+        let minute = calendar.component(.minute, from: dueTime)
+        let taskDueAt = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: dueDate)!
+
+        NotificationManager.shared.scheduleNotification(
+            at: taskDueAt,
+            title: "Tasks Reminder ⏰",
+            body: "Hi \(profile?.name ?? "there"), it's time to complete '\(taskTitle)' task. Don't forget to mark it as done!",
+            identifier: identifier
+        )
     }
 }

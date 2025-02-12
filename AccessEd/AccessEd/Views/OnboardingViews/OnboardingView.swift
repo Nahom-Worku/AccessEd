@@ -50,12 +50,9 @@ struct OnboardingView: View {
                     addGradeSection
                         .transition(transition)
                 case 3:
-                    addpreferredLanguageSection
-                        .transition(transition)
-                case 4:
                     addFieldsOfInterestSection
                         .transition(transition)
-                case 5:
+                case 4:
                     adduserSelectedCourses
                         .transition(transition)
                 default:
@@ -67,7 +64,7 @@ struct OnboardingView: View {
             }
             
             // MARK: - TODO: disable button instead of alert
-            if profileViewModel.onboardingState <= 5 {
+            if profileViewModel.onboardingState <= 4 {
                 VStack {
                     Spacer()
                     bottomButton
@@ -96,7 +93,7 @@ extension OnboardingView {
     
     private var bottomButton: some View {
         Text(profileViewModel.onboardingState == 0 ? "Get Started" :
-                profileViewModel.onboardingState == 5 ? "Finish" :
+                profileViewModel.onboardingState == 4 ? "Finish" :
             "Next"
         )
         .font(.system(size: 15, weight: .bold))
@@ -111,8 +108,8 @@ extension OnboardingView {
                 handleNextButtonPressed()
                         
                 
-                if profileViewModel.onboardingState > 5 {
-                    let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest, interestedCourses: profileViewModel.interestedCourses)
+                if profileViewModel.onboardingState > 4 {
+                    let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, fieldsOfInterest: profileViewModel.fieldsOfInterest, interestedCourses: profileViewModel.interestedCourses)
                     
                     profileViewModel.modelContext = modelContext
                     profileViewModel.setUpProfile(profile: profile)
@@ -225,31 +222,6 @@ extension OnboardingView {
         .padding(20)
     }
     
-    private var addpreferredLanguageSection: some View {
-        VStack(spacing: 30) {
-            Spacer()
-            Text("What's your preferred language?")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .foregroundStyle(Color("Text-Colors"))
-            
-            
-            HStack {
-                Text("Language: ")
-                
-                Picker("Select Language", selection: $profileViewModel.preferredLanguage) {
-                    ForEach(Languages.allLanguages, id: \.self) { language in
-                        Text(language).tag(language)
-                    }
-                }
-                .pickerStyle(MenuPickerStyle())
-            }
-            
-            Spacer()
-            Spacer()
-        }
-        .padding(30)
-    }
     
     private var addFieldsOfInterestSection: some View {
         
@@ -389,12 +361,12 @@ extension OnboardingView {
 //                showAlert(title: "Please select a grade between 9-12!")
 //                return
 //            }
-        case 4:
+        case 3:
             guard !profileViewModel.fieldsOfInterest.isEmpty else {
                 showAlert(title: "You must select at least one field of interest!")
                 return
             }
-        case 5:
+        case 4:
             guard profileViewModel.interestedCourses.count >= 1 else {
                 showAlert(title: "You must select at least one courses!")
                 return
@@ -405,7 +377,7 @@ extension OnboardingView {
         
         
         // GO TO NEXT SECTION
-        if profileViewModel.onboardingState > 5 {
+        if profileViewModel.onboardingState > 4 {
             
             // MARK: - sign in here maybe
 //            signIn()
@@ -421,7 +393,7 @@ extension OnboardingView {
         // MARK: - TODO thing here
         // TODO: maybe set isProfileSetUp = true here
         
-        let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, preferredLanguage: profileViewModel.preferredLanguage, fieldsOfInterest: profileViewModel.fieldsOfInterest, interestedCourses: profileViewModel.interestedCourses)
+        let profile = ProfileModel(name: profileViewModel.name, grade: profileViewModel.grade, fieldsOfInterest: profileViewModel.fieldsOfInterest, interestedCourses: profileViewModel.interestedCourses)
         
         profileViewModel.setUpProfile(profile: profile)
         

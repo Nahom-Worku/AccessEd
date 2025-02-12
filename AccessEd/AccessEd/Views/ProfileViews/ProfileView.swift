@@ -23,11 +23,13 @@ struct ProfileView: View {
     @Environment(\.modelContext) var modelContext
     @ObservedObject var courseViewModel: CourseViewModel
     @ObservedObject var profileViewModel: ProfileViewModel
+    @ObservedObject var calendarViewModel: CalendarViewModel
     @State private var isInterestedCoursesExpanded: Bool = false
     @State private var isFieldsOfInterestExpanded: Bool = false
     @State private var showDeleteConfirmation: Bool = false
     @State private var showingImagePicker: Bool = false
     @State private var showEditProfileView: Bool = false
+    @State private var showProfileDeletedAlert: Bool = false
     
     var body: some View {
         NavigationView {
@@ -41,7 +43,7 @@ struct ProfileView: View {
                         ZStack {
                             profileViewModel.profilePicture
                                 .resizable()
-                                .fontWeight(.thin)
+                                .fontWeight(.ultraLight)
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 100, height: 100)
                                 .clipShape(Circle())
@@ -225,13 +227,19 @@ struct ProfileView: View {
                 courseViewModel.clearAllRecommendedCourses()
                 courseViewModel.clearUserPreferences()
                 courseViewModel.resetUserPreferences()
+                calendarViewModel.DeleteAllTasks()
                 courseViewModel.fetchCourses()
                 profileViewModel.fetchProfile()
+                
+                showProfileDeletedAlert = true
             }
             Button("Cancel", role: .cancel) { }
         } message: {
             Text("Are you sure you want to delete your profile? This action cannot be undone.")
         }
+        .alert(isPresented: $showProfileDeletedAlert, content: {
+            Alert(title: Text("Profile Deleted"), message: Text("Close the app and reopen it to setup your profile again."), dismissButton: .cancel())
+        })
     }
 }
 
@@ -260,6 +268,7 @@ struct AppInfoView: View {
 #Preview("profile view") {
     let profileViewModel = ProfileViewModel()
     let courseViewModel = CourseViewModel(profileViewModel: profileViewModel)
-    ProfileView(courseViewModel: courseViewModel, profileViewModel: profileViewModel)
+    let calendarViewModel = CalendarViewModel()
+    ProfileView(courseViewModel: courseViewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
 }
 

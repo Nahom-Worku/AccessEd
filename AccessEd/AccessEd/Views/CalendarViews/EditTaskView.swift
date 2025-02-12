@@ -8,20 +8,21 @@
 import SwiftUI
 
 struct EditTaskView: View {
-    @ObservedObject var viewModel: CalendarViewModel
+    @ObservedObject var calendarViewModel: CalendarViewModel
+    @ObservedObject var profileViewModel: ProfileViewModel
     var taskIndex: Int
-    @State private var taskName: String = ""
+    @State private var taskTitle: String = ""
     @State private var taskDate: Date = Date()
     @State private var taskDueTime: Date = Date()
     @Binding var isCurrentDateSelected: Bool
     @FocusState private var isTaskFieldFocused: Bool
 
     var body: some View {
-        if viewModel.isEditingTask {
+        if calendarViewModel.isEditingTask {
             Color.black.opacity(0.5)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    viewModel.isEditingTask = false
+                    calendarViewModel.isEditingTask = false
                 }
             
             VStack(spacing: 20) {
@@ -30,11 +31,11 @@ struct EditTaskView: View {
                     .bold()
                     .foregroundStyle(Color("Text-Colors"))
                 
-                if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? viewModel.tasksForCurrentDate.count: viewModel.tasksForSelectedDate.count) {
+                if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? calendarViewModel.tasksForCurrentDate.count: calendarViewModel.tasksForSelectedDate.count) {
                     VStack(alignment: .leading) {
                         Text("Update Task Name")
                             .padding(.leading)
-                        TextField("Enter Task Name", text: $taskName)
+                        TextField("Enter Task Name", text: $taskTitle)
                             .focused($isTaskFieldFocused)
                             .padding(10)
                             .background(Color.gray.opacity(0.05).cornerRadius(5.0))
@@ -49,7 +50,7 @@ struct EditTaskView: View {
                             .padding(.horizontal, 20)
                             .font(.subheadline)
                         
-                        Text("Select Time")
+                        Text("Update Due Time")
                             .padding(.leading)
                         DatePicker("Due Time", selection: $taskDueTime, displayedComponents: .hourAndMinute)
                             .padding(10)
@@ -63,7 +64,7 @@ struct EditTaskView: View {
                 HStack(alignment: .center) {
                     // Cancel button
                     Button(action: {
-                        viewModel.isEditingTask = false
+                        calendarViewModel.isEditingTask = false
                     }) {
                         Text("Cancel")
                             .font(.subheadline)
@@ -83,10 +84,12 @@ struct EditTaskView: View {
                     // Save button
                     Button {
                         // Save the updated task
-                        if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? viewModel.tasksForCurrentDate.count: viewModel.tasksForSelectedDate.count) {
-                            viewModel.updateTaskName(at: taskIndex, newName: taskName, newDate: taskDate, dueTime: taskDueTime)
+                        if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? calendarViewModel.tasksForCurrentDate.count: calendarViewModel.tasksForSelectedDate.count) {
+                            calendarViewModel.updateTask(at: taskIndex, newName: taskTitle, newDate: taskDate, dueTime: taskDueTime)
+                            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["TasksReminder_\(taskTitle)"])
+                            profileViewModel.scheduleTasksNotification(taskTitle: taskTitle, dueDate: taskDate, dueTime: taskDueTime)
                         }
-                        viewModel.isEditingTask = false
+                        calendarViewModel.isEditingTask = false
                     } label: {
                         Text("Save")
                             .font(.subheadline)
@@ -115,9 +118,9 @@ struct EditTaskView: View {
             .padding(.horizontal, 10)
             .padding(.top, 10)
             .onAppear {
-                if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? viewModel.tasksForCurrentDate.count: viewModel.tasksForSelectedDate.count) {
-                    let task = isCurrentDateSelected ? viewModel.tasksForCurrentDate[taskIndex] : viewModel.tasksForSelectedDate[taskIndex]
-                    taskName = task.name
+                if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? calendarViewModel.tasksForCurrentDate.count: calendarViewModel.tasksForSelectedDate.count) {
+                    let task = isCurrentDateSelected ? calendarViewModel.tasksForCurrentDate[taskIndex] : calendarViewModel.tasksForSelectedDate[taskIndex]
+                    taskTitle = task.name
                     taskDate = task.date
                     taskDueTime = task.time
                 }
@@ -131,6 +134,7 @@ struct EditTaskView: View {
 
 #Preview {
     @Previewable @State var isCurrentDateSelected: Bool = false
-    let viewModel = CalendarViewModel()
-    EditTaskView(viewModel: viewModel, taskIndex: 0, isCurrentDateSelected: $isCurrentDateSelected)
+    let calendarViewModel = CalendarViewModel()
+    let profileViewModel = ProfileViewModel()
+    EditTaskView(calendarViewModel: calendarViewModel, profileViewModel: profileViewModel, taskIndex: 0, isCurrentDateSelected: $isCurrentDateSelected)
 }

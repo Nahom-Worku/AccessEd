@@ -13,7 +13,6 @@ class ProfileModel: Identifiable {
     var id: UUID = UUID()
     var name: String
     var grade: String
-    var preferredLanguage: String
     var fieldsOfInterest: [String]
     var interestedCourses: [String]
     var profilePicture: Data?
@@ -21,10 +20,9 @@ class ProfileModel: Identifiable {
     var isUserSignedIn: Bool
     var isNotificationsOn: Bool
     
-    init(name: String, grade: String, preferredLanguage: String, fieldsOfInterest: [String], interestedCourses: [String], profilePicture: Data? = nil, timeZone: String = TimeZone.current.identifier, isUserSignedIn: Bool = false, isNotificationsOn: Bool = true) {
+    init(name: String, grade: String, fieldsOfInterest: [String], interestedCourses: [String], profilePicture: Data? = nil, timeZone: String = TimeZone.current.identifier, isUserSignedIn: Bool = false, isNotificationsOn: Bool = true) {
         self.name = name
         self.grade = grade
-        self.preferredLanguage = preferredLanguage
         self.fieldsOfInterest = fieldsOfInterest
         self.interestedCourses = interestedCourses
         self.profilePicture = profilePicture

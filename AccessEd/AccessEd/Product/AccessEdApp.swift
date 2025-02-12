@@ -45,9 +45,9 @@ struct AccessEdApp: App {
         _courseViewModel = StateObject(wrappedValue: CourseViewModel(profileViewModel: profileViewModel))
         
         NotificationManager.shared.configure()
-//        NotificationManager.shared.requestAuthorization()
-//        UNUserNotificationCenter.current().delegate = notificationDelegate
-//        UNUserNotificationCenter.current().delegate = NotificationManager.shared
+        NotificationManager.shared.requestAuthorization()
+        UNUserNotificationCenter.current().delegate = notificationDelegate
+        UNUserNotificationCenter.current().delegate = NotificationManager.shared
     }
     
     var body: some Scene {
@@ -60,7 +60,7 @@ struct AccessEdApp: App {
 //
 //                CoursesView(viewModel: courseViewModel)  // TODO: might need to get rid of these
 //                CalendarView(viewModel: calendarViewModel)
-                ProfileView(courseViewModel: courseViewModel, profileViewModel: profileViewModel)
+                ProfileView(courseViewModel: courseViewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
                     .environment(\.modelContext, modelContext)
                     .environmentObject(calendarViewModel)
                     .environmentObject(profileViewModel)

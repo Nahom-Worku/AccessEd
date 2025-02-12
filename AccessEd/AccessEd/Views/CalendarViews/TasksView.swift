@@ -26,8 +26,8 @@ struct TasksView: View {
                         .foregroundStyle(.gray.opacity(0.8))
                         .fontWeight(.light)
                     
-                    Text("No tasks for today.")
-                        .font(.headline)
+                    Text("No tasks for \(viewModel.formattedDate(viewModel.selectedDate)).")
+                        .font(.subheadline)
                         .bold()
                         .opacity(0.8)
                         .padding(.bottom, 3)
@@ -81,7 +81,7 @@ struct TasksSubView: View {
                         Text("Due: ")
                             .fontWeight(.medium)
                         
-                        Text("\(viewModel.formattedTime(task.time)) • \(viewModel.formattedDate(task.date))")
+                        Text("\(viewModel.formattedDate(task.date)) • \(viewModel.formattedTime(task.time))")
                         
                         Spacer()
                     }
@@ -127,16 +127,16 @@ struct TasksSubView: View {
                             viewModel.selectedTaskIndex = index
                             viewModel.isEditingTask = true
                         }
-                    }, label: {
+                    }) {
                         Label("Edit Task", systemImage: "pencil")
-                    })
+                    }
                     
-                    Button(action: {
+                    Button(role: .destructive, action: {
                         viewModel.taskToDelete = task
                         viewModel.taskAlerts = .deleteTask
-                    }, label: {
+                    }) {
                         Label("Delete Task", systemImage: "trash")
-                    })
+                    }
                 }
             }
         }
