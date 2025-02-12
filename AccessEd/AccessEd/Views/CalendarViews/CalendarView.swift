@@ -10,7 +10,8 @@ import SwiftData
 
 struct CalendarView: View {
     @Environment(\.modelContext) var modelContext
-    @ObservedObject var viewModel: CalendarViewModel
+    @ObservedObject var calendarViewModel: CalendarViewModel
+    @ObservedObject var profileViewModel: ProfileViewModel
     @State var isCurrentDateSelected: Bool = false
     
     var body: some View {
@@ -20,12 +21,12 @@ struct CalendarView: View {
                     VStack {
                         VStack(spacing: 0) {
                             // Calendar view
-                            CalendarTitleLayerView(viewModel: viewModel)
+                            CalendarTitleLayerView(viewModel: calendarViewModel)
                             Divider()
                                 .frame(width: UIScreen.main.bounds.width * 0.75, height: 0.21)
                                 .background(Color.gray)
                                 .padding(.bottom)
-                            CalendarEventsView (viewModel: viewModel)
+                            CalendarEventsView (viewModel: calendarViewModel)
                         }
                         .frame(width: UIScreen.main.bounds.width - 40, height: 335, alignment: .top)
                         .background(Color("Light-Dark Mode Colors").cornerRadius(15))
@@ -33,13 +34,13 @@ struct CalendarView: View {
                         .padding()
                         
                         // Tasks View
-                        TasksLayerView(viewModel: viewModel)
+                        TasksLayerView(viewModel: calendarViewModel)
                             .frame(width: UIScreen.main.bounds.width)
                             .padding(.horizontal)
                     }
                     .frame(width: UIScreen.main.bounds.width)
-                    .sheet(isPresented: $viewModel.isAddingTask, content: {
-                        AddTaskSheetView(viewModel: viewModel)
+                    .sheet(isPresented: $calendarViewModel.isAddingTask, content: {
+                        AddTaskSheetView(calendarViewModel: calendarViewModel, profileViewModel: profileViewModel)
                             .presentationDetents([.medium, .fraction(1.1)])
                             .padding(.top)
                     })
@@ -47,8 +48,8 @@ struct CalendarView: View {
                 }
                     
                 
-                if let taskIndex = viewModel.selectedTaskIndex {
-                    EditTaskView(viewModel: viewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
+                if let taskIndex = calendarViewModel.selectedTaskIndex {
+                    EditTaskView(viewModel: calendarViewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
                 }
             }
             .navigationTitle("My Calendar")
@@ -56,46 +57,49 @@ struct CalendarView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         withAnimation(.spring()) {
-                            viewModel.isAddingTask = true
+                            calendarViewModel.isAddingTask = true
                         }
                     }, label: {
                         Image(systemName: "plus")
                             .padding()
                     })
-                    .disabled(viewModel.isEditingTask)
+                    .disabled(calendarViewModel.isEditingTask)
                 }
             }
         }
         .onAppear {
-            viewModel.modelContext = modelContext
-            viewModel.fetchTasks()
-            viewModel.tasks = viewModel.fetchedTasks
+            calendarViewModel.modelContext = modelContext
+            calendarViewModel.fetchTasks()
+            calendarViewModel.tasks = calendarViewModel.fetchedTasks
+            profileViewModel.fetchProfile()
             
-            for date in viewModel.tasks.map({ $0.date }) {
-                viewModel.updateDynamicColor(for: date)
+            for date in calendarViewModel.tasks.map({ $0.date }) {
+                calendarViewModel.updateDynamicColor(for: date)
             }
             
-            viewModel.onDateSelected = { date in
-                viewModel.selectedDate = date
+            calendarViewModel.onDateSelected = { date in
+                calendarViewModel.selectedDate = date
             }
             
-            viewModel.updateDynamicColor = { date in
-                viewModel.updateDynamicColor(for: date)
+            calendarViewModel.updateDynamicColor = { date in
+                calendarViewModel.updateDynamicColor(for: date)
             }
         }
     }
 }
 
 #Preview("Light mode") {
-    let viewModel = CalendarViewModel()
-    CalendarView(viewModel: viewModel)
+    let calendarViewModel = CalendarViewModel()
+    let profileViewModel = ProfileViewModel()
+    CalendarView(calendarViewModel: calendarViewModel, profileViewModel: profileViewModel)
         .preferredColorScheme(.light)
         .modelContainer(for: [TaskModel.self, CalendarModel.self], inMemory: true)
 }
 
 #Preview("Dark mode") {
-    let viewModel = CalendarViewModel()
-    CalendarView(viewModel: viewModel)
+    let calendarViewModel = CalendarViewModel()
+    let profileViewModel = ProfileViewModel()
+    CalendarView(calendarViewModel: calendarViewModel, profileViewModel: profileViewModel)
         .preferredColorScheme(.dark)
         .modelContainer(for: [TaskModel.self, CalendarModel.self], inMemory: true)
 }

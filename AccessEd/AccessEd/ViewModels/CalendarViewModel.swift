@@ -65,7 +65,7 @@ class CalendarViewModel : ObservableObject {
     
     func fetchTasks() {
         guard let context = modelContext else { return }
-        let fetchDescriptor = FetchDescriptor<TaskModel>(sortBy: [SortDescriptor(\.persistentModelID)])
+        let fetchDescriptor = FetchDescriptor<TaskModel>(sortBy: [SortDescriptor(\.time)])
         tasks = (try? context.fetch(fetchDescriptor)) ?? []
     }
     
@@ -138,14 +138,14 @@ class CalendarViewModel : ObservableObject {
         fetchTasks()
     }
     
-    func updateTaskName(at index: Int, with newName: String) {
-        tasksForSelectedDate[index].name = newName
-        try? modelContext?.save()
-        fetchTasks()
-    }
-
-    func updateTaskDate(at index: Int, with newDate: Date) {
-        tasksForSelectedDate[index].date = newDate
+    func updateTaskName(at index: Int, newName: String, newDate: Date, dueTime: Date) {
+        guard index >= 0, index < tasksForSelectedDate.count else { return }
+        
+        let task = tasksForSelectedDate[index]
+        task.name = newName
+        task.date = newDate
+        task.time = dueTime
+        
         try? modelContext?.save()
         fetchTasks()
     }

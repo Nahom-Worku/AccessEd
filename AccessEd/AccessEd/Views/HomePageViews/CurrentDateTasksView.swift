@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct CurrentDateTasksView: View {
-    @ObservedObject var viewModel: CalendarViewModel
+    @ObservedObject var calendarViewModel: CalendarViewModel
     @State var isCurrentDateSelected: Bool = false
     @State var isNavigatingToCalendar: Bool = false
     
     var body: some View {
         VStack {
-            if viewModel.tasksForCurrentDate.isEmpty {
+            if calendarViewModel.tasksForCurrentDate.isEmpty {
 //                Text("No tasks for today.")
 //                    .foregroundColor(.gray)
 //                    .padding(.top, 50)
@@ -33,7 +33,7 @@ struct CurrentDateTasksView: View {
                         .opacity(0.8)
                         .padding(.bottom, 5)
                     
-                    Text("Start adding tasks to get started!")
+                    Text("Start adding tasks to get started in the Calendar Page!")
                         .font(.subheadline)
                         .foregroundStyle(.gray)
                         .padding(.bottom)
@@ -42,21 +42,21 @@ struct CurrentDateTasksView: View {
                                         
                     
                     // MARK: - TODO: change this deprecated ting
-                    NavigationLink(
-                        destination: CalendarView(viewModel: viewModel), // ✅ Properly push the view
-                        isActive: $isNavigatingToCalendar
-                    ) {
-                        Button(action: {
-                            viewModel.selectedDate = Date()
-                            withAnimation {
-                                viewModel.isAddingTask = true
-                                isNavigatingToCalendar = true
-                            }
-                        }, label: {
-                            Text("Add a Task")
-                                .font(.subheadline)
-                        })
-                    }
+//                    NavigationLink(
+//                        destination: CalendarView(calendarViewModel: calendarViewModel), // ✅ Properly push the view
+//                        isActive: $isNavigatingToCalendar
+//                    ) {
+//                        Button(action: {
+//                            calendarViewModel.selectedDate = Date()
+//                            withAnimation {
+//                                calendarViewModel.isAddingTask = true
+//                                isNavigatingToCalendar = true
+//                            }
+//                        }, label: {
+//                            Text("Add a Task")
+//                                .font(.subheadline)
+//                        })
+//                    }
                     
                 }
                 .frame(width: UIScreen.main.bounds.width)
@@ -66,7 +66,7 @@ struct CurrentDateTasksView: View {
                 
             } else {
                 LazyVStack(alignment: .center, spacing: 5) {
-                    TasksSubView(viewModel: viewModel, isCurrentDateSelected: $isCurrentDateSelected)
+                    TasksSubView(viewModel: calendarViewModel, isCurrentDateSelected: $isCurrentDateSelected)
                 }
                 .padding(.top, 10)
                 .padding(.trailing, 20)

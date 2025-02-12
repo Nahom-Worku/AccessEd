@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CalendarLayerView: View {
     @Environment(\.modelContext) var modelContext
-    @EnvironmentObject var viewModel: CalendarViewModel
+    @EnvironmentObject var calendarViewModel: CalendarViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -24,7 +24,7 @@ struct CalendarLayerView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                         
-                        Text("\(viewModel.uncompletedTasksForCurrentDate.count)")
+                        Text("\(calendarViewModel.uncompletedTasksForCurrentDate.count)")
                             .foregroundStyle(.purple)
                             .padding(10)
                             .frame(maxWidth: 35, maxHeight: 30)
@@ -43,7 +43,7 @@ struct CalendarLayerView: View {
                 
                 Spacer()
                 
-                TaskActionsView(viewModel: viewModel)
+                TaskActionsView(viewModel: calendarViewModel)
             }
             .padding(.trailing, 5)
             .frame(width: UIScreen.main.bounds.width - 50, alignment: .leading)
@@ -51,7 +51,7 @@ struct CalendarLayerView: View {
             
             
             LazyVStack {
-                CurrentDateTasksView(viewModel: viewModel)
+                CurrentDateTasksView(calendarViewModel: calendarViewModel)
             }
             .padding(.horizontal, 20)
             .frame(width: UIScreen.main.bounds.width, alignment: .center)
@@ -60,8 +60,8 @@ struct CalendarLayerView: View {
         }
         .padding(.bottom, 50)
         .onAppear {
-            viewModel.modelContext = modelContext
-            viewModel.fetchTasks()
+            calendarViewModel.modelContext = modelContext
+            calendarViewModel.fetchTasks()
         }
     }
 }

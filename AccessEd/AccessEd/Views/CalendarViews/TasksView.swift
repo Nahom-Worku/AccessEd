@@ -74,12 +74,14 @@ struct TasksSubView: View {
     @Binding var isCurrentDateSelected: Bool
     
     var body: some View {
-        VStack(spacing: 25) {
+        VStack(spacing: 15) {
             ForEach(Array(isCurrentDateSelected ? viewModel.tasksForCurrentDate.enumerated() : viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
-                VStack {
+                VStack(spacing: 5) {
                     HStack {
                         Text("Due: ")
-                        Text("\(viewModel.dueTime) - \(viewModel.formattedDate(task.date))")
+                            .fontWeight(.medium)
+                        
+                        Text("\(viewModel.formattedTime(task.time)) • \(viewModel.formattedDate(task.date))")
                         
                         Spacer()
                     }
@@ -87,7 +89,8 @@ struct TasksSubView: View {
                     .foregroundStyle(.gray)
                     
                     Divider()
-                        .frame(height: 1)
+                        .frame(height: 5)
+                        .foregroundStyle(.gray)
                     
                     HStack {
                         Text(task.name)
@@ -104,16 +107,17 @@ struct TasksSubView: View {
                                 .foregroundColor(task.isCompleted ? .green : .red)
                         })
                     }
+                    .padding(.vertical, 3)
                 }
                 // MARK: TODO: clean this up
                 .padding(.vertical, 10)
                 .padding(.horizontal, 13)
-                .background(Color("Courses-Colors"))
+                .background(Color("Task-Colors"))
                 .cornerRadius(8)
                 //            .padding(.trailing, 10)
                 .frame(width: UIScreen.main.bounds.width - 60)
                 .padding(.leading, 15)
-                .shadow(radius: 1, x: 0, y: 0)
+//                .shadow(radius: 1, x: 0, y: 0)
                 .onTapGesture(count: 2) {
                     viewModel.handleTaskCompletion(task)
                 }

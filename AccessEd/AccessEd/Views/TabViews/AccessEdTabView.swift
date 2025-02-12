@@ -55,7 +55,7 @@ struct AccessEdTabView: View {
             
             // Calendar/ToDo List page
             VStack {
-                CalendarView(viewModel: calendarViewModel)
+                CalendarView(calendarViewModel: calendarViewModel, profileViewModel: profileViewModel)
                 
 //                Spacer().frame(height: 10)
             }
