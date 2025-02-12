@@ -49,7 +49,7 @@ struct EditTaskView: View {
                             .padding(.horizontal, 20)
                             .font(.subheadline)
                         
-                        Text("Select Time")
+                        Text("Update Due Time")
                             .padding(.leading)
                         DatePicker("Due Time", selection: $taskDueTime, displayedComponents: .hourAndMinute)
                             .padding(10)

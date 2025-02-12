@@ -68,7 +68,7 @@ struct AccessEdTabView: View {
             
             // Profile page
             VStack {
-                ProfileView(courseViewModel: coursesViewModel, profileViewModel: profileViewModel)
+                ProfileView(courseViewModel: coursesViewModel, profileViewModel: profileViewModel, calendarViewModel: calendarViewModel)
                 
 //                Spacer().frame(height: 10)
             }

@@ -125,6 +125,16 @@ class CalendarViewModel : ObservableObject {
         soundPlayer.playSound(named: "All_Task_deleted.mp3", volume: 0.2)
     }
     
+    func DeleteAllTasks() {
+        guard let context = modelContext else { return }
+        for task in tasks {
+            context.delete(task)
+        }
+        
+        try? context.save()
+        fetchTasks()
+    }
+    
     func updateAllTasksCompleted() {
         var completionStatus: [Date: Bool] = [:]
 

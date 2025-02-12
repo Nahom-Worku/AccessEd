@@ -127,7 +127,7 @@ struct AddTaskSheetView: View {
         NotificationManager.shared.scheduleNotification(
             at: taskDueAt,
             title: "Tasks Reminder ⏰",
-            body: "Hi \(profileViewModel.profile?.name ?? "there"), it's time to complete '\(taskTitle)'. Don't forget to mark it as done!",
+            body: "Hi \(profileViewModel.profile?.name ?? "there"), it's time to complete '\(taskTitle)' task. Don't forget to mark it as done!",
             identifier: identifier
         )
     }

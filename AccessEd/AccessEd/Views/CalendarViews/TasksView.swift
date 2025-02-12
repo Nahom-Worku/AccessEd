@@ -127,16 +127,16 @@ struct TasksSubView: View {
                             viewModel.selectedTaskIndex = index
                             viewModel.isEditingTask = true
                         }
-                    }, label: {
+                    }) {
                         Label("Edit Task", systemImage: "pencil")
-                    })
+                    }
                     
-                    Button(action: {
+                    Button(role: .destructive, action: {
                         viewModel.taskToDelete = task
                         viewModel.taskAlerts = .deleteTask
-                    }, label: {
+                    }) {
                         Label("Delete Task", systemImage: "trash")
-                    })
+                    }
                 }
             }
         }

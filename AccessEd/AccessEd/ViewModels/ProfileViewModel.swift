@@ -15,7 +15,6 @@ class ProfileViewModel : ObservableObject {
     @Published var profile: ProfileModel?
     @Published var name: String = ""
     @Published var grade: String = "9"
-    @Published var preferredLanguage: String = "English"
     @Published var isUserSignedIn: Bool = false
     @Published var onboardingState: Int = 0
     @Published var alertTitle: String = ""
@@ -133,7 +132,6 @@ class ProfileViewModel : ObservableObject {
             // Update fields
             existingProfile.name = updatedProfile.name
             existingProfile.grade = updatedProfile.grade
-            existingProfile.preferredLanguage = updatedProfile.preferredLanguage
             existingProfile.fieldsOfInterest = updatedProfile.fieldsOfInterest
             existingProfile.timeZone = updatedProfile.timeZone
 

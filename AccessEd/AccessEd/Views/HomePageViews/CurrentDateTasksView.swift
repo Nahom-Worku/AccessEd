@@ -15,11 +15,6 @@ struct CurrentDateTasksView: View {
     var body: some View {
         VStack {
             if calendarViewModel.tasksForCurrentDate.isEmpty {
-//                Text("No tasks for today.")
-//                    .foregroundColor(.gray)
-//                    .padding(.top, 50)
-//                    .frame(width: UIScreen.main.bounds.width, alignment: .center)
-                
                 VStack(alignment: .center) {
                     Image(systemName: "list.bullet.rectangle")
                         .font(Font.system(size: 40))
@@ -39,25 +34,6 @@ struct CurrentDateTasksView: View {
                         .padding(.bottom)
                         .padding(.horizontal, 50)
                         .multilineTextAlignment(.center)
-                                        
-                    
-                    // MARK: - TODO: change this deprecated ting
-//                    NavigationLink(
-//                        destination: CalendarView(calendarViewModel: calendarViewModel), // ✅ Properly push the view
-//                        isActive: $isNavigatingToCalendar
-//                    ) {
-//                        Button(action: {
-//                            calendarViewModel.selectedDate = Date()
-//                            withAnimation {
-//                                calendarViewModel.isAddingTask = true
-//                                isNavigatingToCalendar = true
-//                            }
-//                        }, label: {
-//                            Text("Add a Task")
-//                                .font(.subheadline)
-//                        })
-//                    }
-                    
                 }
                 .frame(width: UIScreen.main.bounds.width)
                 .padding()
