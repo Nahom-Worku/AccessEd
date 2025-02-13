@@ -56,9 +56,7 @@ struct TasksView: View {
                 .padding(.top, 10)
             }
         }
-        
-    }
-       
+    }    
 }
 
 struct TasksSubView: View {
