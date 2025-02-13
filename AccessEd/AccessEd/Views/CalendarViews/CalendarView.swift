@@ -44,12 +44,14 @@ struct CalendarView: View {
                             .presentationDetents([.medium, .fraction(1.1)])
                             .padding(.top)
                     })
-                    
                 }
                     
                 
                 if let taskIndex = calendarViewModel.selectedTaskIndex {
                     EditTaskView(calendarViewModel: calendarViewModel, profileViewModel: profileViewModel, taskIndex: taskIndex, isCurrentDateSelected: $isCurrentDateSelected)
+                        .safeAreaInset(edge: .top) {
+                            Color.clear.frame(height: 23)
+                        }
                 }
             }
             .navigationTitle("My Calendar")
