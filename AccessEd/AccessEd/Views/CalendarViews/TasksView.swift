@@ -15,10 +15,6 @@ struct TasksView: View {
     var body: some View {
         VStack {
             if viewModel.tasksForSelectedDate.isEmpty {
-//                Text("No tasks for this date.")
-//                    .foregroundColor(.gray)
-//                    .frame(width: UIScreen.main.bounds.width)
-//                    .padding(.top, 50)
                 VStack(alignment: .center, spacing: 0) {
                     Image(systemName: "list.bullet.rectangle")
                         .font(Font.system(size: 40))
@@ -41,11 +37,7 @@ struct TasksView: View {
                     
                     
                     Button(action: {
-                        viewModel.selectedDate = Date()
-                        withAnimation {
-                            viewModel.isAddingTask = true
-                            
-                        }
+                        withAnimation { viewModel.isAddingTask = true }
                     }, label: {
                         Text("Add a Task")
                             .font(.subheadline)
