@@ -58,7 +58,7 @@ struct CalendarLayerView: View {
             .padding(.top, 10)
             
         }
-        .padding(.bottom, 50)
+        .padding(.bottom)
         .onAppear {
             calendarViewModel.modelContext = modelContext
             calendarViewModel.fetchTasks()

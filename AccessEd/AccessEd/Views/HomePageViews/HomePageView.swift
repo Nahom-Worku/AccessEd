@@ -94,6 +94,9 @@ struct HomePageView: View {
                 calendarViewModel.completeAllTasks(for: calendarViewModel.selectedDate)
             }
             Button("Remove All Tasks", role: .destructive) {
+                for task in calendarViewModel.tasksForSelectedDate {
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["TasksReminder_\(task.name)"])
+                }
                 calendarViewModel.deleteAllTasks(for: calendarViewModel.selectedDate)
             }
             Button("Cancel", role: .cancel) {}

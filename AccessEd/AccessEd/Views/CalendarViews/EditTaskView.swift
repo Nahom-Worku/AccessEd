@@ -85,8 +85,11 @@ struct EditTaskView: View {
                     Button {
                         // Save the updated task
                         if taskIndex >= 0 && taskIndex < (isCurrentDateSelected ? calendarViewModel.tasksForCurrentDate.count: calendarViewModel.tasksForSelectedDate.count) {
+                            let task = isCurrentDateSelected ? calendarViewModel.tasksForCurrentDate[taskIndex] : calendarViewModel.tasksForSelectedDate[taskIndex]
+                            let originalTaskName = task.name
+                            
+                            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["TasksReminder_\(originalTaskName)"])
                             calendarViewModel.updateTask(at: taskIndex, newName: taskTitle, newDate: taskDate, dueTime: taskDueTime)
-                            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["TasksReminder_\(taskTitle)"])
                             profileViewModel.scheduleTasksNotification(taskTitle: taskTitle, dueDate: taskDate, dueTime: taskDueTime)
                         }
                         calendarViewModel.isEditingTask = false
