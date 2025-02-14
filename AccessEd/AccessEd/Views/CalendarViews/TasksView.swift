@@ -66,13 +66,11 @@ struct TasksSubView: View {
     var body: some View {
         VStack(spacing: 15) {
             ForEach(Array(isCurrentDateSelected ? viewModel.tasksForCurrentDate.enumerated() : viewModel.tasksForSelectedDate.enumerated()), id: \.offset) { index, task in
-                VStack(spacing: 5) {
+                VStack(spacing: 3) {
                     HStack {
                         Text("Due: ")
                             .fontWeight(.medium)
-                        
                         Text("\(viewModel.formattedDate(task.date)) • \(viewModel.formattedTime(task.time))")
-                        
                         Spacer()
                     }
                     .font(.caption)
@@ -104,13 +102,13 @@ struct TasksSubView: View {
                 .padding(.horizontal, 13)
                 .background(Color("Task-Colors"))
                 .cornerRadius(8)
-                //            .padding(.trailing, 10)
                 .frame(width: UIScreen.main.bounds.width - 60)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray, lineWidth: 0.25)
+                )
                 .padding(.leading, 15)
-//                .shadow(radius: 1, x: 0, y: 0)
-                .onTapGesture(count: 2) {
-                    viewModel.handleTaskCompletion(task)
-                }
+                .onTapGesture(count: 2) { viewModel.handleTaskCompletion(task) }
                 .contextMenu {
                     Button(action: {
                         withAnimation(.easeIn(duration: 0.2)) {
@@ -130,7 +128,7 @@ struct TasksSubView: View {
                 }
             }
         }
-        .padding(.bottom, 30)
+        .padding(.bottom)
     }
 }
 
