@@ -136,9 +136,7 @@ class StudyCardViewModel: ObservableObject {
     @Published var generatedCards: [(question: String, answer: String)] = []
     @Published var selectedPhotoItem: PhotosPickerItem? = nil
     @Published var selectedImage: UIImage? = nil
-    @Published var showReviewSheet: Bool = false  // Show review modal
     @Published var showCreateStudyCardsView: Bool = false
-    
     var modelContext: ModelContext?
 
     private let studyCardsGenerator = StudyCardsGenerator()
@@ -146,7 +144,7 @@ class StudyCardViewModel: ObservableObject {
     // ✅ Fetch Study Cards
     func fetchStudyCards() {
         guard let modelContext = modelContext else { return }
-        let fetchDescriptor = FetchDescriptor<StudyCardModel>(sortBy: [SortDescriptor(\.id)])
+        let fetchDescriptor = FetchDescriptor<StudyCardModel>(sortBy: [SortDescriptor(\.persistentModelID)])
 
         DispatchQueue.main.async {
             self.studyCards = (try? modelContext.fetch(fetchDescriptor)) ?? []
@@ -169,8 +167,7 @@ class StudyCardViewModel: ObservableObject {
             modelContext.insert(newCard)
         }
         try? modelContext.save()
-        fetchStudyCards()  // Reload UI
-//        showReviewSheet = false  // Close modal after saving
+        fetchStudyCards()
     }
 
     // ✅ Load Image from Picker

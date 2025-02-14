@@ -192,7 +192,7 @@ struct ProfileView: View {
                 .frame(width: UIScreen.main.bounds.width)
                 
             }
-            .padding()
+//            .padding()
             .navigationTitle("Profile")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

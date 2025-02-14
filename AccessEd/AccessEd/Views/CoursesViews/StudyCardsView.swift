@@ -24,8 +24,7 @@ struct StudyCardsView: View {
             }
             .padding()
         }
-        .padding()
-        .navigationTitle("\(studyCardName)")
+        .navigationTitle(studyCardName)
         .sheet(isPresented: $showCreateStudyCardsView) {
             CreateStudyCardsView(studyCardName: studyCardName, modelContext: modelContext, course: course)
         }

@@ -23,12 +23,10 @@ struct ResoursesTabView: View {
                     .foregroundColor(.purple)
                     .font(.headline)
             ){
-                ForEach(0..<3) { index in
-                    NavigationLink(destination: BookChaptersView(course: $course, bookNumber: index)) {
-                        
-                        // TODO: add this in a rounded rectangle
-                        EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
-                    }
+                NavigationLink(destination: BookChaptersView(course: $course, bookNumber: 1)) {
+                    
+                    // TODO: add this in a rounded rectangle
+                    EachCourseResoursesView(course: $course, resourseCategory: ResoursesCategory.textbook)
                 }
                 .listRowBackground(Color("Light-Dark Mode Colors"))
             }

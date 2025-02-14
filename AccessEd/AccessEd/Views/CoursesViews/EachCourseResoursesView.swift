@@ -14,7 +14,7 @@ struct EachCourseResoursesView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
-            .fill(Color("StudyCard-Colors"))
+            .fill(course.courseColor) //Color("StudyCard-Colors"))
             .padding(.horizontal, 30)
             .padding(.leading)
             .frame(width: UIScreen.main.bounds.width, height: 70)
@@ -31,21 +31,13 @@ struct EachCourseResoursesView: View {
                         .cornerRadius(10)
                         .padding(.horizontal, 10)
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("\(course.name): \(resourseCategory.self)")
-                            .font(.subheadline)
-                            .lineLimit(nil)
-                            .multilineTextAlignment(.leading)
-                            .foregroundStyle(Color("Text-Colors"))
-                        
-                        // MARK: - Not working
-                        if let grade = profileViewModel.profile?.grade {
-                            Text("Grade: \(grade)")
-                                .font(.footnote)
-                                .foregroundStyle(Color("Text-Colors")).opacity(0.5)
-                        }
-                    }
-                    .padding(5)
+
+                    Text("\(course.name): \(resourseCategory.self)")
+                        .font(.subheadline)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.leading)
+                        .foregroundStyle(Color("Text-Colors"))
+                        .padding(5)
                     
                     Spacer()
                     
